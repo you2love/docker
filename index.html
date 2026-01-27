@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Docker 学习教程 2026 - 从入门到精通</title>
+    <title>Docker 学习教程 - 从入门到精通</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -20,7 +20,7 @@
                 <li><a href="#structure">目录结构</a></li>
                 <li><a href="#network">网络详解</a></li>
                 <li><a href="#volume">数据卷详解</a></li>
-                <li><a href="#new-features">2026新特性</a></li>
+                <li><a href="#new-features">新特性</a></li>
                 <li><a href="#commands">常用命令</a></li>
                 <li><a href="#examples">实战示例</a></li>
                 <li><a href="#practices">最佳实践</a></li>
@@ -33,11 +33,11 @@
     <header id="home" class="hero">
         <div class="container">
             <div class="hero-content">
-                <h1>学习 Docker 容器技术 2026</h1>
+                <h1>学习 Docker 容器技术</h1>
                 <p>从零开始掌握容器化部署，利用 AI 辅助和现代化工具链轻松构建、运行和管理应用程序</p>
                 <div class="hero-buttons">
                     <a href="#basics" class="btn btn-primary">开始学习</a>
-                    <a href="#new-features" class="btn btn-secondary">2026新特性</a>
+                    <a href="#new-features" class="btn btn-secondary">新特性</a>
                     <a href="#ai-tools" class="btn btn-secondary">AI工具</a>
                 </div>
             </div>
@@ -78,7 +78,7 @@
                 <div class="feature-card">
                     <div class="feature-icon">🔒</div>
                     <h3>零信任安全</h3>
-                    <p>内置签名验证、SBOM 生成和运行时保护，符合 2026 年安全合规标准</p>
+                    <p>内置签名验证、SBOM 生成和运行时保护，符合最新安全合规标准</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">🌐</div>
@@ -146,7 +146,7 @@ choco install rancher-desktop</code></pre>
                             <pre><code class="language-bash">docker --version
 docker run hello-world
 
-# 检查 BuildKit（2026 默认启用）
+# 检查 BuildKit（默认启用）
 docker buildx version
 
 # 检查 Docker Scout（安全扫描工具）
@@ -159,7 +159,7 @@ docker scout version</code></pre>
                 <!-- Dockerfile -->
                 <div class="tab-content" id="dockerfile">
                     <div class="code-block">
-                        <h3>Dockerfile 基础示例（2026 版本）</h3>
+                        <h3>Dockerfile 基础示例</h3>
                         <div class="code-container">
                             <pre><code class="language-dockerfile"># 使用 BuildKit 优化的多阶段构建
 # syntax=docker/dockerfile:1.4
@@ -203,7 +203,7 @@ CMD ["node", "dist/index.js"]</code></pre>
                     </div>
 
                     <div class="info-card">
-                        <h3>2026 Dockerfile 新特性</h3>
+                        <h3>Dockerfile 新特性</h3>
                         <ul>
                             <li><code># syntax</code>: 声明 Dockerfile 语法版本，启用新特性</li>
                             <li><code>--mount=type=cache</code>: BuildKit 缓存挂载，加速构建</li>
@@ -524,7 +524,7 @@ docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d</code></pre
                     <div class="tab-content" id="wasm">
                         <div class="info-card">
                             <h3>什么是 WASM 容器？</h3>
-                            <p>WebAssembly (WASM) 容器是 2026 年 Docker 的革命性特性。它将 WASM 模块作为容器运行，提供接近原生的性能、极小的镜像大小（通常 <1MB）和更强的隔离性。</p>
+                            <p>WebAssembly (WASM) 容器是 Docker 的革命性特性。它将 WASM 模块作为容器运行，提供接近原生的性能、极小的镜像大小（通常 <1MB）和更强的隔离性。</p>
                         </div>
 
                         <div class="code-block">
@@ -651,10 +651,10 @@ volumes:
         </div>
     </section>
 
-    <!-- 2026 新特性 -->
+    <!-- 新特性 -->
     <section id="new-features" class="section">
         <div class="container">
-            <h2 class="section-title">2026 Docker 新特性</h2>
+            <h2 class="section-title">Docker 新特性</h2>
 
             <div class="features-grid">
                 <div class="feature-card">
@@ -808,7 +808,7 @@ du -sh /var/lib/docker/*</code></pre>
 ├── trust/                            # 内容信任数据
 │   └── tuf.db                        # 信任数据库
 ├── engine-id                         # 引擎唯一标识
-└── cli-plugins/                      # CLI 插件（2026 新增）
+└── cli-plugins/                      # CLI 插件
     └── docker-scout/                 # Docker Scout 插件
     └── docker-ai/                    # Docker AI 插件</code></pre>
                     <button class="copy-btn" onclick="copyCode(this)">复制</button>
@@ -958,7 +958,7 @@ docker network prune</code></pre>
             </div>
 
             <div class="code-block">
-                <h3>BuildKit 目录详解（2026 优化）</h3>
+                <h3>BuildKit 目录详解</h3>
                 <div class="code-container">
                     <pre><code class="language-bash">/var/lib/docker/buildkit/
 ├── cache/                            # 构建缓存
@@ -1967,7 +1967,7 @@ CMD ["spin", "up"]</code></pre>
     <!-- 最佳实践 -->
     <section id="practices" class="section">
         <div class="container">
-            <h2 class="section-title">Docker 最佳实践（2026版）</h2>
+            <h2 class="section-title">Docker 最佳实践</h2>
 
             <div class="info-card">
                 <h3>📋 为什么需要遵循最佳实践？</h3>
@@ -1981,7 +1981,7 @@ CMD ["spin", "up"]</code></pre>
                     <button class="tab-button" data-tab="practices-security">安全加固</button>
                     <button class="tab-button" data-tab="practices-network">网络配置</button>
                     <button class="tab-button" data-tab="practices-volume">数据管理</button>
-                    <button class="tab-button" data-tab="practices-2026">2026新特性</button>
+                    <button class="tab-button" data-tab="practices-new-features">新特性</button>
                 </div>
 
                 <!-- 构建优化 -->
@@ -2386,8 +2386,8 @@ docker run --tmpfs /tmp:size=1g myapp:latest</code></pre>
                     </div>
                 </div>
 
-                <!-- 2026新特性 -->
-                <div class="tab-content" id="practices-2026">
+                <!-- 新特性 -->
+                <div class="tab-content" id="practices-new-features">
                     <div class="practices-list">
                         <div class="practice-item">
                             <div class="practice-icon">⭐</div>
@@ -2490,8 +2490,8 @@ cosign verify myrepo/myimage:latest</code></pre>
             <h2 class="section-title">🤖 AI 辅助 Docker 工具</h2>
 
             <div class="info-card">
-                <h3>2026 年的 AI Docker 生态</h3>
-                <p>利用 AI 工具可以显著提升 Docker 开发效率，自动生成配置、优化镜像、检测漏洞，并提供智能建议。以下是 2026 年主流的 AI Docker 工具。</p>
+                <h3>AI Docker 生态</h3>
+                <p>利用 AI 工具可以显著提升 Docker 开发效率，自动生成配置、优化镜像、检测漏洞，并提供智能建议。以下是主流的 AI Docker 工具。</p>
             </div>
 
             <div class="features-grid">
@@ -2799,7 +2799,7 @@ jobs:
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 Docker Tutorial. 用于学习和教育目的。已更新至 2026 年最新技术。</p>
+                <p>&copy; Docker Tutorial. 用于学习和教育目的。</p>
             </div>
         </div>
     </footer>

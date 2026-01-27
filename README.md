@@ -1,6 +1,6 @@
-# Docker 学习教程示例 2026
+# Docker 学习教程示例
 
-这个目录包含了 Docker 学习教程中的各种示例项目，包含 2026 年最新技术。
+这个目录包含了 Docker 学习教程中的各种示例项目，包含最新技术。
 
 ## 📦 目录结构
 
@@ -10,8 +10,8 @@ examples/
 ├── database/         # 数据库部署示例
 ├── python-app/       # Python 应用示例
 ├── multi-stage/      # 多阶段构建示例
-├── wasm-app/         # WASM 容器示例 ⭐ 2026 新特性
-└── ai-optimized/     # AI 优化示例 ⭐ 2026 新特性
+├── wasm-app/         # WASM 容器示例 ⭐ 新特性
+└── ai-optimized/     # AI 优化示例 ⭐ 新特性
 ```
 
 ## 🚀 快速开始
@@ -54,7 +54,7 @@ cd multi-stage
 docker build -t optimized-app .
 ```
 
-### 5. WASM 容器 ⭐ 2026 新特性
+### 5. WASM 容器 ⭐ 新特性
 
 构建极轻量级的 WASM 容器应用：
 
@@ -68,7 +68,7 @@ docker build -t my-wasm-app .
 docker run -p 8080:8080 my-wasm-app
 ```
 
-### 6. AI 优化 ⭐ 2026 新特性
+### 6. AI 优化 ⭐ 新特性
 
 使用 AI 工具优化 Docker 容器：
 
@@ -82,7 +82,7 @@ docker build -f Dockerfile.optimized -t my-ai-app .
 docker ai analyze-performance my-ai-app
 ```
 
-## 🆕 2026 新特性
+## 🆕 新特性
 
 ### WASM 容器
 - **极小体积**：<1MB，比传统容器小 100-1000 倍
@@ -123,7 +123,7 @@ docker ai analyze-performance my-ai-app
 
 1. **基础入门**：web-app、database
 2. **进阶优化**：multi-stage、python-app
-3. **2026 新特性**：wasm-app、ai-optimized
+3. **新特性**：wasm-app、ai-optimized
 4. **实战项目**：组合使用多个示例构建完整应用
 
 ## 🤝 贡献
