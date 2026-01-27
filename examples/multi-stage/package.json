@@ -1,0 +1,13 @@
+{
+  "name": "multi-stage-example",
+  "version": "1.0.0",
+  "description": "多阶段构建示例应用",
+  "main": "index.js",
+  "scripts": {
+    "build": "echo 'Building application...'",
+    "start": "node server.js"
+  },
+  "keywords": ["docker", "multi-stage", "nginx"],
+  "author": "",
+  "license": "MIT"
+}
