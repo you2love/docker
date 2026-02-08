@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web 应用 - Docker 教程</title>
+    <title>WASM 应用 - Docker 教程</title>
     <!-- 引用通用头部 -->
     <link rel="stylesheet" href="../styles.css">
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
@@ -39,11 +39,11 @@
                     <summary>实战示例</summary>
                     <ul class="submenu">
                         <li><a href="../examples/python-app/">Python 应用</a></li>
-                        <li><a href="./web-app/index.html" style="color: #2496ed; font-weight: bold;">Web 应用</a></li>
+                        <li><a href="../examples/web-app/">Web 应用</a></li>
                         <li><a href="../examples/database/">数据库</a></li>
                         <li><a href="../examples/ai-optimized/">AI 优化</a></li>
                         <li><a href="../examples/multi-stage/">多阶段构建</a></li>
-                        <li><a href="../examples/wasm-app/">WASM 应用</a></li>
+                        <li><a href="./wasm-app/index.html" style="color: #2496ed; font-weight: bold;">WASM 应用</a></li>
                     </ul>
                 </details>
             </li>
@@ -56,125 +56,151 @@
     <main class="main-content">
         <section class="section">
             <div class="container">
-                <h2 class="section-title">Web 应用 Docker 化</h2>
+                <h2 class="section-title">WASM 应用容器化</h2>
                 
                 <div class="info-card">
-                    <h3>Web 应用容器化指南</h3>
-                    <p>本节介绍如何将各种类型的 Web 应用程序容器化，包括前端、后端和全栈应用的最佳实践。</p>
+                    <h3>WASM 容器化指南</h3>
+                    <p>WebAssembly (WASM) 容器是 Docker 的革命性特性，将 WASM 模块作为容器运行，提供接近原生的性能、极小的镜像大小和更强的隔离性。</p>
                 </div>
                 
                 <div class="code-block">
-                    <h3>Node.js Web 应用 Dockerfile</h3>
+                    <h3>WASM Dockerfile 示例</h3>
                     <div class="code-container">
-                        <pre><code class="language-dockerfile"># 使用 LTS 版本的 Node.js
-FROM node:18-alpine
+                        <pre><code class="language-dockerfile"># syntax=docker/dockerfile:1.6
+# 构建阶段 - 使用 WasmEdge 运行时
+FROM rust:1.70 AS builder
 
-# 设置工作目录
 WORKDIR /app
 
-# 复制 package 文件
-COPY package*.json ./
+# 安装 WASM 目标
+RUN rustup target add wasm32-wasi
 
-# 安装依赖
-RUN npm ci --only=production
+# 创建新项目
+RUN cargo new hello-wasm
+WORKDIR /hello-wasm
 
-# 复制应用代码
-COPY . .
+# 复制 Cargo.toml
+COPY Cargo.toml .
 
-# 创建非 root 用户
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nextjs -u 1001
-USER nextjs
+# 复制源代码
+COPY src ./src
 
-# 暴露端口
-EXPOSE 3000
+# 构建为 WASM
+RUN cargo build --target wasm32-wasi --release
 
-# 运行应用
-CMD ["npm", "start"]</code></pre>
+# 运行阶段
+FROM scratch
+COPY --from=builder /hello-wasm/target/wasm32-wasi/release/hello-wasm.wasm ./
+COPY index.html ./
+COPY manifest.json ./
+
+CMD ["hello-wasm.wasm"]</code></pre>
                         <button class="copy-btn" onclick="copyCode(this)">复制</button>
                     </div>
                 </div>
                 
                 <div class="code-block">
-                    <h3>React 应用 Dockerfile</h3>
+                    <h3>使用 Spin 框架的 WASM 应用</h3>
                     <div class="code-container">
-                        <pre><code class="language-dockerfile"># 构建阶段
-FROM node:18-alpine AS builder
+                        <pre><code class="language-dockerfile"># syntax=docker/dockerfile:1.6
+# 构建阶段
+FROM rust:1.70 AS builder
 
 WORKDIR /app
-COPY package*.json ./
-RUN npm ci
 
-COPY . .
-RUN npm run build
+# 安装 Spin CLI
+RUN curl -fsSL https://developer.fermyon.com/downloads/installer.sh | bash
 
-# 运行阶段 - 使用 Nginx 提供静态文件服务
-FROM nginx:alpine
-COPY --from=builder /app/build /usr/share/nginx/html
+# 安装 WASM32-WASI 目标
+RUN rustup target add wasm32-wasi
 
-# 复制自定义 Nginx 配置
-COPY nginx.conf /etc/nginx/nginx.conf
+# 创建 Spin 应用
+RUN spin new --from https://github.com/fermyon/spin/templates hello-wasm
+WORKDIR /app/hello-wasm
 
-EXPOSE 80
+# 构建应用
+RUN spin build
 
-CMD ["nginx", "-g", "daemon off;"]</code></pre>
+# 运行阶段
+FROM scratch
+COPY --from=builder /app/hello-wasm/spin.toml ./
+COPY --from=builder /app/hello-wasm/target/wasm32-wasi/release/hello-wasm.wasm ./
+
+CMD ["spin", "up"]</code></pre>
                         <button class="copy-btn" onclick="copyCode(this)">复制</button>
                     </div>
                 </div>
                 
                 <div class="code-block">
-                    <h3>Web 应用 docker-compose.yml 示例</h3>
+                    <h3>WASM 应用的 Docker Compose 示例</h3>
                     <div class="code-container">
                         <pre><code class="language-yaml">version: '3.8'
 
 services:
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+  # WASM 微服务
+  wasm-api:
+    image: wasmcloud/http-hello-world
+    runtime: io.containerd.wasmedge.v1  # 或 io.containerd.runsc.v1
     ports:
-      - "3000:80"
-    depends_on:
-      - backend
-    environment:
-      - REACT_APP_API_URL=http://localhost:5000
+      - "8080:8080"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 50M
+    restart: unless-stopped
 
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+  # 传统容器（用于数据库）
+  redis:
+    image: redis:7-alpine
     ports:
-      - "5000:5000"
-    environment:
-      - DATABASE_URL=postgresql://user:password@db:5432/myapp
-      - NODE_ENV=production
-    depends_on:
-      - db
-
-  db:
-    image: postgres:15-alpine
-    environment:
-      POSTGRES_DB: myapp
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-    ports:
-      - "5432:5432"
+      - "6379:6379"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - redis-data:/data
 
-  nginx:
-    image: nginx:alpine
+  # WASM 边缘计算服务
+  edge-compute:
+    image: my-wasm-edge-service:latest
+    runtime: io.containerd.wasmedge.v1
+    environment:
+      - WASM_LOG_LEVEL=info
+      - EDGE_REGION=us-west-2
     ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-    depends_on:
-      - frontend
-      - backend
+      - "9000:80"
+    restart: unless-stopped
 
 volumes:
-  postgres_data:</code></pre>
+  redis-data:</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                </div>
+                
+                <div class="code-block">
+                    <h3>WASM vs 传统容器对比</h3>
+                    <div class="code-container">
+                        <pre><code class="language-bash"># 传统容器
+镜像大小：~150MB (Node.js 应用)
+启动时间：~1-2 秒
+内存占用：~50-100MB
+隔离性：Linux 命名空间 + cgroups
+
+# WASM 容器
+镜像大小：~500KB - 1MB
+启动时间：~10-50ms
+内存占用：~5-10MB
+隔离性：WASM 能力模型 + 沙箱
+
+# 性能提升：
+- 镜像拉取速度：提升 100-200 倍
+- 冷启动时间：提升 20-100 倍
+- 资源利用率：提升 5-10 倍
+
+# 启用 WASM 支持（需要 Docker 27.0+）
+export DOCKER_CLI_EXPERIMENTAL=enabled
+
+# 运行 WASM 容器
+docker run --runtime=io.containerd.wasmedge.v1 --rm -p 8080:8080 \
+  wasmcloud/http-hello-world</code></pre>
                         <button class="copy-btn" onclick="copyCode(this)">复制</button>
                     </div>
                 </div>

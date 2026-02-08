@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WASM 容器 - Docker 教程</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+</head>
+<body>
+    <!-- 侧边树形导航 -->
+    <nav class="sidebar-nav">
+        <div class="nav-brand">
+            <span class="logo">🐳</span>
+            <span class="brand-name">Docker Tutorial</span>
+        </div>
+        <ul class="tree-menu">
+            <li><a href="../index.html">首页</a></li>
+            <li>
+                <details open>
+                    <summary>基础入门</summary>
+                    <ul class="submenu">
+                        <li><a href="./install.html">安装 Docker</a></li>
+                        <li><a href="./dockerfile.html">Dockerfile</a></li>
+                        <li><a href="./compose.html">Docker Compose</a></li>
+                        <li><a href="./wasm.html" style="color: #2496ed; font-weight: bold;">WASM 容器</a></li>
+                    </ul>
+                </details>
+            </li>
+            <li><a href="./structure.html">目录结构</a></li>
+            <li><a href="./network.html">网络详解</a></li>
+            <li><a href="./volume.html">数据卷详解</a></li>
+            <li><a href="./new-features.html">新特性</a></li>
+            <li><a href="./commands.html">常用命令</a></li>
+            <li>
+                <details>
+                    <summary>实战示例</summary>
+                    <ul class="submenu">
+                        <li><a href="../examples/python-app/">Python 应用</a></li>
+                        <li><a href="../examples/web-app/">Web 应用</a></li>
+                        <li><a href="../examples/database/">数据库</a></li>
+                        <li><a href="../examples/ai-optimized/">AI 优化</a></li>
+                        <li><a href="../examples/multi-stage/">多阶段构建</a></li>
+                        <li><a href="../examples/wasm-app/">WASM 应用</a></li>
+                    </ul>
+                </details>
+            </li>
+            <li><a href="./practices.html">最佳实践</a></li>
+            <li><a href="./ai-tools.html">AI工具</a></li>
+        </ul>
+    </nav>
+    
+    <!-- 主内容区域 -->
+    <main class="main-content">
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">WASM 容器</h2>
+
+                <div class="info-card">
+                    <h3>什么是 WASM 容器？</h3>
+                    <p>WebAssembly (WASM) 容器是 Docker 的革命性特性。它将 WASM 模块作为容器运行，提供接近原生的性能、极小的镜像大小（通常 <1MB）和更强的隔离性。</p>
+                </div>
+
+                <div class="code-block">
+                    <h3>运行 WASM 容器</h3>
+                    <div class="code-container">
+                        <pre><code class="language-bash"># 启用 WASM 支持（需要 Docker 27.0+）
+export DOCKER_CLI_EXPERIMENTAL=enabled
+
+# 运行 WASM 容器
+docker run --runtime=wasm --rm -p 8080:8080 \
+  wasmcloud/http-hello-world
+
+# 查看 WASM 运行时
+docker info | grep -i wasm
+
+# 使用 Docker Compose 运行 WASM 服务
+docker compose --compatibility up -d</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <h3>WASM Dockerfile 示例</h3>
+                    <div class="code-container">
+                        <pre><code class="language-dockerfile"># syntax=docker/dockerfile:1.6
+# 使用 WASM 基础镜像（基于 Spin 或 WasmEdge）
+
+FROM ghcr.io/spinframework/spin:latest AS builder
+WORKDIR /app
+
+# 编译 WASM 应用
+# 假设有一个简单的 HTTP 服务
+COPY spin.toml .
+COPY src/ ./src/
+
+# 构建目标 WASM
+RUN spin build
+
+# 运行阶段
+FROM scratch
+COPY --from=builder /app/spin.toml .
+COPY --from=builder /app/target/wasm32-wasi/release/app.wasm ./app.wasm
+
+# 使用 WASM 运行时
+CMD ["spin", "up"]
+
+# WASM 应用通常很小（<1MB）
+# 比传统容器小 100-1000 倍</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3>WASM 容器优势</h3>
+                    <ul>
+                        <li><strong>极小体积：</strong>镜像通常 <1MB，比传统容器小 100-1000 倍</li>
+                        <li><strong>快速启动：</strong>毫秒级启动，比传统容器快 10-100 倍</li>
+                        <li><strong>高安全性：</strong>基于能力的安全模型，更强的隔离性</li>
+                        <li><strong>跨平台：</strong>一次构建，随处运行（Linux、macOS、Windows）</li>
+                        <li><strong>多语言支持：</strong>支持 Rust、Go、Python、JavaScript 等语言</li>
+                        <li><strong>低资源占用：</strong>内存占用通常是传统容器的 10%</li>
+                        <li><strong>无服务器友好：</strong>完美适配 FaaS 和边缘计算场景</li>
+                    </ul>
+                </div>
+
+                <div class="code-block">
+                    <h3>WASM vs 传统容器对比</h3>
+                    <div class="code-container">
+                        <pre><code class="language-bash"># 传统容器
+镜像大小：~150MB (Node.js 应用)
+启动时间：~1-2 秒
+内存占用：~50-100MB
+隔离性：Linux 命名空间 + cgroups
+
+# WASM 容器
+镜像大小：~500KB - 1MB
+启动时间：~10-50ms
+内存占用：~5-10MB
+隔离性：WASM 能力模型 + 沙箱
+
+# 性能提升：
+- 镜像拉取速度：提升 100-200 倍
+- 冷启动时间：提升 20-100 倍
+- 资源利用率：提升 5-10 倍</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <h3>Docker Compose WASM 示例</h3>
+                    <div class="code-container">
+                        <pre><code class="language-yaml">version: '3.8'
+
+services:
+  # WASM 微服务
+  wasm-api:
+    image: wasmcloud/http-hello-world
+    runtime: wasm
+    ports:
+      - "8080:8080"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 50M
+    restart: unless-stopped
+
+  # 传统容器（用于数据库）
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+volumes:
+  redis-data:</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="../script.js"></script>
+    <script>
+        // 复制代码功能
+        function copyCode(button) {
+            const codeBlock = button.previousElementSibling.querySelector('code');
+            navigator.clipboard.writeText(codeBlock.textContent).then(() => {
+                const originalText = button.textContent;
+                button.textContent = '已复制!';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>安装 Docker - Docker 教程</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+</head>
+<body>
+    <!-- 侧边树形导航 -->
+    <nav class="sidebar-nav">
+        <div class="nav-brand">
+            <span class="logo">🐳</span>
+            <span class="brand-name">Docker Tutorial</span>
+        </div>
+        <ul class="tree-menu">
+            <li><a href="../index.html">首页</a></li>
+            <li>
+                <details open>
+                    <summary>基础入门</summary>
+                    <ul class="submenu">
+                        <li><a href="./install.html" style="color: #2496ed; font-weight: bold;">安装 Docker</a></li>
+                        <li><a href="./dockerfile.html">Dockerfile</a></li>
+                        <li><a href="./compose.html">Docker Compose</a></li>
+                        <li><a href="./wasm.html">WASM 容器</a></li>
+                    </ul>
+                </details>
+            </li>
+            <li><a href="./structure.html">目录结构</a></li>
+            <li><a href="./network.html">网络详解</a></li>
+            <li><a href="./volume.html">数据卷详解</a></li>
+            <li><a href="./new-features.html">新特性</a></li>
+            <li><a href="./commands.html">常用命令</a></li>
+            <li>
+                <details>
+                    <summary>实战示例</summary>
+                    <ul class="submenu">
+                        <li><a href="../examples/python-app/">Python 应用</a></li>
+                        <li><a href="../examples/web-app/">Web 应用</a></li>
+                        <li><a href="../examples/database/">数据库</a></li>
+                        <li><a href="../examples/ai-optimized/">AI 优化</a></li>
+                        <li><a href="../examples/multi-stage/">多阶段构建</a></li>
+                        <li><a href="../examples/wasm-app/">WASM 应用</a></li>
+                    </ul>
+                </details>
+            </li>
+            <li><a href="./practices.html">最佳实践</a></li>
+            <li><a href="./ai-tools.html">AI工具</a></li>
+        </ul>
+    </nav>
+    
+    <!-- 主内容区域 -->
+    <main class="main-content">
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">安装 Docker</h2>
+
+                <div class="code-block">
+                    <h3>1. Mac/Linux 安装</h3>
+                    <div class="code-container">
+                        <pre><code class="language-bash"># 使用 Homebrew 安装 (Mac)
+brew install --cask docker-desktop
+
+# 或使用 Colima（轻量级替代方案）
+brew install colima
+colima start
+
+# Ubuntu 安装（推荐使用官方脚本）
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+
+# 添加当前用户到 docker 组
+sudo usermod -aG docker $USER</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <h3>2. Windows 安装</h3>
+                    <div class="code-container">
+                        <pre><code class="language-bash"># 使用 WSL2 + Docker Desktop（推荐）
+wsl --install
+
+# 使用 Chocolatey
+choco install docker-desktop
+
+# 或使用 Rancher Desktop（开源替代）
+choco install rancher-desktop</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <h3>3. 验证安装</h3>
+                    <div class="code-container">
+                        <pre><code class="language-bash">docker --version
+docker run hello-world
+
+# 检查 BuildKit（默认启用）
+docker buildx version
+
+# 检查 Docker Scout（安全扫描工具）
+docker scout version</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="../script.js"></script>
+    <script>
+        // 复制代码功能
+        function copyCode(button) {
+            const codeBlock = button.previousElementSibling.querySelector('code');
+            navigator.clipboard.writeText(codeBlock.textContent).then(() => {
+                const originalText = button.textContent;
+                button.textContent = '已复制!';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>目录结构 - Docker 教程</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+</head>
+<body>
+    <!-- 侧边树形导航 -->
+    <nav class="sidebar-nav">
+        <div class="nav-brand">
+            <span class="logo">🐳</span>
+            <span class="brand-name">Docker Tutorial</span>
+        </div>
+        <ul class="tree-menu">
+            <li><a href="../index.html">首页</a></li>
+            <li>
+                <details>
+                    <summary>基础入门</summary>
+                    <ul class="submenu">
+                        <li><a href="./install.html">安装 Docker</a></li>
+                        <li><a href="./dockerfile.html">Dockerfile</a></li>
+                        <li><a href="./compose.html">Docker Compose</a></li>
+                        <li><a href="./wasm.html">WASM 容器</a></li>
+                    </ul>
+                </details>
+            </li>
+            <li><a href="./structure.html" style="color: #2496ed; font-weight: bold;">目录结构</a></li>
+            <li><a href="./network.html">网络详解</a></li>
+            <li><a href="./volume.html">数据卷详解</a></li>
+            <li><a href="./new-features.html">新特性</a></li>
+            <li><a href="./commands.html">常用命令</a></li>
+            <li>
+                <details>
+                    <summary>实战示例</summary>
+                    <ul class="submenu">
+                        <li><a href="../examples/python-app/">Python 应用</a></li>
+                        <li><a href="../examples/web-app/">Web 应用</a></li>
+                        <li><a href="../examples/database/">数据库</a></li>
+                        <li><a href="../examples/ai-optimized/">AI 优化</a></li>
+                        <li><a href="../examples/multi-stage/">多阶段构建</a></li>
+                        <li><a href="../examples/wasm-app/">WASM 应用</a></li>
+                    </ul>
+                </details>
+            </li>
+            <li><a href="./practices.html">最佳实践</a></li>
+            <li><a href="./ai-tools.html">AI工具</a></li>
+        </ul>
+    </nav>
+    
+    <!-- 主内容区域 -->
+    <main class="main-content">
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">Docker 目录结构详解</h2>
+
+                <div class="info-card">
+                    <h3>📁 为什么了解 Docker 目录结构很重要？</h3>
+                    <p>Docker 在主机上创建了多个目录用于存储镜像、容器、卷、网络等数据。了解这些目录的结构和用途可以帮助您：</p>
+                    <ul>
+                        <li>有效管理存储空间</li>
+                        <li>快速定位和备份重要数据</li>
+                        <li>解决存储相关问题</li>
+                        <li>优化 Docker 性能</li>
+                        <li>进行故障排查</li>
+                    </ul>
+                </div>
+
+                <div class="code-block">
+                    <h3>查看 Docker 根目录</h3>
+                    <div class="code-container">
+                        <pre><code class="language-bash"># 查看 Docker 根目录位置
+docker info | grep "Docker Root Dir"
+
+# 输出示例（Linux/Mac）：
+# Docker Root Dir: /var/lib/docker
+
+# Windows 输出示例：
+# Docker Root Dir: C:\ProgramData\Docker
+
+# 查看目录大小
+du -sh /var/lib/docker/*</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <h3>Docker 完整目录结构</h3>
+                    <div class="code-container">
+                        <pre><code class="language-bash">/var/lib/docker/                      # Docker 根目录
+├── aufs/                             # AUFS 存储驱动（如果使用 AUFS）
+├── buildkit/                         # BuildKit 构建缓存
+│   ├── cache.db                      # BuildKit 缓存数据库
+│   └── snapshots.db                  # BuildKit 快照数据库
+├── containers/                       # 容器数据
+│   ├── {container-id}/               # 单个容器目录
+│   │   ├── config.v2.json            # 容器配置
+│   │   ├── hostconfig.json           # 容器主机配置
+│   │   ├── hostname                  # 容器主机名
+│   │   ├── hosts                     # 容器 hosts 文件
+│   │   ├── resolv.conf               # DNS 配置
+│   │   └── ...                       # 其他容器文件
+├── image/                            # 镜像数据
+│   ├── imagedb.json                  # 镜像数据库
+│   ├── layerdb/                      # 镜像层数据库
+│   │   └── sha256/                   # 按 SHA256 哈希组织的层
+│   └── ...
+├── network/                          # 网络配置
+│   └── files/
+│       ├── network-config.db         # 网络配置数据库
+│       └── network-state.db          # 网络状态数据库
+├── plugins/                          # Docker 插件
+├── swarm/                            # Swarm 集群配置
+├── tmp/                              # 临时文件
+├── trust/                            # 内容信任配置
+├── volumes/                          # 命名卷数据
+│   └── {volume-hash}/                # 单个卷目录
+└── ...                               # 其他文件和目录</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3>关键目录说明</h3>
+                    <ul>
+                        <li><strong>/var/lib/docker/containers/</strong>: 存放所有容器的配置和日志文件</li>
+                        <li><strong>/var/lib/docker/image/</strong>: 存放镜像元数据和层信息</li>
+                        <li><strong>/var/lib/docker/volumes/</strong>: 存放命名卷的数据</li>
+                        <li><strong>/var/lib/docker/network/</strong>: 存放网络配置信息</li>
+                        <li><strong>/var/lib/docker/buildkit/</strong>: 存放 BuildKit 构建缓存</li>
+                    </ul>
+                </div>
+
+                <div class="code-block">
+                    <h3>管理 Docker 目录</h3>
+                    <div class="code-container">
+                        <pre><code class="language-bash"># 查看磁盘使用情况
+docker system df
+
+# 查看详细磁盘使用情况
+docker system df -v
+
+# 清理未使用的数据
+docker system prune
+
+# 清理所有未使用数据（包括镜像）
+docker system prune -a
+
+# 清理构建缓存
+docker builder prune
+
+# 清理指定容器的日志
+truncate -s 0 $(docker inspect --format='{{.LogPath}}' CONTAINER_ID)</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="../script.js"></script>
+    <script>
+        // 复制代码功能
+        function copyCode(button) {
+            const codeBlock = button.previousElementSibling.querySelector('code');
+            navigator.clipboard.writeText(codeBlock.textContent).then(() => {
+                const originalText = button.textContent;
+                button.textContent = '已复制!';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

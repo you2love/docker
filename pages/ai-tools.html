@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 工具 - Docker 教程</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+</head>
+<body>
+    <!-- 侧边树形导航 -->
+    <nav class="sidebar-nav">
+        <div class="nav-brand">
+            <span class="logo">🐳</span>
+            <span class="brand-name">Docker Tutorial</span>
+        </div>
+        <ul class="tree-menu">
+            <li><a href="../index.html">首页</a></li>
+            <li>
+                <details>
+                    <summary>基础入门</summary>
+                    <ul class="submenu">
+                        <li><a href="./install.html">安装 Docker</a></li>
+                        <li><a href="./dockerfile.html">Dockerfile</a></li>
+                        <li><a href="./compose.html">Docker Compose</a></li>
+                        <li><a href="./wasm.html">WASM 容器</a></li>
+                    </ul>
+                </details>
+            </li>
+            <li><a href="./structure.html">目录结构</a></li>
+            <li><a href="./network.html">网络详解</a></li>
+            <li><a href="./volume.html">数据卷详解</a></li>
+            <li><a href="./new-features.html">新特性</a></li>
+            <li><a href="./commands.html">常用命令</a></li>
+            <li>
+                <details>
+                    <summary>实战示例</summary>
+                    <ul class="submenu">
+                        <li><a href="../examples/python-app/">Python 应用</a></li>
+                        <li><a href="../examples/web-app/">Web 应用</a></li>
+                        <li><a href="../examples/database/">数据库</a></li>
+                        <li><a href="../examples/ai-optimized/">AI 优化</a></li>
+                        <li><a href="../examples/multi-stage/">多阶段构建</a></li>
+                        <li><a href="../examples/wasm-app/">WASM 应用</a></li>
+                    </ul>
+                </details>
+            </li>
+            <li><a href="./practices.html">最佳实践</a></li>
+            <li><a href="./ai-tools.html" style="color: #2496ed; font-weight: bold;">AI工具</a></li>
+        </ul>
+    </nav>
+    
+    <!-- 主内容区域 -->
+    <main class="main-content">
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">AI 工具在 Docker 中的应用</h2>
+
+                <div class="info-card">
+                    <h3>🤖 AI 驱动的 Docker 工具</h3>
+                    <p>现代 Docker 生态系统集成了多种 AI 工具，帮助开发者优化镜像构建、提高安全性、增强监控能力，并简化开发流程。</p>
+                </div>
+
+                <div class="code-block">
+                    <h3>AI 优化的 Dockerfile 生成</h3>
+                    <div class="code-container">
+                        <pre><code class="language-bash"># 使用 Dagger 进行 AI 驱动的构建
+# dagger/ci.mts
+import Client from "@dagger.io/dagger";
+
+async function buildAndTest() {
+  const client = new Client();
+  
+  try {
+    const source = client.host().directory("./");
+    
+    // AI 优化的构建流程
+    const build = await client
+      .container()
+      .from("node:18-alpine")
+      .withDirectory("/src", source)
+      .withWorkdir("/src")
+      .withExec(["npm", "ci"])
+      .withExec(["npm", "run", "build"])
+      .directory("./dist");
+    
+    // AI 驱动的安全扫描
+    const scanResult = await client
+      .container()
+      .from("aquasec/trivy:latest")
+      .withMountedDirectory("/app", source)
+      .withExec(["filesystem", "--security-checks", "vuln,config,secret", "/app"])
+      .stdout();
+    
+    console.log(scanResult);
+    
+    // 返回构建产物
+    return build;
+  } finally {
+    await client.close();
+  }
+}
+
+buildAndTest();
+
+# 运行 AI 优化的构建
+npx dagger call build-and-test</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <h3>使用 AI 生成 Dockerfile</h3>
+                    <div class="code-container">
+                        <pre><code class="language-dockerfile"># AI 推荐的优化 Dockerfile 结构
+# syntax=docker/dockerfile:1.4
+
+# 构建阶段
+FROM node:18-alpine AS builder
+
+WORKDIR /app
+
+# AI 优化的依赖安装 - 利用分层缓存
+COPY package*.json ./
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci --only=production
+
+# AI 推荐的代码复制顺序 - 利用缓存
+COPY . .
+
+# AI 优化的构建步骤
+RUN npm run build
+
+# 运行阶段 - AI 推荐的最小化镜像
+FROM node:18-alpine AS production
+
+WORKDIR /app
+
+# AI 推荐的安全配置
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001
+
+# 从构建阶段复制必要文件
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package*.json ./
+
+USER nodejs
+
+EXPOSE 3000
+
+# AI 优化的健康检查
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:3000/health || exit 1
+
+CMD ["node", "server.js"]</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <h3>AI 驱动的安全扫描</h3>
+                    <div class="code-container">
+                        <pre><code class="language-bash"># 使用 Docker Scout（AI 驱动的安全工具）
+docker scout cves --exit-code 1 --severity critical,high myapp:latest
+
+# 生成 AI 分析的 SBOM
+docker scout sbom myapp:latest
+
+# 比较镜像差异（AI 驱动的分析）
+docker scout compare --to myapp:latest --from myapp:previous
+
+# 使用 Trivy 进行 AI 增强的安全扫描
+docker run --rm -v /tmp/scanned:/scan aquasec/trivy fs --security-checks vuln,config,secret /scan
+
+# AI 驱动的镜像分析
+docker scout quickview myapp:latest
+
+# CI/CD 中的 AI 安全检查
+docker scout cves --exit-code 1 --severity critical,high --only-fixed myapp:latest</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <h3>AI 优化的 Docker Compose</h3>
+                    <div class="code-container">
+                        <pre><code class="language-yaml">version: '3.8'
+
+services:
+  # AI 优化的 Web 服务配置
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      # AI 推荐的构建参数
+      args:
+        - NODE_ENV=production
+        - BUILD_OPTIMIZATION=aggressive
+    ports:
+      - "3000:3000"
+    environment:
+      # AI 推荐的环境配置
+      - NODE_ENV=production
+      - LOG_LEVEL=info
+      - HEALTH_CHECK_INTERVAL=30s
+    volumes:
+      # AI 推荐的卷配置
+      - ./logs:/app/logs
+    deploy:
+      # AI 推荐的资源限制
+      resources:
+        limits:
+          cpus: '1.5'
+          memory: 1G
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    restart: unless-stopped
+    # AI 优化的健康检查
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # AI 优化的数据库配置
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: myapp
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: secure_password
+    volumes:
+      # AI 推荐的持久化策略
+      - db_data:/var/lib/postgresql/data
+      - ./backups:/backups
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+        reservations:
+          cpus: '0.25'
+          memory: 512M
+    restart: unless-stopped
+
+volumes:
+  db_data:
+    # AI 推荐的卷驱动和选项
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /opt/postgres-data</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3>AI 工具生态系统</h3>
+                    <ul>
+                        <li><strong>Docker Scout</strong>: AI 驱动的安全分析和镜像优化</li>
+                        <li><strong>Dagger</strong>: 用于构建 AI 优化的 CI/CD 管道</li>
+                        <li><strong>Trivy</strong>: AI 增强的漏洞扫描器</li>
+                        <li><strong>Harbor</strong>: AI 驱动的镜像仓库和安全扫描</li>
+                        <li><strong>BuildBuddy</strong>: AI 优化的构建分析平台</li>
+                        <li><strong>Dependabot</strong>: AI 驱动的依赖管理和安全更新</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="../script.js"></script>
+    <script>
+        // 复制代码功能
+        function copyCode(button) {
+            const codeBlock = button.previousElementSibling.querySelector('code');
+            navigator.clipboard.writeText(codeBlock.textContent).then(() => {
+                const originalText = button.textContent;
+                button.textContent = '已复制!';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

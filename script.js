@@ -22,39 +22,73 @@ document.addEventListener('DOMContentLoaded', function() {
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));
+            
             if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
+                // 计算偏移量以考虑侧边栏
+                const offsetTop = window.innerWidth > 768 ? target.offsetTop - 20 : target.offsetTop - 80;
+                
+                window.scrollTo({
+                    top: offsetTop,
+                    behavior: 'smooth'
                 });
             }
         });
     });
 
-    // 导航栏滚动效果
-    let lastScroll = 0;
-    const navbar = document.querySelector('.navbar');
+    // 导航栏滚动效果 - 仅在没有侧边栏时使用
+    if (!document.querySelector('.sidebar-nav')) {
+        let lastScroll = 0;
+        const navbar = document.querySelector('.navbar');
 
-    window.addEventListener('scroll', function() {
-        const currentScroll = window.pageYOffset;
+        window.addEventListener('scroll', function() {
+            const currentScroll = window.pageYOffset;
 
-        if (currentScroll > lastScroll && currentScroll > 100) {
-            navbar.style.transform = 'translateY(-100%)';
-        } else {
-            navbar.style.transform = 'translateY(0)';
-        }
+            if (currentScroll > lastScroll && currentScroll > 100) {
+                navbar.style.transform = 'translateY(-100%)';
+            } else {
+                navbar.style.transform = 'translateY(0)';
+            }
 
-        lastScroll = currentScroll;
-    });
+            lastScroll = currentScroll;
+        });
 
-    // 添加过渡效果
-    navbar.style.transition = 'transform 0.3s ease';
+        // 添加过渡效果
+        navbar.style.transition = 'transform 0.3s ease';
+    }
+    
+    // 侧边栏树形菜单功能
+    if (document.querySelector('.sidebar-nav')) {
+        document.querySelectorAll('.tree-menu details').forEach(detail => {
+            detail.addEventListener('toggle', function() {
+                // 当details元素打开或关闭时触发
+                if (this.open) {
+                    console.log('展开:', this.querySelector('summary').textContent.trim());
+                } else {
+                    console.log('收起:', this.querySelector('summary').textContent.trim());
+                }
+            });
+        });
+    }
 });
 
 // 复制代码功能
 function copyCode(button) {
-    const codeContainer = button.parentElement;
-    const code = codeContainer.querySelector('code').textContent;
+    let code;
+    // 检查按钮的父元素是否包含code元素
+    const codeElement = button.previousElementSibling ? button.previousElementSibling.querySelector('code') : null;
+    
+    if (codeElement) {
+        code = codeElement.textContent;
+    } else {
+        // 如果没有找到code元素，则尝试从同级的pre元素获取
+        const preElement = button.parentElement.querySelector('pre');
+        if (preElement) {
+            code = preElement.textContent;
+        } else {
+            console.error('找不到要复制的代码');
+            return;
+        }
+    }
 
     navigator.clipboard.writeText(code).then(function() {
         const originalText = button.textContent;
@@ -261,5 +295,30 @@ document.addEventListener('keydown', function(e) {
         if (searchInput) {
             searchInput.focus();
         }
+    }
+});
+
+// 移动端菜单切换功能
+document.addEventListener('DOMContentLoaded', function() {
+    if (window.innerWidth <= 768) {
+        // 创建移动端菜单按钮
+        const menuToggle = document.createElement('button');
+        menuToggle.classList.add('mobile-menu-toggle');
+        menuToggle.innerHTML = '☰';
+        menuToggle.setAttribute('aria-label', '切换菜单');
+        document.body.appendChild(menuToggle);
+
+        const sidebarNav = document.querySelector('.sidebar-nav');
+        
+        menuToggle.addEventListener('click', function() {
+            sidebarNav.classList.toggle('active');
+        });
+
+        // 点击内容区域隐藏菜单
+        document.querySelector('.main-content')?.addEventListener('click', function() {
+            if (sidebarNav.classList.contains('active')) {
+                sidebarNav.classList.remove('active');
+            }
+        });
     }
 });

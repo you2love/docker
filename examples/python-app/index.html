@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web 应用 - Docker 教程</title>
+    <title>Python 应用 - Docker 教程</title>
     <!-- 引用通用头部 -->
     <link rel="stylesheet" href="../styles.css">
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
@@ -38,8 +38,8 @@
                 <details>
                     <summary>实战示例</summary>
                     <ul class="submenu">
-                        <li><a href="../examples/python-app/">Python 应用</a></li>
-                        <li><a href="./web-app/index.html" style="color: #2496ed; font-weight: bold;">Web 应用</a></li>
+                        <li><a href="./python-app/index.html" style="color: #2496ed; font-weight: bold;">Python 应用</a></li>
+                        <li><a href="../examples/web-app/">Web 应用</a></li>
                         <li><a href="../examples/database/">数据库</a></li>
                         <li><a href="../examples/ai-optimized/">AI 优化</a></li>
                         <li><a href="../examples/multi-stage/">多阶段构建</a></li>
@@ -56,100 +56,106 @@
     <main class="main-content">
         <section class="section">
             <div class="container">
-                <h2 class="section-title">Web 应用 Docker 化</h2>
+                <h2 class="section-title">Python 应用 Docker 化</h2>
                 
                 <div class="info-card">
-                    <h3>Web 应用容器化指南</h3>
-                    <p>本节介绍如何将各种类型的 Web 应用程序容器化，包括前端、后端和全栈应用的最佳实践。</p>
+                    <h3>Python 应用容器化指南</h3>
+                    <p>本节介绍如何将 Python 应用程序容器化，包括依赖管理、环境配置和最佳实践。</p>
                 </div>
                 
                 <div class="code-block">
-                    <h3>Node.js Web 应用 Dockerfile</h3>
+                    <h3>基础 Python 应用 Dockerfile</h3>
                     <div class="code-container">
-                        <pre><code class="language-dockerfile"># 使用 LTS 版本的 Node.js
-FROM node:18-alpine
+                        <pre><code class="language-dockerfile"># 使用官方 Python 基础镜像
+FROM python:3.11-slim
 
 # 设置工作目录
 WORKDIR /app
 
-# 复制 package 文件
-COPY package*.json ./
+# 复制依赖文件
+COPY requirements.txt .
 
 # 安装依赖
-RUN npm ci --only=production
+RUN pip install --no-cache-dir -r requirements.txt
 
 # 复制应用代码
 COPY . .
 
-# 创建非 root 用户
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nextjs -u 1001
-USER nextjs
-
 # 暴露端口
-EXPOSE 3000
+EXPOSE 5000
 
 # 运行应用
-CMD ["npm", "start"]</code></pre>
+CMD ["python", "app.py"]</code></pre>
                         <button class="copy-btn" onclick="copyCode(this)">复制</button>
                     </div>
                 </div>
                 
                 <div class="code-block">
-                    <h3>React 应用 Dockerfile</h3>
+                    <h3>优化的多阶段构建</h3>
                     <div class="code-container">
-                        <pre><code class="language-dockerfile"># 构建阶段
-FROM node:18-alpine AS builder
-
+                        <pre><code class="language-dockerfile"># syntax=docker/dockerfile:1.4
+# 多阶段构建 - 构建阶段
+FROM python:3.11 AS builder
 WORKDIR /app
-COPY package*.json ./
-RUN npm ci
 
+# 安装构建依赖
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# 复制依赖文件并安装到虚拟环境中
+COPY requirements.txt .
+RUN python -m venv venv && \
+    . venv/bin/activate && \
+    pip install --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+
+# 运行阶段
+FROM python:3.11-slim
+WORKDIR /app
+
+# 从构建阶段复制虚拟环境
+COPY --from=builder /app/venv ./venv
 COPY . .
-RUN npm run build
 
-# 运行阶段 - 使用 Nginx 提供静态文件服务
-FROM nginx:alpine
-COPY --from=builder /app/build /usr/share/nginx/html
+# 创建非 root 用户
+RUN useradd --create-home --shell /bin/bash app && chown -R app:app /app
+USER app
 
-# 复制自定义 Nginx 配置
-COPY nginx.conf /etc/nginx/nginx.conf
+# 激活虚拟环境
+ENV PATH="/app/venv/bin:$PATH"
 
-EXPOSE 80
+# 暴露端口
+EXPOSE 5000
 
-CMD ["nginx", "-g", "daemon off;"]</code></pre>
+# 运行应用
+CMD ["python", "app.py"]</code></pre>
                         <button class="copy-btn" onclick="copyCode(this)">复制</button>
                     </div>
                 </div>
                 
                 <div class="code-block">
-                    <h3>Web 应用 docker-compose.yml 示例</h3>
+                    <h3>Python 应用 docker-compose.yml 示例</h3>
                     <div class="code-container">
                         <pre><code class="language-yaml">version: '3.8'
 
 services:
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    ports:
-      - "3000:80"
-    depends_on:
-      - backend
-    environment:
-      - REACT_APP_API_URL=http://localhost:5000
-
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+  web:
+    build: .
     ports:
       - "5000:5000"
     environment:
-      - DATABASE_URL=postgresql://user:password@db:5432/myapp
-      - NODE_ENV=production
+      - FLASK_ENV=development
+    volumes:
+      - .:/app
     depends_on:
+      - redis
       - db
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
 
   db:
     image: postgres:15-alpine
@@ -161,17 +167,6 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-
-  nginx:
-    image: nginx:alpine
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-    depends_on:
-      - frontend
-      - backend
 
 volumes:
   postgres_data:</code></pre>

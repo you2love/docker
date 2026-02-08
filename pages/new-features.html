@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新特性 - Docker 教程</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+</head>
+<body>
+    <!-- 侧边树形导航 -->
+    <nav class="sidebar-nav">
+        <div class="nav-brand">
+            <span class="logo">🐳</span>
+            <span class="brand-name">Docker Tutorial</span>
+        </div>
+        <ul class="tree-menu">
+            <li><a href="../index.html">首页</a></li>
+            <li>
+                <details>
+                    <summary>基础入门</summary>
+                    <ul class="submenu">
+                        <li><a href="./install.html">安装 Docker</a></li>
+                        <li><a href="./dockerfile.html">Dockerfile</a></li>
+                        <li><a href="./compose.html">Docker Compose</a></li>
+                        <li><a href="./wasm.html">WASM 容器</a></li>
+                    </ul>
+                </details>
+            </li>
+            <li><a href="./structure.html">目录结构</a></li>
+            <li><a href="./network.html">网络详解</a></li>
+            <li><a href="./volume.html">数据卷详解</a></li>
+            <li><a href="./new-features.html" style="color: #2496ed; font-weight: bold;">新特性</a></li>
+            <li><a href="./commands.html">常用命令</a></li>
+            <li>
+                <details>
+                    <summary>实战示例</summary>
+                    <ul class="submenu">
+                        <li><a href="../examples/python-app/">Python 应用</a></li>
+                        <li><a href="../examples/web-app/">Web 应用</a></li>
+                        <li><a href="../examples/database/">数据库</a></li>
+                        <li><a href="../examples/ai-optimized/">AI 优化</a></li>
+                        <li><a href="../examples/multi-stage/">多阶段构建</a></li>
+                        <li><a href="../examples/wasm-app/">WASM 应用</a></li>
+                    </ul>
+                </details>
+            </li>
+            <li><a href="./practices.html">最佳实践</a></li>
+            <li><a href="./ai-tools.html">AI工具</a></li>
+        </ul>
+    </nav>
+    
+    <!-- 主内容区域 -->
+    <main class="main-content">
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">Docker 新特性</h2>
+
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🏗️</div>
+                        <h3>BuildKit 2.0</h3>
+                        <p>分布式构建、智能缓存、并行执行，构建速度提升 5-10 倍。支持远程构建和团队共享缓存。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔍</div>
+                        <h3>Docker Scout</h3>
+                        <p>AI 驱动的漏洞扫描、SBOM 生成、合规检查。实时监控镜像安全状态，自动修复安全风险。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>镜像签名</h3>
+                        <p>基于 Cosign 的原生签名验证，确保镜像完整性和来源可信。支持硬件密钥和云 KMS。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>eBPF 监控</h3>
+                        <p>基于 eBPF 的深度容器监控，零开销的性能追踪、网络分析和安全审计。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🤖</div>
+                        <h3>AI Dockerfile 生成</h3>
+                        <p>使用大语言模型自动生成优化 Dockerfile，智能选择基础镜像和依赖版本。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>OCI v1.2 支持</h3>
+                        <p>完整的 OCI 规范支持，兼容所有符合标准的容器运行时和工具链。</p>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <h3>使用 Docker Scout 进行安全扫描</h3>
+                    <div class="code-container">
+                        <pre><code class="language-bash"># 扫描镜像漏洞
+docker scout cves myapp:latest
+
+# 快速漏洞扫描
+docker scout quickview myapp:latest
+
+# 生成 SBOM（软件物料清单）
+docker scout sbom myapp:latest --output sbom.json
+
+# 查看镜像详情和依赖关系
+docker scout repo myapp:latest
+
+# 比较镜像差异
+docker scout compare old:latest new:latest
+
+# CI/CD 集成（失败如果发现高危漏洞）
+docker scout cves --exit-code 1 --severity high,critical myapp:latest</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <h3>使用 BuildKit 2.0 分布式构建</h3>
+                    <div class="code-container">
+                        <pre><code class="language-bash"># 设置分布式构建缓存
+export BUILDKIT_REMOTE_CACHE=type=registry,ref=myregistry.com/cache
+
+# 使用远程构建器
+docker buildx build \
+  --builder=my-builder \
+  --cache-from=type=registry,ref=myregistry.com/cache \
+  --cache-to=type=registry,ref=myregistry.com/cache,mode=max \
+  -t myapp:latest \
+  .
+
+# 创建远程构建器
+docker buildx create --name remote-builder \
+  --driver=docker-container \
+  --driver-opt image=moby/buildkit:latest \
+  --bootstrap
+
+# 并行构建多架构镜像
+docker buildx build \
+  --platform linux/amd64,linux/arm64,linux/arm/v7 \
+  -t myapp:multiarch \
+  --push .</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <h3>使用 eBPF 进行监控</h3>
+                    <div class="code-container">
+                        <pre><code class="language-bash"># 安装 bpftrace（如果未安装）
+sudo apt-get install bpftrace
+
+# 监控容器网络流量
+sudo bpftrace -e '
+tracepoint:syscalls:sys_enter_connect / comm == "containerd" / {
+  printf("Connect from PID %d to %s\n", pid, str(args->uservaddr, 16));
+}'
+
+# 监控容器文件系统访问
+sudo bpftrace -e '
+tracepoint:syscalls:sys_enter_openat / comm == "containerd" / {
+  printf("PID %d opened file: %s\n", pid, str(args->filename));
+}'
+
+# 使用 Sysdig 进行高级监控
+sysdig container.name=web-app
+
+# 使用 Falco 进行安全监控
+falco -r /etc/falco/rules.local.yaml</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="../script.js"></script>
+    <script>
+        // 复制代码功能
+        function copyCode(button) {
+            const codeBlock = button.previousElementSibling.querySelector('code');
+            navigator.clipboard.writeText(codeBlock.textContent).then(() => {
+                const originalText = button.textContent;
+                button.textContent = '已复制!';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

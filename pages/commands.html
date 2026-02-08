@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>常用命令 - Docker 教程</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+</head>
+<body>
+    <!-- 侧边树形导航 -->
+    <nav class="sidebar-nav">
+        <div class="nav-brand">
+            <span class="logo">🐳</span>
+            <span class="brand-name">Docker Tutorial</span>
+        </div>
+        <ul class="tree-menu">
+            <li><a href="../index.html">首页</a></li>
+            <li>
+                <details>
+                    <summary>基础入门</summary>
+                    <ul class="submenu">
+                        <li><a href="./install.html">安装 Docker</a></li>
+                        <li><a href="./dockerfile.html">Dockerfile</a></li>
+                        <li><a href="./compose.html">Docker Compose</a></li>
+                        <li><a href="./wasm.html">WASM 容器</a></li>
+                    </ul>
+                </details>
+            </li>
+            <li><a href="./structure.html">目录结构</a></li>
+            <li><a href="./network.html">网络详解</a></li>
+            <li><a href="./volume.html">数据卷详解</a></li>
+            <li><a href="./new-features.html">新特性</a></li>
+            <li><a href="./commands.html" style="color: #2496ed; font-weight: bold;">常用命令</a></li>
+            <li>
+                <details>
+                    <summary>实战示例</summary>
+                    <ul class="submenu">
+                        <li><a href="../examples/python-app/">Python 应用</a></li>
+                        <li><a href="../examples/web-app/">Web 应用</a></li>
+                        <li><a href="../examples/database/">数据库</a></li>
+                        <li><a href="../examples/ai-optimized/">AI 优化</a></li>
+                        <li><a href="../examples/multi-stage/">多阶段构建</a></li>
+                        <li><a href="../examples/wasm-app/">WASM 应用</a></li>
+                    </ul>
+                </details>
+            </li>
+            <li><a href="./practices.html">最佳实践</a></li>
+            <li><a href="./ai-tools.html">AI工具</a></li>
+        </ul>
+    </nav>
+    
+    <!-- 主内容区域 -->
+    <main class="main-content">
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">Docker 常用命令</h2>
+
+                <div class="commands-grid">
+                    <div class="command-category">
+                        <h3>镜像管理</h3>
+                        <div class="command-list">
+                            <div class="command-item">
+                                <code>docker images</code>
+                                <span>列出本地镜像</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker pull IMAGE_NAME</code>
+                                <span>从仓库拉取镜像</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker push IMAGE_NAME</code>
+                                <span>推送镜像到仓库</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker rmi IMAGE_ID</code>
+                                <span>删除本地镜像</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker build -t NAME .</code>
+                                <span>构建镜像</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker tag SOURCE TARGET</code>
+                                <span>标记镜像</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="command-category">
+                        <h3>容器管理</h3>
+                        <div class="command-list">
+                            <div class="command-item">
+                                <code>docker ps</code>
+                                <span>列出运行中的容器</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker ps -a</code>
+                                <span>列出所有容器</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker run IMAGE</code>
+                                <span>运行容器</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker start CONTAINER</code>
+                                <span>启动容器</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker stop CONTAINER</code>
+                                <span>停止容器</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker rm CONTAINER</code>
+                                <span>删除容器</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="command-category">
+                        <h3>系统管理</h3>
+                        <div class="command-list">
+                            <div class="command-item">
+                                <code>docker system df</code>
+                                <span>查看磁盘使用情况</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker system prune</code>
+                                <span>清理未使用数据</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker stats</code>
+                                <span>查看容器资源使用情况</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker info</code>
+                                <span>查看系统信息</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker version</code>
+                                <span>查看版本信息</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker login</code>
+                                <span>登录到仓库</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="command-category">
+                        <h3>调试与日志</h3>
+                        <div class="command-list">
+                            <div class="command-item">
+                                <code>docker logs CONTAINER</code>
+                                <span>查看容器日志</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker exec -it CONTAINER COMMAND</code>
+                                <span>进入容器执行命令</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker inspect CONTAINER</code>
+                                <span>查看容器详细信息</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker top CONTAINER</code>
+                                <span>查看容器内进程</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker diff CONTAINER</code>
+                                <span>查看容器文件系统变化</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker port CONTAINER</code>
+                                <span>查看端口映射</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <h3>高级命令示例</h3>
+                    <div class="code-container">
+                        <pre><code class="language-bash"># 运行一次性容器
+docker run --rm -it ubuntu bash
+
+# 挂载数据卷和端口映射
+docker run -d -p 8080:80 -v my-volume:/data nginx
+
+# 使用环境变量
+docker run -e ENV_VAR=value nginx
+
+# 连接到特定网络
+docker run --network my-network nginx
+
+# 设置容器资源限制
+docker run --memory=512m --cpus=1.0 nginx
+
+# 查看实时统计信息
+docker stats --no-stream
+
+# 批量操作容器
+docker ps -q | xargs docker stop
+
+# 查找特定镜像
+docker images --filter reference="nginx:*"
+
+# 查看容器 IP 地址
+docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' CONTAINER
+
+# 复制文件到/从容器
+docker cp CONTAINER:/path/to/file /local/path
+docker cp /local/path CONTAINER:/path/to/file</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3>实用技巧</h3>
+                    <ul>
+                        <li>使用 <code>--rm</code> 标志自动删除退出的容器</li>
+                        <li>使用 <code>-d</code> 标志在后台运行容器</li>
+                        <li>使用 <code>-it</code> 标志获取交互式终端</li>
+                        <li>使用 <code>--name</code> 为容器指定名称</li>
+                        <li>使用 <code>-v</code> 挂载数据卷以持久化数据</li>
+                        <li>使用 <code>-p</code> 映射端口以访问容器服务</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="../script.js"></script>
+    <script>
+        // 复制代码功能
+        function copyCode(button) {
+            const codeBlock = button.previousElementSibling.querySelector('code');
+            navigator.clipboard.writeText(codeBlock.textContent).then(() => {
+                const originalText = button.textContent;
+                button.textContent = '已复制!';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

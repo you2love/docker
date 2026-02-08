@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网络详解 - Docker 教程</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+</head>
+<body>
+    <!-- 侧边树形导航 -->
+    <nav class="sidebar-nav">
+        <div class="nav-brand">
+            <span class="logo">🐳</span>
+            <span class="brand-name">Docker Tutorial</span>
+        </div>
+        <ul class="tree-menu">
+            <li><a href="../index.html">首页</a></li>
+            <li>
+                <details>
+                    <summary>基础入门</summary>
+                    <ul class="submenu">
+                        <li><a href="./install.html">安装 Docker</a></li>
+                        <li><a href="./dockerfile.html">Dockerfile</a></li>
+                        <li><a href="./compose.html">Docker Compose</a></li>
+                        <li><a href="./wasm.html">WASM 容器</a></li>
+                    </ul>
+                </details>
+            </li>
+            <li><a href="./structure.html">目录结构</a></li>
+            <li><a href="./network.html" style="color: #2496ed; font-weight: bold;">网络详解</a></li>
+            <li><a href="./volume.html">数据卷详解</a></li>
+            <li><a href="./new-features.html">新特性</a></li>
+            <li><a href="./commands.html">常用命令</a></li>
+            <li>
+                <details>
+                    <summary>实战示例</summary>
+                    <ul class="submenu">
+                        <li><a href="../examples/python-app/">Python 应用</a></li>
+                        <li><a href="../examples/web-app/">Web 应用</a></li>
+                        <li><a href="../examples/database/">数据库</a></li>
+                        <li><a href="../examples/ai-optimized/">AI 优化</a></li>
+                        <li><a href="../examples/multi-stage/">多阶段构建</a></li>
+                        <li><a href="../examples/wasm-app/">WASM 应用</a></li>
+                    </ul>
+                </details>
+            </li>
+            <li><a href="./practices.html">最佳实践</a></li>
+            <li><a href="./ai-tools.html">AI工具</a></li>
+        </ul>
+    </nav>
+    
+    <!-- 主内容区域 -->
+    <main class="main-content">
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">Docker 网络详解</h2>
+
+                <div class="info-card">
+                    <h3>🌐 Docker 网络概述</h3>
+                    <p>Docker 网络功能允许容器之间以及容器与主机之间的通信。Docker 提供了多种网络驱动，每种都有其特定的用途和功能。</p>
+                </div>
+
+                <div class="code-block">
+                    <h3>查看网络</h3>
+                    <div class="code-container">
+                        <pre><code class="language-bash"># 列出所有网络
+docker network ls
+
+# 查看特定网络详情
+docker network inspect bridge
+
+# 查看容器网络配置
+docker inspect CONTAINER_NAME</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <h3>创建自定义网络</h3>
+                    <div class="code-container">
+                        <pre><code class="language-bash"># 创建桥接网络
+docker network create my-bridge-network
+
+# 创建覆盖网络（用于 Swarm）
+docker network create --driver overlay my-overlay-network
+
+# 创建 MACVLAN 网络
+docker network create -d macvlan --subnet=172.16.86.0/24 --gateway=172.16.86.1 -o parent=eth0 pub-net
+
+# 创建 IPVLAN 网络
+docker network create -d ipvlan --subnet=192.168.1.0/24 --gateway=192.168.1.1 -o parent=eth0 ipvlan-net</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3>网络驱动类型</h3>
+                    <ul>
+                        <li><strong>Bridge</strong>: 默认网络驱动，适用于单主机上的容器通信</li>
+                        <li><strong>Host</strong>: 移除容器和 Docker 主机之间的网络隔离</li>
+                        <li><strong>Overlay</strong>: 用于连接多个 Docker 守护进程，适用于 Swarm</li>
+                        <li><strong>Macvlan</strong>: 为容器分配 MAC 地址，使其外观像物理设备</li>
+                        <li><strong>None</strong>: 禁用所有网络</li>
+                        <li><strong>第三方插件</strong>: 其他网络实现</li>
+                    </ul>
+                </div>
+
+                <div class="code-block">
+                    <h3>使用自定义网络</h3>
+                    <div class="code-container">
+                        <pre><code class="language-bash"># 运行容器时指定网络
+docker run -d --name container1 --network my-bridge-network nginx
+
+# 将运行中的容器连接到网络
+docker network connect my-bridge-network container2
+
+# 断开容器与网络的连接
+docker network disconnect my-bridge-network container1
+
+# 使用自定义网络运行多个容器
+docker run -d --name web --network my-bridge-network nginx
+docker run -d --name db --network my-bridge-network mysql:8.0</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <h3>Docker Compose 网络配置</h3>
+                    <div class="code-container">
+                        <pre><code class="language-yaml">version: '3.8'
+
+services:
+  web:
+    image: nginx
+    networks:
+      - frontend
+      - backend
+
+  api:
+    image: myapi
+    networks:
+      - backend
+
+  db:
+    image: postgres
+    networks:
+      - backend
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
+    internal: true  # 禁止外部访问</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3>网络最佳实践</h3>
+                    <ul>
+                        <li>使用自定义网络而非默认桥接网络</li>
+                        <li>使用有意义的网络名称</li>
+                        <li>根据安全需求分离网络（例如，前端和后端）</li>
+                        <li>定期清理未使用的网络</li>
+                        <li>使用内部网络限制对外访问</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="../script.js"></script>
+    <script>
+        // 复制代码功能
+        function copyCode(button) {
+            const codeBlock = button.previousElementSibling.querySelector('code');
+            navigator.clipboard.writeText(codeBlock.textContent).then(() => {
+                const originalText = button.textContent;
+                button.textContent = '已复制!';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

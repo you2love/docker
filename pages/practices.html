@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>最佳实践 - Docker 教程</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+</head>
+<body>
+    <!-- 侧边树形导航 -->
+    <nav class="sidebar-nav">
+        <div class="nav-brand">
+            <span class="logo">🐳</span>
+            <span class="brand-name">Docker Tutorial</span>
+        </div>
+        <ul class="tree-menu">
+            <li><a href="../index.html">首页</a></li>
+            <li>
+                <details>
+                    <summary>基础入门</summary>
+                    <ul class="submenu">
+                        <li><a href="./install.html">安装 Docker</a></li>
+                        <li><a href="./dockerfile.html">Dockerfile</a></li>
+                        <li><a href="./compose.html">Docker Compose</a></li>
+                        <li><a href="./wasm.html">WASM 容器</a></li>
+                    </ul>
+                </details>
+            </li>
+            <li><a href="./structure.html">目录结构</a></li>
+            <li><a href="./network.html">网络详解</a></li>
+            <li><a href="./volume.html">数据卷详解</a></li>
+            <li><a href="./new-features.html">新特性</a></li>
+            <li><a href="./commands.html">常用命令</a></li>
+            <li>
+                <details>
+                    <summary>实战示例</summary>
+                    <ul class="submenu">
+                        <li><a href="../examples/python-app/">Python 应用</a></li>
+                        <li><a href="../examples/web-app/">Web 应用</a></li>
+                        <li><a href="../examples/database/">数据库</a></li>
+                        <li><a href="../examples/ai-optimized/">AI 优化</a></li>
+                        <li><a href="../examples/multi-stage/">多阶段构建</a></li>
+                        <li><a href="../examples/wasm-app/">WASM 应用</a></li>
+                    </ul>
+                </details>
+            </li>
+            <li><a href="./practices.html" style="color: #2496ed; font-weight: bold;">最佳实践</a></li>
+            <li><a href="./ai-tools.html">AI工具</a></li>
+        </ul>
+    </nav>
+    
+    <!-- 主内容区域 -->
+    <main class="main-content">
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">Docker 最佳实践</h2>
+
+                <div class="practices-list">
+                    <div class="practice-item">
+                        <div class="practice-icon">🔒</div>
+                        <div class="practice-content">
+                            <h3>安全最佳实践</h3>
+                            <p>始终使用非 root 用户运行容器，限制容器权限，使用只读根文件系统，并定期扫描镜像漏洞。</p>
+                            <div class="code-container">
+                                <pre><code class="language-dockerfile"># 在 Dockerfile 中创建非 root 用户
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001
+USER nodejs
+
+# 使用只读根文件系统
+docker run --read-only myapp:latest
+
+# 使用用户命名空间
+docker run --userns=host myapp:latest</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="practice-item">
+                        <div class="practice-icon">📦</div>
+                        <div class="practice-content">
+                            <h3>镜像大小优化</h3>
+                            <p>使用多阶段构建减少镜像大小，选择合适的基础镜像，合并 RUN 指令减少层数，并清理不必要的文件。</p>
+                            <div class="code-container">
+                                <pre><code class="language-dockerfile"># 使用 Alpine 基础镜像
+FROM node:18-alpine
+
+# 多阶段构建
+FROM node:18-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci && npm cache clean --force
+COPY . .
+RUN npm run build
+
+FROM node:18-alpine AS production
+WORKDIR /app
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
+CMD ["npm", "start"]</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="practice-item">
+                        <div class="practice-icon">🔄</div>
+                        <div class="practice-content">
+                            <h3>持续集成/持续部署</h3>
+                            <p>使用 BuildKit 加速构建，利用缓存层，自动化测试，并使用 Docker Compose 进行多服务编排。</p>
+                            <div class="code-container">
+                                <pre><code class="language-bash"># 使用 BuildKit 构建
+export DOCKER_BUILDKIT=1
+docker build -t myapp:latest .
+
+# 使用缓存
+docker build --cache-from myapp:latest -t myapp:latest .
+
+# CI/CD 中的多架构构建
+docker buildx build --platform linux/amd64,linux/arm64 -t myapp:latest --push .</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="practice-item">
+                        <div class="practice-icon">📊</div>
+                        <div class="practice-content">
+                            <h3>监控和日志</h3>
+                            <p>集中化日志管理，使用健康检查，监控资源使用情况，并设置告警机制。</p>
+                            <div class="code-container">
+                                <pre><code class="language-dockerfile"># 在 Dockerfile 中添加健康检查
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost/health || exit 1
+
+# 使用 Docker Compose 配置日志
+services:
+  app:
+    image: myapp
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="practice-item">
+                        <div class="practice-icon">🔗</div>
+                        <div class="practice-content">
+                            <h3>网络和存储</h3>
+                            <p>使用自定义网络隔离服务，使用命名卷持久化数据，避免使用默认桥接网络。</p>
+                            <div class="code-container">
+                                <pre><code class="language-yaml"># Docker Compose 网络配置
+version: '3.8'
+services:
+  web:
+    image: nginx
+    networks:
+      - frontend
+    volumes:
+      - web-data:/usr/share/nginx/html
+
+  db:
+    image: postgres
+    networks:
+      - backend
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
+
+volumes:
+  web-data:
+  db-data:</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3>综合最佳实践清单</h3>
+                    <ul>
+                        <li>使用特定的标签而非 latest</li>
+                        <li>使用 .dockerignore 文件排除不需要的文件</li>
+                        <li>定期更新基础镜像和依赖</li>
+                        <li>使用 Docker 官方镜像作为基础</li>
+                        <li>为容器设置资源限制</li>
+                        <li>使用 secrets 管理敏感信息</li>
+                        <li>实施镜像签名和验证</li>
+                        <li>使用 Docker Bench for Security 审查配置</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="../script.js"></script>
+    <script>
+        // 复制代码功能
+        function copyCode(button) {
+            const codeBlock = button.previousElementSibling.querySelector('code');
+            navigator.clipboard.writeText(codeBlock.textContent).then(() => {
+                const originalText = button.textContent;
+                button.textContent = '已复制!';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

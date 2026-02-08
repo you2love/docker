@@ -9,692 +9,684 @@
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
 </head>
 <body>
-    <!-- 导航栏 -->
-    <nav class="navbar">
-        <div class="container">
-            <div class="nav-brand">
-                <span class="logo">🐳</span>
-                <span class="brand-name">Docker Tutorial</span>
-            </div>
-            <ul class="nav-menu">
-                <li><a href="#home">首页</a></li>
-                <li><a href="#basics">基础入门</a></li>
-                <li><a href="#structure">目录结构</a></li>
-                <li><a href="#network">网络详解</a></li>
-                <li><a href="#volume">数据卷详解</a></li>
-                <li><a href="#new-features">新特性</a></li>
-                <li><a href="#commands">常用命令</a></li>
-                <li><a href="#examples">实战示例</a></li>
-                <li><a href="#practices">最佳实践</a></li>
-                <li><a href="#ai-tools">AI工具</a></li>
-            </ul>
+    <!-- 侧边树形导航 -->
+    <nav class="sidebar-nav">
+        <div class="nav-brand">
+            <span class="logo">🐳</span>
+            <span class="brand-name">Docker Tutorial</span>
         </div>
+        <ul class="tree-menu">
+            <li><a href="#home">首页</a></li>
+            <li>
+                <details>
+                    <summary>基础入门</summary>
+                    <ul class="submenu">
+                        <li><a href="./pages/install.html">安装 Docker</a></li>
+                        <li><a href="#dockerfile">Dockerfile</a></li>
+                        <li><a href="#compose">Docker Compose</a></li>
+                        <li><a href="#wasm">WASM 容器</a></li>
+                    </ul>
+                </details>
+            </li>
+            <li><a href="#structure">目录结构</a></li>
+            <li><a href="#network">网络详解</a></li>
+            <li><a href="#volume">数据卷详解</a></li>
+            <li><a href="#new-features">新特性</a></li>
+            <li><a href="#commands">常用命令</a></li>
+            <li>
+                <details>
+                    <summary>实战示例</summary>
+                    <ul class="submenu">
+                        <li><a href="#dockerfile">Dockerfile 实践</a></li>
+                        <li><a href="#compose">Compose 实践</a></li>
+                        <li><a href="#volume">数据卷实践</a></li>
+                        <li><a href="#network">网络实践</a></li>
+                        <li><a href="#multi-stage">多阶段构建实践</a></li>
+                        <li><a href="#wasm">WASM 实践</a></li>
+                    </ul>
+                </details>
+            </li>
+            <li><a href="#practices">最佳实践</a></li>
+            <li><a href="#ai-tools">AI工具</a></li>
+        </ul>
     </nav>
 
-    <!-- 英雄区域 -->
-    <header id="home" class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1>学习 Docker 容器技术</h1>
-                <p>从零开始掌握容器化部署，利用 AI 辅助和现代化工具链轻松构建、运行和管理应用程序</p>
-                <div class="hero-buttons">
-                    <a href="#basics" class="btn btn-primary">开始学习</a>
-                    <a href="#new-features" class="btn btn-secondary">新特性</a>
-                    <a href="#ai-tools" class="btn btn-secondary">AI工具</a>
-                </div>
-            </div>
-            <div class="hero-image">
-                <div class="docker-animation">
-                    <div class="container-icon"></div>
-                    <div class="whale-icon">🐳</div>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- 什么是 Docker -->
-    <section class="section">
-        <div class="container">
-            <h2 class="section-title">什么是 Docker？</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">🤖</div>
-                    <h3>AI 智能构建</h3>
-                    <p>利用 AI 优化 Dockerfile，自动检测最佳实践，智能推荐基础镜像和依赖管理</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
-                    <h3>极速部署</h3>
-                    <p>采用 BuildKit 2.0 和 Buildx，实现并行构建和缓存共享，部署速度提升 5-10 倍</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🔄</div>
-                    <h3>环境一致性</h3>
-                    <p>开发、测试、生产环境完全一致，配合 Docker Scout 自动检测安全漏洞</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📈</div>
-                    <h3>资源高效</h3>
-                    <p>采用 WASM 容器和 eBPF 监控，资源利用率提升 40%，内存占用降低 30%</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🔒</div>
-                    <h3>零信任安全</h3>
-                    <p>内置签名验证、SBOM 生成和运行时保护，符合最新安全合规标准</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🌐</div>
-                    <h3>云原生集成</h3>
-                    <p>无缝对接 Kubernetes、AWS EKS、Azure AKS，支持多云部署和边缘计算</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 基础入门 -->
-    <section id="basics" class="section bg-light">
-        <div class="container">
-            <h2 class="section-title">基础入门</h2>
-
-            <!-- 标签页 -->
-            <div class="tabs">
-                <div class="tab-buttons">
-                    <button class="tab-button active" data-tab="install">安装 Docker</button>
-                    <button class="tab-button" data-tab="dockerfile">Dockerfile</button>
-                    <button class="tab-button" data-tab="compose">Docker Compose</button>
-                    <button class="tab-button" data-tab="wasm">WASM 容器</button>
-                </div>
-
-                <!-- 安装 Docker -->
-                <div class="tab-content active" id="install">
-                    <div class="code-block">
-                        <h3>1. Mac/Linux 安装</h3>
-                        <div class="code-container">
-                            <pre><code class="language-bash"># 使用 Homebrew 安装 (Mac)
-brew install --cask docker-desktop
-
-# 或使用 Colima（轻量级替代方案）
-brew install colima
-colima start
-
-# Ubuntu 安装（推荐使用官方脚本）
-curl -fsSL https://get.docker.com -o get-docker.sh
-sudo sh get-docker.sh
-
-# 添加当前用户到 docker 组
-sudo usermod -aG docker $USER</code></pre>
-                            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+    <!-- 主内容区域 -->
+    <main class="main-content">
+        <!-- Docker 架构原理图 -->
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">Docker 经典架构原理图</h2>
+                
+                <div class="docker-architecture-diagram">
+                    <div class="diagram-container">
+                        <div class="host-os">
+                            <h3>宿主机操作系统 (Host OS)</h3>
+                            <p>Ubuntu, CentOS, Windows, macOS 等</p>
+                        </div>
+                        
+                        <div class="docker-engine">
+                            <h3>Docker Engine</h3>
+                            <div class="engine-components">
+                                <div class="component">Docker Daemon (dockerd)</div>
+                                <div class="component">Containerd</div>
+                                <div class="component">runc</div>
+                            </div>
+                        </div>
+                        
+                        <div class="containers-section">
+                            <h3>容器层 (Containers)</h3>
+                            <div class="container-group">
+                                <div class="container-box">
+                                    <div class="container-header">容器 1</div>
+                                    <div class="container-body">
+                                        <div class="app-process">应用进程</div>
+                                        <div class="layers">
+                                            <div class="layer">可写层</div>
+                                            <div class="layer">只读层</div>
+                                            <div class="layer">只读层</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="container-box">
+                                    <div class="container-header">容器 2</div>
+                                    <div class="container-body">
+                                        <div class="app-process">应用进程</div>
+                                        <div class="layers">
+                                            <div class="layer">可写层</div>
+                                            <div class="layer">只读层</div>
+                                            <div class="layer">只读层</div>
+                                            <div class="layer">只读层</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="container-box">
+                                    <div class="container-header">容器 N</div>
+                                    <div class="container-body">
+                                        <div class="app-process">应用进程</div>
+                                        <div class="layers">
+                                            <div class="layer">可写层</div>
+                                            <div class="layer">基础镜像层</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="images-section">
+                            <h3>镜像层 (Images)</h3>
+                            <div class="image-layers">
+                                <div class="image-layer">Ubuntu 基础镜像</div>
+                                <div class="image-layer">应用依赖层</div>
+                                <div class="image-layer">应用代码层</div>
+                            </div>
+                        </div>
+                        
+                        <div class="shared-resources">
+                            <h3>共享资源</h3>
+                            <p>内核、CPU、内存、网络、存储</p>
                         </div>
                     </div>
-
-                    <div class="code-block">
-                        <h3>2. Windows 安装</h3>
-                        <div class="code-container">
-                            <pre><code class="language-bash"># 使用 WSL2 + Docker Desktop（推荐）
-wsl --install
-
-# 使用 Chocolatey
-choco install docker-desktop
-
-# 或使用 Rancher Desktop（开源替代）
-choco install rancher-desktop</code></pre>
-                            <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                        </div>
-                    </div>
-
-                    <div class="code-block">
-                        <h3>3. 验证安装</h3>
-                        <div class="code-container">
-                            <pre><code class="language-bash">docker --version
-docker run hello-world
-
-# 检查 BuildKit（默认启用）
-docker buildx version
-
-# 检查 Docker Scout（安全扫描工具）
-docker scout version</code></pre>
-                            <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Dockerfile -->
-                <div class="tab-content" id="dockerfile">
-                    <div class="code-block">
-                        <h3>Dockerfile 基础示例</h3>
-                        <div class="code-container">
-                            <pre><code class="language-dockerfile"># 使用 BuildKit 优化的多阶段构建
-# syntax=docker/dockerfile:1.4
-
-# 构建阶段
-FROM node:20-alpine AS builder
-WORKDIR /app
-
-# 启用 BuildKit 缓存挂载
-RUN --mount=type=cache,target=/root/.npm \
-    npm ci
-
-COPY . .
-RUN npm run build
-
-# 运行阶段
-FROM node:20-alpine
-WORKDIR /app
-
-# 复制构建产物
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
-COPY package*.json ./
-
-# 创建非 root 用户
-RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nodejs -u 1001
-USER nodejs
-
-# 暴露端口
-EXPOSE 3000
-
-# 健康检查
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD node -e "require('http').get('http://localhost:3000/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
-
-# 启动应用
-CMD ["node", "dist/index.js"]</code></pre>
-                            <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                        </div>
-                    </div>
-
-                    <div class="info-card">
-                        <h3>Dockerfile 新特性</h3>
+                    
+                    <div class="diagram-description">
+                        <h3>架构说明</h3>
                         <ul>
-                            <li><code># syntax</code>: 声明 Dockerfile 语法版本，启用新特性</li>
-                            <li><code>--mount=type=cache</code>: BuildKit 缓存挂载，加速构建</li>
-                            <li><code>--mount=type=secret</code>: 安全挂载密钥（如 SSH 密钥）</li>
-                            <li><code>--mount=type=ssh</code>: 直接在构建中使用 SSH</li>
-                            <li><code>COPY --link</code>: 减少构建上下文和层大小</li>
-                            <li><code>RUN --network</code>: 控制构建时的网络访问</li>
-                            <li><code>HEREDOC</code>: 支持多行文本块</li>
+                            <li><strong>宿主机操作系统</strong>：提供底层系统资源和内核功能</li>
+                            <li><strong>Docker Engine</strong>：负责容器的创建、运行和管理</li>
+                            <li><strong>镜像层</strong>：采用分层存储，多层只读层构成镜像</li>
+                            <li><strong>容器层</strong>：在镜像基础上添加可写层，实现写时复制</li>
+                            <li><strong>共享资源</strong>：容器共享宿主机内核，但彼此隔离</li>
                         </ul>
                     </div>
-
-                    <div class="code-block">
-                        <h3>使用 Secrets 和 SSH</h3>
-                        <div class="code-container">
-                            <pre><code class="language-dockerfile"># syntax=docker/dockerfile:1.4
-
-FROM node:20-alpine AS builder
+                </div>
+            </div>
+        </section>
+        
+        <!-- Docker 运行流程图 -->
+        <section class="section bg-light">
+            <div class="container">
+                <h2 class="section-title">Docker 运行流程图</h2>
+                
+                <div class="docker-workflow-diagram">
+                    <div class="workflow-container">
+                        <div class="workflow-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>编写 Dockerfile</h4>
+                                <div class="step-diagram">
+                                    <pre><code class="language-dockerfile">FROM node:18-alpine
 WORKDIR /app
-
-# 使用私有 npm 仓库的 token（作为 secret）
-RUN --mount=type=secret,id=npm_token,required \
-    NPM_TOKEN=$(cat /run/secrets/npm_token) \
-    npm ci
-
-# 克隆私有 Git 仓库
-RUN --mount=type=ssh \
-    git clone git@github.com:yourorg/private-repo.git
-
-# 多行脚本（HEREDOC）
-RUN <<EOF
-echo "Setting up environment..."
-apk add --no-cache git curl
-curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
-EOF</code></pre>
-                            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+COPY package*.json ./
+RUN npm install
+COPY . .
+EXPOSE 3000
+CMD ["npm", "start"]</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="workflow-arrow">↓</div>
+                        
+                        <div class="workflow-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>构建镜像</h4>
+                                <div class="step-diagram">
+                                    <pre><code class="language-bash">docker build -t myapp:latest .</code></pre>
+                                </div>
+                                <div class="build-process">
+                                    <div class="layer-build">基础层</div>
+                                    <div class="layer-build">依赖层</div>
+                                    <div class="layer-build">应用层</div>
+                                    <div class="result">→ 镜像构建完成</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="workflow-arrow">↓</div>
+                        
+                        <div class="workflow-step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>运行容器</h4>
+                                <div class="step-diagram">
+                                    <pre><code class="language-bash">docker run -d -p 3000:3000 myapp:latest</code></pre>
+                                </div>
+                                <div class="run-process">
+                                    <div class="container-create">创建容器</div>
+                                    <div class="mount-layer">挂载可写层</div>
+                                    <div class="start-process">启动应用进程</div>
+                                    <div class="result">→ 容器运行中</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="workflow-arrow">↓</div>
+                        
+                        <div class="workflow-step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h4>管理与监控</h4>
+                                <div class="manage-options">
+                                    <div class="option">docker ps</div>
+                                    <div class="option">docker logs</div>
+                                    <div class="option">docker exec</div>
+                                    <div class="option">docker stats</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="workflow-description">
+                        <h3>运行流程说明</h3>
+                        <ul>
+                            <li><strong>编写 Dockerfile</strong>：定义应用的构建步骤和依赖</li>
+                            <li><strong>构建镜像</strong>：按层构建，利用缓存机制加速构建</li>
+                            <li><strong>运行容器</strong>：基于镜像创建容器实例并启动应用</li>
+                            <li><strong>管理监控</strong>：使用 Docker 命令管理容器生命周期</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Docker 核心技术 -->
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">Docker 核心技术原理</h2>
+                
+                <div class="tech-principles-grid">
+                    <div class="tech-card">
+                        <div class="tech-icon">🔒</div>
+                        <h3>命名空间 (Namespaces)</h3>
+                        <p>实现进程、网络、挂载点等资源的隔离，每个容器拥有独立的视图</p>
+                        <div class="tech-details">
+                            <div class="detail-item">PID Namespace: 进程ID隔离</div>
+                            <div class="detail-item">NET Namespace: 网络接口隔离</div>
+                            <div class="detail-item">MNT Namespace: 挂载点隔离</div>
+                        </div>
+                    </div>
+                    
+                    <div class="tech-card">
+                        <div class="tech-icon">⚖️</div>
+                        <h3>控制组 (Cgroups)</h3>
+                        <p>限制和隔离应用对CPU、内存、磁盘IO等资源的使用</p>
+                        <div class="tech-details">
+                            <div class="detail-item">cpu: CPU 时间片分配</div>
+                            <div class="detail-item">memory: 内存使用限制</div>
+                            <div class="detail-item">blkio: 块设备IO限制</div>
+                        </div>
+                    </div>
+                    
+                    <div class="tech-card">
+                        <div class="tech-icon">🔄</div>
+                        <h3>联合文件系统 (Union FS)</h3>
+                        <p>将多个文件系统合并到单一挂载点，实现镜像分层和写时复制</p>
+                        <div class="tech-details">
+                            <div class="detail-item">AUFS: 高级多层统一文件系统</div>
+                            <div class="detail-item">OverlayFS: 轻量级联合文件系统</div>
+                            <div class="detail-item">DeviceMapper: 块级存储管理</div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </section>
+        
+        <!-- Docker 目录结构 -->
+        <section id="structure" class="section">
+            <div class="container">
+                <h2 class="section-title">Docker 目录结构详解</h2>
 
-                <!-- Docker Compose -->
-                <div class="tab-content" id="compose">
-                    <div class="info-card">
-                        <h3>什么是 Docker Compose？</h3>
-                        <p>Docker Compose 是一个用于定义和运行多容器 Docker 应用程序的工具。通过 Compose，您可以使用 YAML 文件来配置应用程序的服务，然后使用一个命令就可以创建并启动所有服务。</p>
+                <div class="info-card">
+                    <h3>📁 为什么了解 Docker 目录结构很重要？</h3>
+                    <p>Docker 在主机上创建了多个目录用于存储镜像、容器、卷、网络等数据。了解这些目录的结构和用途可以帮助您：</p>
+                    <ul>
+                        <li>有效管理存储空间</li>
+                        <li>快速定位和备份重要数据</li>
+                        <li>解决存储相关问题</li>
+                        <li>优化 Docker 性能</li>
+                        <li>进行故障排查</li>
+                    </ul>
+                </div>
+
+                <div class="code-block">
+                    <h3>查看 Docker 根目录</h3>
+                    <div class="code-container">
+                        <pre><code class="language-bash"># 查看 Docker 根目录位置
+docker info | grep "Docker Root Dir"
+
+# 输出示例（Linux/Mac）：
+# Docker Root Dir: /var/lib/docker
+
+# Windows 输出示例：
+# Docker Root Dir: C:\ProgramData\Docker
+
+# 查看目录大小
+du -sh /var/lib/docker/*</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
                     </div>
+                </div>
 
-                    <div class="code-block">
-                        <h3>安装 Docker Compose</h3>
-                        <div class="code-container">
-                            <pre><code class="language-bash"># Docker Desktop 已包含 Compose
-# 验证安装
-docker-compose --version
-
-# 或使用新的 compose 插件
-docker compose version</code></pre>
-                            <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                        </div>
+                <div class="code-block">
+                    <h3>Docker 完整目录结构</h3>
+                    <div class="code-container">
+                        <pre><code class="language-bash">/var/lib/docker/                      # Docker 根目录
+├── aufs/                             # AUFS 存储驱动（如果使用 AUFS）
+├── buildkit/                         # BuildKit 构建缓存
+│   ├── cache.db                      # BuildKit 缓存数据库
+│   └── snapshots.db                  # BuildKit 快照数据库
+├── containers/                       # 容器数据
+│   ├── {container-id}/               # 单个容器目录
+│   │   ├── config.v2.json            # 容器配置
+│   │   ├── hostconfig.json           # 容器主机配置
+│   │   ├── hostname                  # 容器主机名
+│   │   ├── hosts                     # 容器 hosts 文件
+│   │   ├── resolv.conf               # DNS 配置
+│   │   └── ...                       # 其他容器文件
+├── image/                            # 镜像数据
+│   ├── imagedb.json                  # 镜像数据库
+│   ├── layerdb/                      # 镜像层数据库
+│   │   └── sha256/                   # 按 SHA256 哈希组织的层
+│   └── ...
+├── network/                          # 网络配置
+│   └── files/
+│       ├── network-config.db         # 网络配置数据库
+│       └── network-state.db          # 网络状态数据库
+├── plugins/                          # Docker 插件
+├── swarm/                            # Swarm 集群配置
+├── tmp/                              # 临时文件
+├── trust/                            # 内容信任配置
+├── volumes/                          # 命名卷数据
+│   └── {volume-hash}/                # 单个卷目录
+└── ...                               # 其他文件和目录</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
                     </div>
+                </div>
 
-                    <div class="code-block">
-                        <h3>完整示例：Web 应用 + 数据库 + 缓存</h3>
-                        <div class="code-container">
-                            <pre><code class="language-yaml">version: '3.8'
+                <div class="info-card">
+                    <h3>关键目录说明</h3>
+                    <ul>
+                        <li><strong>/var/lib/docker/containers/</strong>: 存放所有容器的配置和日志文件</li>
+                        <li><strong>/var/lib/docker/image/</strong>: 存放镜像元数据和层信息</li>
+                        <li><strong>/var/lib/docker/volumes/</strong>: 存放命名卷的数据</li>
+                        <li><strong>/var/lib/docker/network/</strong>: 存放网络配置信息</li>
+                        <li><strong>/var/lib/docker/buildkit/</strong>: 存放 BuildKit 构建缓存</li>
+                    </ul>
+                </div>
+
+                <div class="code-block">
+                    <h3>管理 Docker 目录</h3>
+                    <div class="code-container">
+                        <pre><code class="language-bash"># 查看磁盘使用情况
+docker system df
+
+# 查看详细磁盘使用情况
+docker system df -v
+
+# 清理未使用的数据
+docker system prune
+
+# 清理所有未使用数据（包括镜像）
+docker system prune -a
+
+# 清理构建缓存
+docker builder prune
+
+# 清理指定容器的日志
+truncate -s 0 $(docker inspect --format='{{.LogPath}}' CONTAINER_ID)</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Docker 网络详解 -->
+        <section id="network" class="section bg-light">
+            <div class="container">
+                <h2 class="section-title">Docker 网络详解</h2>
+
+                <div class="info-card">
+                    <h3>🌐 Docker 网络概述</h3>
+                    <p>Docker 网络功能允许容器之间以及容器与主机之间的通信。Docker 提供了多种网络驱动，每种都有其特定的用途和功能。</p>
+                </div>
+
+                <div class="code-block">
+                    <h3>查看网络</h3>
+                    <div class="code-container">
+                        <pre><code class="language-bash"># 列出所有网络
+docker network ls
+
+# 查看特定网络详情
+docker network inspect bridge
+
+# 查看容器网络配置
+docker inspect CONTAINER_NAME</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <h3>创建自定义网络</h3>
+                    <div class="code-container">
+                        <pre><code class="language-bash"># 创建桥接网络
+docker network create my-bridge-network
+
+# 创建覆盖网络（用于 Swarm）
+docker network create --driver overlay my-overlay-network
+
+# 创建 MACVLAN 网络
+docker network create -d macvlan --subnet=172.16.86.0/24 --gateway=172.16.86.1 -o parent=eth0 pub-net
+
+# 创建 IPVLAN 网络
+docker network create -d ipvlan --subnet=192.168.1.0/24 --gateway=192.168.1.1 -o parent=eth0 ipvlan-net</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3>网络驱动类型</h3>
+                    <ul>
+                        <li><strong>Bridge</strong>: 默认网络驱动，适用于单主机上的容器通信</li>
+                        <li><strong>Host</strong>: 移除容器和 Docker 主机之间的网络隔离</li>
+                        <li><strong>Overlay</strong>: 用于连接多个 Docker 守护进程，适用于 Swarm</li>
+                        <li><strong>Macvlan</strong>: 为容器分配 MAC 地址，使其外观像物理设备</li>
+                        <li><strong>None</strong>: 禁用所有网络</li>
+                        <li><strong>第三方插件</strong>: 其他网络实现</li>
+                    </ul>
+                </div>
+
+                <div class="code-block">
+                    <h3>使用自定义网络</h3>
+                    <div class="code-container">
+                        <pre><code class="language-bash"># 运行容器时指定网络
+docker run -d --name container1 --network my-bridge-network nginx
+
+# 将运行中的容器连接到网络
+docker network connect my-bridge-network container2
+
+# 断开容器与网络的连接
+docker network disconnect my-bridge-network container1
+
+# 使用自定义网络运行多个容器
+docker run -d --name web --network my-bridge-network nginx
+docker run -d --name db --network my-bridge-network mysql:8.0</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <h3>Docker Compose 网络配置</h3>
+                    <div class="code-container">
+                        <pre><code class="language-yaml">version: '3.8'
 
 services:
-  # Web 应用
   web:
-    build: .
-    container_name: myapp-web
-    ports:
-      - "3000:3000"
-    volumes:
-      - .:/app
-      - /app/node_modules
-    environment:
-      - NODE_ENV=development
-      - DB_HOST=db
-      - REDIS_HOST=redis
-    depends_on:
-      db:
-        condition: service_healthy
-      redis:
-        condition: service_started
+    image: nginx
     networks:
-      - app-network
-    restart: unless-stopped
+      - frontend
+      - backend
 
-  # PostgreSQL 数据库
+  api:
+    image: myapi
+    networks:
+      - backend
+
   db:
-    image: postgres:15-alpine
-    container_name: myapp-db
+    image: postgres
+    networks:
+      - backend
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
+    internal: true  # 禁止外部访问</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3>网络最佳实践</h3>
+                    <ul>
+                        <li>使用自定义网络而非默认桥接网络</li>
+                        <li>使用有意义的网络名称</li>
+                        <li>根据安全需求分离网络（例如，前端和后端）</li>
+                        <li>定期清理未使用的网络</li>
+                        <li>使用内部网络限制对外访问</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Docker 数据卷详解 -->
+        <section id="volume" class="section">
+            <div class="container">
+                <h2 class="section-title">Docker 数据卷详解</h2>
+
+                <div class="info-card">
+                    <h3>💾 Docker 数据卷概述</h3>
+                    <p>数据卷是 Docker 中用于持久化数据的机制，它独立于容器生命周期，即使容器被删除，数据卷中的数据仍然存在。</p>
+                </div>
+
+                <div class="code-block">
+                    <h3>数据卷操作命令</h3>
+                    <div class="code-container">
+                        <pre><code class="language-bash"># 创建数据卷
+docker volume create my-volume
+
+# 列出所有数据卷
+docker volume ls
+
+# 查看数据卷详情
+docker volume inspect my-volume
+
+# 删除数据卷
+docker volume rm my-volume
+
+# 清理未使用的数据卷
+docker volume prune
+
+# 查看所有数据卷（包括未使用的）
+docker volume ls -q | xargs docker volume inspect</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                </div>
+
+                <div class="code-block">
+                    <h3>挂载数据卷到容器</h3>
+                    <div class="code-container">
+                        <pre><code class="language-bash"># 使用命名卷
+docker run -d --name my-container -v my-volume:/app/data nginx
+
+# 使用匿名卷
+docker run -d --name my-container -v /app/data nginx
+
+# 使用绑定挂载（主机目录）
+docker run -d --name my-container -v /host/path:/container/path nginx
+
+# 使用临时文件系统（内存中）
+docker run -d --name my-container --tmpfs /app/data nginx
+
+# 只读挂载
+docker run -d --name my-container -v my-volume:/app/data:ro nginx
+
+# 设置挂载选项
+docker run -d --name my-container -v my-volume:/app/data:rw,Z nginx</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3>数据卷类型</h3>
+                    <ul>
+                        <li><strong>命名卷</strong>: Docker 管理的持久化存储，存储在主机的特定位置</li>
+                        <li><strong>匿名卷</strong>: 没有指定名称的卷，由 Docker 自动分配名称</li>
+                        <li><strong>绑定挂载</strong>: 挂载主机文件系统中的文件或目录到容器</li>
+                        <li><strong>临时文件系统</strong>: 挂载到内存中的临时文件系统（tmpfs）</li>
+                    </ul>
+                </div>
+
+                <div class="code-block">
+                    <h3>Docker Compose 中的数据卷</h3>
+                    <div class="code-container">
+                        <pre><code class="language-yaml">version: '3.8'
+
+services:
+  web:
+    image: nginx
+    volumes:
+      # 命名卷
+      - web-data:/usr/share/nginx/html
+      # 绑定挂载
+      - ./html:/usr/share/nginx/html
+      # 匿名卷
+      - /tmp/cache
+      # 只读绑定挂载
+      - ./config:/etc/nginx/configs:ro
+      # 临时文件系统
+      - type: tmpfs
+        target: /run
+        tmpfs:
+          size: 100M
+
+  db:
+    image: postgres:15
+    volumes:
+      # 命名卷用于数据库持久化
+      - db-data:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: myapp
-      POSTGRES_USER: appuser
-      POSTGRES_PASSWORD: secretpassword
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-    ports:
-      - "5432:5432"
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U appuser -d myapp"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    networks:
-      - app-network
-    restart: unless-stopped
-
-  # Redis 缓存
-  redis:
-    image: redis:7-alpine
-    container_name: myapp-redis
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis-data:/data
-    command: redis-server --appendonly yes
-    networks:
-      - app-network
-    restart: unless-stopped
-
-  # Nginx 反向代理
-  nginx:
-    image: nginx:alpine
-    container_name: myapp-nginx
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
-      - ./ssl:/etc/nginx/ssl
-    depends_on:
-      - web
-    networks:
-      - app-network
-    restart: unless-stopped
-
-# 数据卷定义
-volumes:
-  postgres-data:
-    driver: local
-  redis-data:
-    driver: local
-
-# 网络定义
-networks:
-  app-network:
-    driver: bridge</code></pre>
-                            <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                        </div>
-                    </div>
-
-                    <div class="info-card">
-                        <h3>核心概念</h3>
-                        <ul>
-                            <li><strong>services:</strong> 定义要运行的容器服务</li>
-                            <li><strong>build:</strong> 从 Dockerfile 构建镜像</li>
-                            <li><strong>image:</strong> 使用现成的镜像</li>
-                            <li><strong>ports:</strong> 端口映射（主机:容器）</li>
-                            <li><strong>volumes:</strong> 数据卷挂载</li>
-                            <li><strong>environment:</strong> 环境变量</li>
-                            <li><strong>depends_on:</strong> 服务依赖关系</li>
-                            <li><strong>networks:</strong> 网络配置</li>
-                            <li><strong>healthcheck:</strong> 健康检查</li>
-                            <li><strong>restart:</strong> 重启策略</li>
-                        </ul>
-                    </div>
-
-                    <div class="code-block">
-                        <h3>常用命令</h3>
-                        <div class="code-container">
-                            <pre><code class="language-bash"># 启动所有服务（后台运行）
-docker-compose up -d
-
-# 启动所有服务（前台运行，查看日志）
-docker-compose up
-
-# 停止所有服务
-docker-compose stop
-
-# 停止并删除所有服务、网络
-docker-compose down
-
-# 停止并删除所有服务、网络、数据卷
-docker-compose down -v
-
-# 构建镜像
-docker-compose build
-
-# 构建并启动
-docker-compose up -d --build
-
-# 查看服务状态
-docker-compose ps
-
-# 查看服务日志
-docker-compose logs
-
-# 查看特定服务日志
-docker-compose logs -f web
-
-# 重启服务
-docker-compose restart
-
-# 重启特定服务
-docker-compose restart web
-
-# 进入容器
-docker-compose exec web sh
-
-# 查看资源使用情况
-docker-compose top
-
-# 扩展服务（如扩展到3个副本）
-docker-compose up -d --scale web=3
-
-# 列出所有容器
-docker-compose ps -a</code></pre>
-                            <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                        </div>
-                    </div>
-
-                    <div class="code-block">
-                        <h3>重启策略</h3>
-                        <div class="code-container">
-                            <pre><code class="language-yaml"># 不自动重启（默认）
-restart: "no"
-
-# 总是重启
-restart: always
-
-# 失败时重启
-restart: on-failure
-
-# 失败时重启，最多5次
-restart: on-failure:5
-
-# 除非手动停止，否则总是重启
-restart: unless-stopped</code></pre>
-                            <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                        </div>
-                    </div>
-
-                    <div class="code-block">
-                        <h3>环境变量管理</h3>
-                        <div class="code-container">
-                            <pre><code class="language-bash"># 方法1：在 docker-compose.yml 中定义
-environment:
-  - DB_HOST=localhost
-  - DB_PORT=5432
-
-# 方法2：使用 .env 文件
-# 创建 .env 文件：
-# DB_HOST=localhost
-# DB_PORT=5432
-
-# 在 docker-compose.yml 中引用：
-environment:
-  - DB_HOST=${DB_HOST}
-  - DB_PORT=${DB_PORT}
-
-# 方法3：使用 env_file
-env_file:
-  - .env
-  - .env.production</code></pre>
-                            <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                        </div>
-                    </div>
-
-                    <div class="code-block">
-                        <h3>多环境配置</h3>
-                        <div class="code-container">
-                            <pre><code class="language-bash"># 基础配置：docker-compose.yml
-version: '3.8'
-services:
-  web:
-    build: .
-
-# 开发环境：docker-compose.dev.yml
-version: '3.8'
-services:
-  web:
-    volumes:
-      - .:/app
-    environment:
-      - NODE_ENV=development
-
-# 生产环境：docker-compose.prod.yml
-version: '3.8'
-services:
-  web:
-    environment:
-      - NODE_ENV=production
-    restart: always
-
-# 使用不同的配置文件
-docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d</code></pre>
-                            <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                        </div>
-                    </div>
-
-                    <div class="info-card">
-                        <h3>最佳实践</h3>
-                        <ul>
-                            <li><strong>使用命名卷：</strong>便于备份和迁移</li>
-                            <li><strong>设置健康检查：</strong>确保服务真正可用</li>
-                            <li><strong>配置重启策略：</strong>自动恢复失败的服务</li>
-                            <li><strong>使用环境变量：</strong>避免敏感信息硬编码</li>
-                            <li><strong>定义网络：</strong>隔离不同应用的服务</li>
-                            <li><strong>限制资源：</strong>防止服务占用过多资源</li>
-                            <li><strong>使用 .env 文件：</strong>管理环境变量</li>
-                            <li><strong>版本控制：</strong>将配置文件纳入版本管理</li>
-                        </ul>
-                    </div>
-
-                    <!-- WASM 容器 -->
-                    <div class="tab-content" id="wasm">
-                        <div class="info-card">
-                            <h3>什么是 WASM 容器？</h3>
-                            <p>WebAssembly (WASM) 容器是 Docker 的革命性特性。它将 WASM 模块作为容器运行，提供接近原生的性能、极小的镜像大小（通常 <1MB）和更强的隔离性。</p>
-                        </div>
-
-                        <div class="code-block">
-                            <h3>运行 WASM 容器</h3>
-                            <div class="code-container">
-                                <pre><code class="language-bash"># 启用 WASM 支持（需要 Docker 27.0+）
-export DOCKER_CLI_EXPERIMENTAL=enabled
-
-# 运行 WASM 容器
-docker run --runtime=wasm --rm -p 8080:8080 \
-  wasmcloud/http-hello-world
-
-# 查看 WASM 运行时
-docker info | grep -i wasm
-
-# 使用 Docker Compose 运行 WASM 服务
-docker compose --compatibility up -d</code></pre>
-                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                            </div>
-                        </div>
-
-                        <div class="code-block">
-                            <h3>WASM Dockerfile 示例</h3>
-                            <div class="code-container">
-                                <pre><code class="language-dockerfile"># syntax=docker/dockerfile:1.6
-# 使用 WASM 基础镜像（基于 Spin 或 WasmEdge）
-
-FROM ghcr.io/spinframework/spin:latest AS builder
-WORKDIR /app
-
-# 编译 WASM 应用
-# 假设有一个简单的 HTTP 服务
-COPY spin.toml .
-COPY src/ ./src/
-
-# 构建目标 WASM
-RUN spin build
-
-# 运行阶段
-FROM scratch
-COPY --from=builder /app/spin.toml .
-COPY --from=builder /app/target/wasm32-wasi/release/app.wasm ./app.wasm
-
-# 使用 WASM 运行时
-CMD ["spin", "up"]
-
-# WASM 应用通常很小（<1MB）
-# 比传统容器小 100-1000 倍</code></pre>
-                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                            </div>
-                        </div>
-
-                        <div class="info-card">
-                            <h3>WASM 容器优势</h3>
-                            <ul>
-                                <li><strong>极小体积：</strong>镜像通常 <1MB，比传统容器小 100-1000 倍</li>
-                                <li><strong>快速启动：</strong>毫秒级启动，比传统容器快 10-100 倍</li>
-                                <li><strong>高安全性：</strong>基于能力的安全模型，更强的隔离性</li>
-                                <li><strong>跨平台：</strong>一次构建，随处运行（Linux、macOS、Windows）</li>
-                                <li><strong>多语言支持：</strong>支持 Rust、Go、Python、JavaScript 等语言</li>
-                                <li><strong>低资源占用：</strong>内存占用通常是传统容器的 10%</li>
-                                <li><strong>无服务器友好：</strong>完美适配 FaaS 和边缘计算场景</li>
-                            </ul>
-                        </div>
-
-                        <div class="code-block">
-                            <h3>WASM vs 传统容器对比</h3>
-                            <div class="code-container">
-                                <pre><code class="language-bash"># 传统容器
-镜像大小：~150MB (Node.js 应用)
-启动时间：~1-2 秒
-内存占用：~50-100MB
-隔离性：Linux 命名空间 + cgroups
-
-# WASM 容器
-镜像大小：~500KB - 1MB
-启动时间：~10-50ms
-内存占用：~5-10MB
-隔离性：WASM 能力模型 + 沙箱
-
-# 性能提升：
-- 镜像拉取速度：提升 100-200 倍
-- 冷启动时间：提升 20-100 倍
-- 资源利用率：提升 5-10 倍</code></pre>
-                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                            </div>
-                        </div>
-
-                        <div class="code-block">
-                            <h3>Docker Compose WASM 示例</h3>
-                            <div class="code-container">
-                                <pre><code class="language-yaml">version: '3.8'
-
-services:
-  # WASM 微服务
-  wasm-api:
-    image: wasmcloud/http-hello-world
-    runtime: wasm
-    ports:
-      - "8080:8080"
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 50M
-    restart: unless-stopped
-
-  # 传统容器（用于数据库）
-  redis:
-    image: redis:7-alpine
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis-data:/data
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
 
 volumes:
-  redis-data:</code></pre>
-                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                            </div>
-                        </div>
+  web-data:
+  db-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /opt/postgres-data</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- 新特性 -->
-    <section id="new-features" class="section">
-        <div class="container">
-            <h2 class="section-title">Docker 新特性</h2>
+                <div class="code-block">
+                    <h3>数据卷备份和恢复</h3>
+                    <div class="code-container">
+                        <pre><code class="language-bash"># 创建备份容器
+docker run --rm -v my-volume:/volume -v $(pwd):/backup alpine tar czf /backup/backup.tar.gz -C /volume .
 
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">🏗️</div>
-                    <h3>BuildKit 2.0</h3>
-                    <p>分布式构建、智能缓存、并行执行，构建速度提升 5-10 倍。支持远程构建和团队共享缓存。</p>
+# 恢复备份
+docker run --rm -v my-volume:/volume -v backup-container:/backup alpine tar xzf /backup/backup.tar.gz -C /volume
+
+# 使用专门的备份工具
+docker run --rm -it -v my-volume:/data -v backup-container:/backup alpine tar -cvf - -C /data . | tar -xvf - -C /backup
+
+# 从主机备份
+sudo tar -czf backup.tar.gz -C /var/lib/docker/volumes/my-volume/_data .</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🔍</div>
-                    <h3>Docker Scout</h3>
-                    <p>AI 驱动的漏洞扫描、SBOM 生成、合规检查。实时监控镜像安全状态，自动修复安全风险。</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🔒</div>
-                    <h3>镜像签名</h3>
-                    <p>基于 Cosign 的原生签名验证，确保镜像完整性和来源可信。支持硬件密钥和云 KMS。</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <h3>eBPF 监控</h3>
-                    <p>基于 eBPF 的深度容器监控，零开销的性能追踪、网络分析和安全审计。</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🤖</div>
-                    <h3>AI Dockerfile 生成</h3>
-                    <p>使用大语言模型自动生成优化 Dockerfile，智能选择基础镜像和依赖版本。</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
-                    <h3>OCI v1.2 支持</h3>
-                    <p>完整的 OCI 规范支持，兼容所有符合标准的容器运行时和工具链。</p>
+
+                <div class="info-card">
+                    <h3>数据卷最佳实践</h3>
+                    <ul>
+                        <li>使用命名卷而非绑定挂载，以获得更好的可移植性</li>
+                        <li>为生产环境使用专用的存储解决方案</li>
+                        <li>定期备份重要数据卷</li>
+                        <li>使用卷驱动程序扩展功能（如加密、远程存储）</li>
+                        <li>合理规划卷的权限和访问模式</li>
+                    </ul>
                 </div>
             </div>
+        </section>
+        
+        <!-- Docker 新特性 -->
+        <section id="new-features" class="section">
+            <div class="container">
+                <h2 class="section-title">Docker 新特性</h2>
+                
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🏗️</div>
+                        <h3>BuildKit 2.0</h3>
+                        <p>分布式构建、智能缓存、并行执行，构建速度提升 5-10 倍。支持远程构建和团队共享缓存。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔍</div>
+                        <h3>Docker Scout</h3>
+                        <p>AI 驱动的漏洞扫描、SBOM 生成、合规检查。实时监控镜像安全状态，自动修复安全风险。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>镜像签名</h3>
+                        <p>基于 Cosign 的原生签名验证，确保镜像完整性和来源可信。支持硬件密钥和云 KMS。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>eBPF 监控</h3>
+                        <p>基于 eBPF 的深度容器监控，零开销的性能追踪、网络分析和安全审计。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🤖</div>
+                        <h3>AI Dockerfile 生成</h3>
+                        <p>使用大语言模型自动生成优化 Dockerfile，智能选择基础镜像和依赖版本。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>OCI v1.2 支持</h3>
+                        <p>完整的 OCI 规范支持，兼容所有符合标准的容器运行时和工具链。</p>
+                    </div>
+                </div>
 
-            <div class="code-block">
-                <h3>使用 Docker Scout 进行安全扫描</h3>
-                <div class="code-container">
-                    <pre><code class="language-bash"># 扫描镜像漏洞
+                <div class="code-block">
+                    <h3>使用 Docker Scout 进行安全扫描</h3>
+                    <div class="code-container">
+                        <pre><code class="language-bash"># 扫描镜像漏洞
 docker scout cves myapp:latest
 
 # 快速漏洞扫描
@@ -711,14 +703,14 @@ docker scout compare old:latest new:latest
 
 # CI/CD 集成（失败如果发现高危漏洞）
 docker scout cves --exit-code 1 --severity high,critical myapp:latest</code></pre>
-                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
                 </div>
-            </div>
 
-            <div class="code-block">
-                <h3>使用 BuildKit 2.0 分布式构建</h3>
-                <div class="code-container">
-                    <pre><code class="language-bash"># 设置分布式构建缓存
+                <div class="code-block">
+                    <h3>使用 BuildKit 2.0 分布式构建</h3>
+                    <div class="code-container">
+                        <pre><code class="language-bash"># 设置分布式构建缓存
 export BUILDKIT_REMOTE_CACHE=type=registry,ref=myregistry.com/cache
 
 # 使用远程构建器
@@ -740,532 +732,642 @@ docker buildx build \
   --platform linux/amd64,linux/arm64,linux/arm/v7 \
   -t myapp:multiarch \
   --push .</code></pre>
-                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+        
+        <!-- Docker 常用命令 -->
+        <section id="commands" class="section bg-light">
+            <div class="container">
+                <h2 class="section-title">Docker 常用命令</h2>
 
-    <!-- Docker 目录结构 -->
-    <section id="structure" class="section">
-        <div class="container">
-            <h2 class="section-title">Docker 目录结构详解</h2>
+                <div class="commands-grid">
+                    <div class="command-category">
+                        <h3>镜像管理</h3>
+                        <div class="command-list">
+                            <div class="command-item">
+                                <code>docker images</code>
+                                <span>列出本地镜像</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker pull IMAGE_NAME</code>
+                                <span>从仓库拉取镜像</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker push IMAGE_NAME</code>
+                                <span>推送镜像到仓库</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker rmi IMAGE_ID</code>
+                                <span>删除本地镜像</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker build -t NAME .</code>
+                                <span>构建镜像</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker tag SOURCE TARGET</code>
+                                <span>标记镜像</span>
+                            </div>
+                        </div>
+                    </div>
 
-            <div class="info-card">
-                <h3>📁 为什么了解 Docker 目录结构很重要？</h3>
-                <p>Docker 在主机上创建了多个目录用于存储镜像、容器、卷、网络等数据。了解这些目录的结构和用途可以帮助您：</p>
-                <ul>
-                    <li>有效管理存储空间</li>
-                    <li>快速定位和备份重要数据</li>
-                    <li>解决存储相关问题</li>
-                    <li>优化 Docker 性能</li>
-                    <li>进行故障排查</li>
-                </ul>
-            </div>
+                    <div class="command-category">
+                        <h3>容器管理</h3>
+                        <div class="command-list">
+                            <div class="command-item">
+                                <code>docker ps</code>
+                                <span>列出运行中的容器</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker ps -a</code>
+                                <span>列出所有容器</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker run IMAGE</code>
+                                <span>运行容器</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker start CONTAINER</code>
+                                <span>启动容器</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker stop CONTAINER</code>
+                                <span>停止容器</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker rm CONTAINER</code>
+                                <span>删除容器</span>
+                            </div>
+                        </div>
+                    </div>
 
-            <div class="code-block">
-                <h3>查看 Docker 根目录</h3>
-                <div class="code-container">
-                    <pre><code class="language-bash"># 查看 Docker 根目录位置
-docker info | grep "Docker Root Dir"
+                    <div class="command-category">
+                        <h3>系统管理</h3>
+                        <div class="command-list">
+                            <div class="command-item">
+                                <code>docker system df</code>
+                                <span>查看磁盘使用情况</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker system prune</code>
+                                <span>清理未使用数据</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker stats</code>
+                                <span>查看容器资源使用情况</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker info</code>
+                                <span>查看系统信息</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker version</code>
+                                <span>查看版本信息</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker login</code>
+                                <span>登录到仓库</span>
+                            </div>
+                        </div>
+                    </div>
 
-# 输出示例（Linux/Mac）：
-# Docker Root Dir: /var/lib/docker
+                    <div class="command-category">
+                        <h3>调试与日志</h3>
+                        <div class="command-list">
+                            <div class="command-item">
+                                <code>docker logs CONTAINER</code>
+                                <span>查看容器日志</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker exec -it CONTAINER COMMAND</code>
+                                <span>进入容器执行命令</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker inspect CONTAINER</code>
+                                <span>查看容器详细信息</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker top CONTAINER</code>
+                                <span>查看容器内进程</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker diff CONTAINER</code>
+                                <span>查看容器文件系统变化</span>
+                            </div>
+                            <div class="command-item">
+                                <code>docker port CONTAINER</code>
+                                <span>查看端口映射</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-# Windows 输出示例：
-# Docker Root Dir: C:\ProgramData\Docker
+                <div class="code-block">
+                    <h3>高级命令示例</h3>
+                    <div class="code-container">
+                        <pre><code class="language-bash"># 运行一次性容器
+docker run --rm -it ubuntu bash
 
-# 查看目录大小
-du -sh /var/lib/docker/*</code></pre>
-                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
+# 挂载数据卷和端口映射
+docker run -d -p 8080:80 -v my-volume:/data nginx
+
+# 使用环境变量
+docker run -e ENV_VAR=value nginx
+
+# 连接到特定网络
+docker run --network my-network nginx
+
+# 设置容器资源限制
+docker run --memory=512m --cpus=1.0 nginx
+
+# 查看实时统计信息
+docker stats --no-stream
+
+# 批量操作容器
+docker ps -q | xargs docker stop
+
+# 查找特定镜像
+docker images --filter reference="nginx:*"
+
+# 查看容器 IP 地址
+docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' CONTAINER
+
+# 复制文件到/从容器
+docker cp CONTAINER:/path/to/file /local/path
+docker cp /local/path CONTAINER:/path/to/file</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3>实用技巧</h3>
+                    <ul>
+                        <li>使用 <code>--rm</code> 标志自动删除退出的容器</li>
+                        <li>使用 <code>-d</code> 标志在后台运行容器</li>
+                        <li>使用 <code>-it</code> 标志获取交互式终端</li>
+                        <li>使用 <code>--name</code> 为容器指定名称</li>
+                        <li>使用 <code>-v</code> 挂载数据卷以持久化数据</li>
+                        <li>使用 <code>-p</code> 映射端口以访问容器服务</li>
+                    </ul>
                 </div>
             </div>
+        </section>
+        
+        <!-- Dockerfile 实践 -->
+        <section id="dockerfile" class="section">
+            <div class="container">
+                <h2 class="section-title">Dockerfile 实践</h2>
+                <div class="info-card">
+                    <h3>Dockerfile 最佳实践</h3>
+                    <ul>
+                        <li>使用 .dockerignore 文件排除不必要的文件</li>
+                        <li>选择合适的基础镜像（如 Alpine）以减小体积</li>
+                        <li>合并 RUN 指令以减少镜像层数</li>
+                        <li>使用构建缓存优化构建速度</li>
+                        <li>设置 HEALTHCHECK 检查容器健康状态</li>
+                    </ul>
+                </div>
+                
+                <div class="code-block">
+                    <h3>优化的 Dockerfile 示例</h3>
+                    <div class="code-container">
+                        <pre><code class="language-dockerfile"># 使用特定版本的基础镜像
+FROM node:18-alpine
 
-            <div class="code-block">
-                <h3>Docker 完整目录结构</h3>
-                <div class="code-container">
-                    <pre><code class="language-bash">/var/lib/docker/                      # Docker 根目录
-├── aufs/                             # AUFS 存储驱动（如果使用 AUFS）
-├── buildkit/                         # BuildKit 构建缓存
-│   ├── cache/                        # 构建缓存
-│   └── executor/                     # 构建执行器
-├── containers/                       # 容器数据
-│   └── [container-id]/               # 每个容器的目录
-│       ├── config.json               # 容器配置
-│       ├── hostname                  # 主机名
-│       ├── hosts                     # /etc/hosts
-│       ├── resolv.conf               # DNS 配置
-│       └── checkpoint/               # 检查点数据
-├── image/                            # 镜像元数据
-│   └── overlay2/                     # Overlay2 驱动存储（最常用）
-│       └── [image-id]/              # 镜像层数据
-├── volumes/                          # 命名卷数据
-│   └── [volume-name]/                # 每个卷的目录
-│       └── _data/                    # 实际数据
-├── networks/                         # 网络数据
-│   └── files/                        # 网络配置文件
-├── swarm/                            # Swarm 模式数据
-├── plugins/                          # 插件数据
-├── tmp/                              # 临时文件
-├── trust/                            # 内容信任数据
-│   └── tuf.db                        # 信任数据库
-├── engine-id                         # 引擎唯一标识
-└── cli-plugins/                      # CLI 插件
-    └── docker-scout/                 # Docker Scout 插件
-    └── docker-ai/                    # Docker AI 插件</code></pre>
-                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
+# 设置工作目录
+WORKDIR /app
+
+# 只复制 package 文件以利用构建缓存
+COPY package*.json ./
+
+# 安装依赖
+RUN npm ci --only=production
+
+# 复制应用代码
+COPY . .
+
+# 创建非 root 用户
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001
+
+# 切换到非 root 用户
+USER nodejs
+
+# 暴露端口
+EXPOSE 3000
+
+# 健康检查
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:3000/health || exit 1
+
+# 启动命令
+CMD ["npm", "start"]</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
                 </div>
             </div>
-
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">📦</div>
-                    <h3>containers/</h3>
-                    <p>存储所有容器的运行时数据、配置文件、日志等。每个容器有独立的目录。</p>
+        </section>
+        
+        <!-- Compose 实践 -->
+        <section id="compose" class="section bg-light">
+            <div class="container">
+                <h2 class="section-title">Compose 实践</h2>
+                <div class="info-card">
+                    <h3>Docker Compose 最佳实践</h3>
+                    <ul>
+                        <li>使用命名卷进行数据持久化</li>
+                        <li>定义网络以隔离服务通信</li>
+                        <li>使用环境变量管理配置</li>
+                        <li>设置适当的资源限制</li>
+                        <li>配置健康检查和重启策略</li>
+                    </ul>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🖼️</div>
-                    <h3>image/</h3>
-                    <p>存储镜像的元数据和层数据。使用分层存储，共享相同层以节省空间。</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">💾</div>
-                    <h3>volumes/</h3>
-                    <p>命名卷的存储位置，用于持久化数据。删除容器不会删除卷数据。</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🌐</div>
-                    <h3>networks/</h3>
-                    <p>网络配置文件，包括桥接网络、覆盖网络等网络模式。</p>
-                </div>
-            </div>
-
-            <div class="code-block">
-                <h3>容器目录详解</h3>
-                <div class="code-container">
-                    <pre><code class="language-bash">/var/lib/docker/containers/
-└── abc123def456/                     # 容器 ID（短 ID）
-    ├── config.json                   # 容器配置（JSON 格式）
-    ├── config.v2.json                # 配置版本 2
-    ├── hostconfig.json               # 主机配置（端口映射等）
-    ├── hostname                      # 容器主机名
-    ├── hosts                         # /etc/hosts 文件
-    ├── hostname                      # 主机名文件
-    ├── resolv.conf                   # DNS 解析配置
-    ├── resolv.conf.hash              # DNS 配置哈希
-    ├── checkpoints/                  # 检查点数据（用于容器迁移）
-    ├── mounts/                       # 挂载点信息
-    ├── shm/                          # 共享内存（/dev/shm）
-    └── [storage-driver]/             # 存储驱动数据
-        └── merged/                   # 容器文件系统（联合挂载）
-
-# 查看容器配置
-cat /var/lib/docker/containers/[container-id]/config.json | jq
-
-# 查看容器文件系统
-ls -la /var/lib/docker/overlay2/[container-id]/merged/
-
-# 查看容器日志
-ls -la /var/lib/docker/containers/[container-id]/[container-id]-json.log</code></pre>
-                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                </div>
-            </div>
-
-            <div class="code-block">
-                <h3>镜像目录详解</h3>
-                <div class="code-container">
-                    <pre><code class="language-bash">/var/lib/docker/image/
-└── overlay2/                         # Overlay2 存储驱动
-    ├── distribution/                 # 镜像分发信息
-    │   └── v2metadata.db             # 镜像元数据数据库
-    ├── imagedb/                      # 镜像数据库
-    │   ├── content/                   # 镜像内容 SHA256
-    │   ├── metadata/                 # 镜像元数据
-    │   └── rootfs/                   # 根文件系统引用
-    ├── layerdb/                      # 层数据库
-    │   ├── sha256/                    # 层 SHA256 目录
-    │   │   └── [layer-hash]/         # 每个层的目录
-    │   │       ├── cache-id          # 缓存 ID
-    │   │       ├── diff/             # 层差异
-    │   │       ├── parent            # 父层引用
-    │   │       └── size              # 层大小
-    │   └── toml/                     # TOML 格式元数据
-    └── repositories.json             # 仓库索引文件
-
-# 查看镜像列表
-docker images
-
-# 查看镜像层信息
-docker history [image-name]
-
-# 查看镜像大小分布
-du -sh /var/lib/docker/image/overlay2/*</code></pre>
-                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                </div>
-            </div>
-
-            <div class="code-block">
-                <h3>卷目录详解</h3>
-                <div class="code-container">
-                    <pre><code class="language-bash">/var/lib/docker/volumes/
-└── my-volume/                        # 卷名称
-    └── _data/                        # 实际数据存储
-        ├── app/                      # 应用数据
-        └── logs/                     # 日志文件
-
-# 查看所有卷
-docker volume ls
-
-# 查看卷详细信息
-docker volume inspect my-volume
-
-# 查看卷数据
-ls -la /var/lib/docker/volumes/my-volume/_data/
-
-# 创建卷
-docker volume create my-volume
-
-# 删除未使用的卷
-docker volume prune</code></pre>
-                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                </div>
-            </div>
-
-            <div class="code-block">
-                <h3>网络目录详解</h3>
-                <div class="code-container">
-                    <pre><code class="language-bash">/var/lib/docker/network/
-└── files/
-    └── local-kv.db                   # 网络键值数据库
-
-# 网络配置存储在数据库中
-# 包括桥接、覆盖、macvlan 等网络模式
-
-# 查看所有网络
-docker network ls
-
-# 查看网络详细信息
-docker network inspect bridge
-
-# 查看网络中的容器
-docker network inspect bridge | jq '[].[0].Containers'
-
-# 创建自定义网络
-docker network create my-network
-
-# 删除未使用的网络
-docker network prune</code></pre>
-                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                </div>
-            </div>
-
-            <div class="code-block">
-                <h3>BuildKit 目录详解</h3>
-                <div class="code-container">
-                    <pre><code class="language-bash">/var/lib/docker/buildkit/
-├── cache/                            # 构建缓存
-│   └── [cache-key]/                  # 按缓存键组织
-│       └── [data]/                   # 缓存数据
-├── executor/                         # 构建执行器
-│   └── [build-id]/                   # 每个构建的目录
-│       ├── snapshot.db              # 快照数据库
-│       └── metadata.db              # 元数据数据库
-└── state/                            # 构建状态
-    └── [build-id]/                   # 构建状态
-
-# 清理构建缓存
-docker builder prune
-
-# 查看构建缓存
-docker builder ls
-
-# 查看构建缓存详情
-docker builder inspect [build-id]
-
-# 使用缓存挂载（减少构建时间）
-# 在 Dockerfile 中使用：
-# RUN --mount=type=cache,target=/root/.npm npm ci</code></pre>
-                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                </div>
-            </div>
-
-            <div class="info-card">
-                <h3>不同操作系统的 Docker 目录</h3>
-                <ul>
-                    <li><strong>Linux:</strong> <code>/var/lib/docker</code></li>
-                    <li><strong>macOS (Docker Desktop):</strong> <code>~/Library/Containers/com.docker.docker/Data/vms/0/data/</code></li>
-                    <li><strong>macOS (Colima):</strong> <code>~/.colima/default/docker/</code></li>
-                    <li><strong>Windows:</strong> <code>C:\ProgramData\Docker</code></li>
-                    <li><strong>Windows (WSL2):</strong> <code>\\wsl$\docker-desktop-data\data\docker\</code></li>
-                </ul>
-            </div>
-
-            <div class="code-block">
-                <h3>查看和管理 Docker 存储空间</h3>
-                <div class="code-container">
-                    <pre><code class="language-bash"># 查看 Docker 磁盘使用情况
-docker system df
-
-# 详细磁盘使用
-docker system df -v
-
-# 查看特定目录大小
-du -sh /var/lib/docker/*
-du -sh /var/lib/docker/containers/*
-du -sh /var/lib/docker/volumes/*
-
-# 清理未使用的资源
-docker system prune
-
-# 清理所有未使用的资源（包括卷）
-docker system prune -a --volumes
-
-# 清理构建缓存
-docker builder prune
-
-# 清理镜像
-docker image prune
-
-# 清理容器
-docker container prune
-
-# 清理卷
-docker volume prune
-
-# 清理网络
-docker network prune</code></pre>
-                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                </div>
-            </div>
-
-            <div class="code-block">
-                <h3>备份和恢复 Docker 数据</h3>
-                <div class="code-container">
-                    <pre><code class="language-bash"># 备份 Docker 目录（需要停止 Docker）
-sudo systemctl stop docker
-sudo tar -czf docker-backup-$(date +%Y%m%d).tar.gz /var/lib/docker
-sudo systemctl start docker
-
-# 恢复 Docker 目录
-sudo systemctl stop docker
-sudo tar -xzf docker-backup-20240127.tar.gz -C /
-sudo systemctl start docker
-
-# 备份特定卷
-docker run --rm -v my-volume:/data -v $(pwd):/backup \
-  alpine tar czf /backup/my-volume-backup.tar.gz /data
-
-# 恢复卷
-docker run --rm -v my-volume:/data -v $(pwd):/backup \
-  alpine sh -c "cd /data && tar xzf /backup/my-volume-backup.tar.gz --strip 1"
-
-# 导出容器为镜像
-docker commit [container-id] my-backup:latest
-
-# 导出镜像
-docker save -o my-image.tar my-image:latest
-
-# 导入镜像
-docker load -i my-image.tar</code></pre>
-                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                </div>
-            </div>
-
-            <div class="info-card">
-                <h3>Docker 目录管理最佳实践</h3>
-                <ul>
-                    <li><strong>定期清理：</strong>定期使用 <code>docker system prune</code> 清理未使用的资源</li>
-                    <li><strong>监控空间：</strong>使用 <code>docker system df</code> 监控磁盘使用情况</li>
-                    <li><strong>使用卷：</strong>持久化数据使用命名卷，不要存储在容器中</li>
-                    <li><strong>备份数据：</strong>定期备份重要卷和配置</li>
-                    <li><strong>限制大小：</strong>为容器设置资源限制，避免占用过多空间</li>
-                    <li><strong>使用缓存：</strong>利用 BuildKit 缓存减少重复构建</li>
-                    <li><strong>分层优化：</strong>优化 Dockerfile 减少层数和大小</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <!-- Docker 网络详解 -->
-    <section id="network" class="section">
-        <div class="container">
-            <h2 class="section-title">Docker 网络详解</h2>
-
-            <div class="info-card">
-                <h3>🌐 为什么需要理解 Docker 网络？</h3>
-                <p>Docker 网络是容器间通信和容器与外部通信的基础。掌握 Docker 网络可以帮助您：</p>
-                <ul>
-                    <li>实现容器间安全通信</li>
-                    <li>隔离不同应用的网络</li>
-                    <li>优化网络性能</li>
-                    <li>实现负载均衡</li>
-                    <li>部署微服务架构</li>
-                    <li>实现服务发现</li>
-                </ul>
-            </div>
-
-            <div class="code-block">
-                <h3>网络类型</h3>
-                <div class="code-container">
-                    <pre><code class="language-bash"># 查看所有网络
-docker network ls
-
-# 查看网络详细信息
-docker network inspect bridge
-
-# 创建自定义桥接网络
-docker network create --driver bridge my-network
-
-# 创建覆盖网络（用于 Swarm）
-docker network create --driver overlay my-overlay
-
-# 创建 Macvlan 网络（直接连接物理网络）
-docker network create --driver macvlan \
-  --subnet=192.168.1.0/24 \
-  --gateway=192.168.1.1 \
-  -o parent=eth0 my-macvlan
-
-# 删除网络
-docker network rm my-network</code></pre>
-                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                </div>
-            </div>
-
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">🌉</div>
-                    <h3>Bridge 网络模式</h3>
-                    <p>默认网络模式，容器通过 Docker 网桥通信，适合单主机场景。每个容器有独立的 IP 地址。</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🔗</div>
-                    <h3>Host 网络模式</h3>
-                    <p>容器直接使用主机网络，没有网络隔离。性能最高但安全性较低，适合需要高性能的场景。</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📦</div>
-                    <h3>Container 网络模式</h3>
-                    <p>容器共享另一个容器的网络命名空间，适合需要共享网络栈的场景。</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🌍</div>
-                    <h3>None 网络模式</h3>
-                    <p>容器没有网络接口，完全隔离。适合需要高安全性的任务或批处理作业。</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🔮</div>
-                    <h3>Overlay 网络模式</h3>
-                    <p>跨主机的容器网络，用于 Docker Swarm 集群。支持服务发现和负载均衡。</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🎯</div>
-                    <h3>Macvlan 网络模式</h3>
-                    <p>容器直接连接物理网络，每个容器有独立的 MAC 地址。适合需要直接访问物理网络的场景。</p>
-                </div>
-            </div>
-
-            <div class="code-block">
-                <h3>Bridge 网络详解</h3>
-                <div class="code-container">
-                    <pre><code class="language-bash"># 查看默认桥接网络
-docker network inspect bridge
-
-# 创建自定义桥接网络
-docker network create \
-  --driver bridge \
-  --subnet=172.20.0.0/16 \
-  --gateway=172.20.0.1 \
-  --ip-range=172.20.0.0/24 \
-  --opt com.docker.network.bridge.name=br-custom \
-  my-bridge-network
-
-# 连接容器到网络
-docker network connect my-bridge-network container1
-docker network disconnect my-bridge-network container1
-
-# 运行容器时指定网络
-docker run -d --name web \
-  --network my-bridge-network \
-  -p 8080:80 \
-  nginx:alpine
-
-# 容器间通信（使用容器名作为主机名）
-# 容器1: web
-# 容器2: db
-# 在 web 容器中可以访问 db: curl http://db:5432
-
-# 查看容器的网络配置
-docker inspect container1 | grep -A 20 "Networks"</code></pre>
-                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                </div>
-            </div>
-
-            <div class="code-block">
-                <h3>Overlay 网络详解（用于 Swarm）</h3>
-                <div class="code-container">
-                    <pre><code class="language-bash"># 初始化 Swarm 集群
-docker swarm init
-
-# 创建覆盖网络
-docker network create \
-  --driver overlay \
-  --opt encrypted \
-  --subnet=10.0.0.0/24 \
-  my-overlay-network
-
-# 部署服务到覆盖网络
-docker service create \
-  --name web \
-  --network my-overlay-network \
-  --replicas 3 \
-  nginx:alpine
-
-# 查看服务网络
-docker service ps web
-docker network inspect my-overlay-network
-
-# 服务发现：服务名可以解析为服务的所有 IP
-# curl http://web
-
-# 在服务中使用覆盖网络
-docker service create \
-  --name api \
-  --network my-overlay-network \
-  -e DB_HOST=db \
-  my-api:latest
-
-# 服务自动发现和负载均衡</code></pre>
-                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                </div>
-            </div>
-
-            <div class="code-block">
-                <h3>Docker Compose 网络配置</h3>
-                <div class="code-container">
-                    <pre><code class="language-yaml">version: '3.8'
+                
+                <div class="code-block">
+                    <h3>Compose 配置示例</h3>
+                    <div class="code-container">
+                        <pre><code class="language-yaml">version: '3.8'
 
 services:
   web:
-    image: nginx:alpine
+    build: .
     ports:
-      - "80:80"
-    networks:
-      - frontend
-      - backend
-
-  app:
-    image: myapp:latest
-    networks:
-      - backend
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./logs:/app/logs
     depends_on:
       - db
+      - redis
+    restart: unless-stopped
+    networks:
+      - app-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
 
   db:
-    image: postgres:15
+    image: postgres:15-alpine
     environment:
       POSTGRES_DB: myapp
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 数据卷实践 -->
+        <section id="volume" class="section">
+            <div class="container">
+                <h2 class="section-title">数据卷实践</h2>
+                <div class="info-card">
+                    <h3>数据卷最佳实践</h3>
+                    <ul>
+                        <li>使用命名卷而非绑定挂载以提高可移植性</li>
+                        <li>为持久化数据使用命名卷</li>
+                        <li>定期备份重要数据卷</li>
+                        <li>使用卷驱动程序扩展功能</li>
+                        <li>正确设置卷的权限</li>
+                    </ul>
+                </div>
+                
+                <div class="code-block">
+                    <h3>数据卷使用示例</h3>
+                    <div class="code-container">
+                        <pre><code class="language-bash"># 创建命名卷
+docker volume create my-data-volume
+
+# 使用命名卷运行容器
+docker run -d --name my-container -v my-data-volume:/app/data my-image
+
+# 查看卷信息
+docker volume inspect my-data-volume
+
+# 备份卷数据
+docker run --rm -v my-data-volume:/data -v $(pwd):/backup alpine tar czf /backup/backup.tar.gz -C /data .
+
+# 恢复卷数据
+docker run --rm -v my-data-volume:/data -v $(pwd):/backup alpine tar xzf /backup/backup.tar.gz -C /data</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 网络实践 -->
+        <section id="network" class="section bg-light">
+            <div class="container">
+                <h2 class="section-title">网络实践</h2>
+                <div class="info-card">
+                    <h3>网络最佳实践</h3>
+                    <ul>
+                        <li>使用自定义网络而非默认桥接网络</li>
+                        <li>为不同服务组使用不同网络</li>
+                        <li>使用网络别名为服务命名</li>
+                        <li>限制不必要的端口暴露</li>
+                        <li>使用 TLS/SSL 保护网络通信</li>
+                    </ul>
+                </div>
+                
+                <div class="code-block">
+                    <h3>网络配置示例</h3>
+                    <div class="code-container">
+                        <pre><code class="language-bash"># 创建自定义网络
+docker network create --driver bridge my-custom-network
+
+# 运行容器并连接到网络
+docker run -d --name web --network my-custom-network nginx
+
+# 连接运行中的容器到网络
+docker network connect my-custom-network db-container
+
+# 检查网络配置
+docker network inspect my-custom-network
+
+# 使用 Docker Compose 网络
+docker-compose up -d</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 多阶段构建实践 -->
+        <section id="multi-stage" class="section">
+            <div class="container">
+                <h2 class="section-title">多阶段构建实践</h2>
+                <div class="info-card">
+                    <h3>多阶段构建最佳实践</h3>
+                    <ul>
+                        <li>将构建环境与运行环境分离</li>
+                        <li>在构建阶段安装构建依赖，在运行阶段移除</li>
+                        <li>使用构建缓存优化构建速度</li>
+                        <li>使用 .dockerignore 减少构建上下文</li>
+                        <li>为每个阶段使用描述性名称</li>
+                    </ul>
+                </div>
+                
+                <div class="code-block">
+                    <h3>多阶段构建示例</h3>
+                    <div class="code-container">
+                        <pre><code class="language-dockerfile"># 构建阶段
+FROM golang:1.21-alpine AS builder
+
+WORKDIR /app
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY . .
+RUN CGO_ENABLED=0 GOOS=linux go build -o main .
+
+# 运行阶段
+FROM alpine:latest
+
+RUN apk --no-cache add ca-certificates
+
+WORKDIR /root/
+
+# 从构建阶段复制二进制文件
+COPY --from=builder /app/main .
+
+# 暴露端口
+EXPOSE 8080
+
+# 启动命令
+CMD ["./main"]</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- WASM 实践 -->
+        <section id="wasm" class="section bg-light">
+            <div class="container">
+                <h2 class="section-title">WASM 容器</h2>
+                
+                <div class="info-card">
+                    <h3>什么是 WASM 容器？</h3>
+                    <p>WebAssembly (WASM) 容器是 Docker 的革命性特性。它将 WASM 模块作为容器运行，提供接近原生的性能、极小的镜像大小（通常 <1MB）和更强的隔离性。</p>
+                    
+                    <h3>为什么要引入 WASM 容器？</h3>
+                    <ul>
+                        <li><strong>极致性能</strong>：毫秒级启动，比传统容器快 10-100 倍</li>
+                        <li><strong>极小体积</strong>：镜像通常 <1MB，比传统容器小 100-1000 倍</li>
+                        <li><strong>高安全性</strong>：基于能力的安全模型，更强的隔离性</li>
+                        <li><strong>跨平台</strong>：一次构建，随处运行（Linux、macOS、Windows）</li>
+                        <li><strong>多语言支持</strong>：支持 Rust、Go、Python、JavaScript 等语言</li>
+                        <li><strong>低资源占用</strong>：内存占用通常是传统容器的 10%</li>
+                        <li><strong>无服务器友好</strong>：完美适配 FaaS 和边缘计算场景</li>
+                    </ul>
+                </div>
+                
+                <div class="info-card">
+                    <h3>WASM 容器最佳实践</h3>
+                    <ul>
+                        <li>使用轻量级运行时如 WasmEdge 或 Wasmer</li>
+                        <li>优化 WASM 模块大小以提高性能</li>
+                        <li>合理配置资源限制</li>
+                        <li>注意 WASM 模块的兼容性</li>
+                        <li>监控 WASM 容器的性能指标</li>
+                    </ul>
+                </div>
+                
+                <div class="code-block">
+                    <h3>WASM 容器示例</h3>
+                    <div class="code-container">
+                        <pre><code class="language-bash"># 启用 WASM 支持（需要 Docker 27.0+）
+export DOCKER_CLI_EXPERIMENTAL=enabled
+
+# 运行 WASM 容器
+docker run --runtime=wasm --rm -p 8080:8080 \
+  wasmcloud/http-hello-world
+
+# 查看 WASM 运行时
+docker info | grep -i wasm
+
+# 使用 Docker Compose 运行 WASM 服务
+docker compose --compatibility up -d
+
+# 构建 WASM 应用
+docker build -t my-wasm-app -f Dockerfile.wasm .
+
+# 检查 WASM 运行时
+docker info | grep -i wasm</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                </div>
+                
+                <div class="code-block">
+                    <h3>WASM vs 传统容器对比</h3>
+                    <div class="code-container">
+                        <pre><code class="language-bash"># 传统容器
+镜像大小：~150MB (Node.js 应用)
+启动时间：~1-2 秒
+内存占用：~50-100MB
+隔离性：Linux 命名空间 + cgroups
+
+# WASM 容器
+镜像大小：~500KB - 1MB
+启动时间：~10-50ms
+内存占用：~5-10MB
+隔离性：WASM 能力模型 + 沙箱
+
+# 性能提升：
+- 镜像拉取速度：提升 100-200 倍
+- 冷启动时间：提升 20-100 倍
+- 资源利用率：提升 5-10 倍</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 最佳实践 -->
+        <section id="practices" class="section bg-light">
+            <div class="container">
+                <h2 class="section-title">Docker 最佳实践</h2>
+
+                <div class="practices-list">
+                    <div class="practice-item">
+                        <div class="practice-icon">🔒</div>
+                        <div class="practice-content">
+                            <h3>安全最佳实践</h3>
+                            <p>始终使用非 root 用户运行容器，限制容器权限，使用只读根文件系统，并定期扫描镜像漏洞。</p>
+                            <div class="code-container">
+                                <pre><code class="language-dockerfile"># 在 Dockerfile 中创建非 root 用户
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001
+USER nodejs
+
+# 使用只读根文件系统
+docker run --read-only myapp:latest
+
+# 使用用户命名空间
+docker run --userns=host myapp:latest</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="practice-item">
+                        <div class="practice-icon">📦</div>
+                        <div class="practice-content">
+                            <h3>镜像大小优化</h3>
+                            <p>使用多阶段构建减少镜像大小，选择合适的基础镜像，合并 RUN 指令减少层数，并清理不必要的文件。</p>
+                            <div class="code-container">
+                                <pre><code class="language-dockerfile"># 使用 Alpine 基础镜像
+FROM node:18-alpine
+
+# 多阶段构建
+FROM node:18-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci && npm cache clean --force
+COPY . .
+RUN npm run build
+
+FROM node:18-alpine AS production
+WORKDIR /app
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
+CMD ["npm", "start"]</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="practice-item">
+                        <div class="practice-icon">🔄</div>
+                        <div class="practice-content">
+                            <h3>持续集成/持续部署</h3>
+                            <p>使用 BuildKit 加速构建，利用缓存层，自动化测试，并使用 Docker Compose 进行多服务编排。</p>
+                            <div class="code-container">
+                                <pre><code class="language-bash"># 使用 BuildKit 构建
+export DOCKER_BUILDKIT=1
+docker build -t myapp:latest .
+
+# 使用缓存
+docker build --cache-from myapp:latest -t myapp:latest .
+
+# CI/CD 中的多架构构建
+docker buildx build --platform linux/amd64,linux/arm64 -t myapp:latest --push .</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="practice-item">
+                        <div class="practice-icon">📊</div>
+                        <div class="practice-content">
+                            <h3>监控和日志</h3>
+                            <p>集中化日志管理，使用健康检查，监控资源使用情况，并设置告警机制。</p>
+                            <div class="code-container">
+                                <pre><code class="language-dockerfile"># 在 Dockerfile 中添加健康检查
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost/health || exit 1
+
+# 使用 Docker Compose 配置日志
+services:
+  app:
+    image: myapp
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="practice-item">
+                        <div class="practice-icon">🔗</div>
+                        <div class="practice-content">
+                            <h3>网络和存储</h3>
+                            <p>使用自定义网络隔离服务，使用命名卷持久化数据，避免使用默认桥接网络。</p>
+                            <div class="code-container">
+                                <pre><code class="language-yaml"># Docker Compose 网络配置
+version: '3.8'
+services:
+  web:
+    image: nginx
+    networks:
+      - frontend
+    volumes:
+      - web-data:/usr/share/nginx/html
+
+  db:
+    image: postgres
     networks:
       - backend
     volumes:
@@ -1274,1538 +1376,268 @@ services:
 networks:
   frontend:
     driver: bridge
-    ipam:
-      config:
-        - subnet: 172.28.0.0/16
-          gateway: 172.28.0.1
-
   backend:
     driver: bridge
-    internal: true  # 隔离网络，不能访问外网
-    ipam:
-      config:
-        - subnet: 172.29.0.0/16
-          gateway: 172.29.0.1
 
 volumes:
+  web-data:
   db-data:</code></pre>
-                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                </div>
-            </div>
-
-            <div class="code-block">
-                <h3>网络高级配置</h3>
-                <div class="code-container">
-                    <pre><code class="language-bash"># 创建带 DNS 的网络
-docker network create \
-  --driver bridge \
-  --opt "com.docker.network.bridge.enable_ip_masquerade"="true" \
-  --opt "com.docker.network.bridge.host_binding_ipv4"="0.0.0.0" \
-  --opt "com.docker.network.mtu"="1500" \
-  my-dns-network
-
-# 为网络指定 DNS 服务器
-docker run -d --name myapp \
-  --network my-dns-network \
-  --dns 8.8.8.8 \
-  --dns 8.8.4.4 \
-  myapp:latest
-
-# 设置容器的 hostname
-docker run -d --name myapp \
-  --hostname myapp.example.com \
-  --network my-bridge-network \
-  myapp:latest
-
-# 添加额外的 hosts
-docker run -d --name myapp \
-  --add-host host1:192.168.1.100 \
-  --add-host host2:192.168.1.101 \
-  myapp:latest
-
-# 端口映射语法
-docker run -d -p 8080:80 nginx              # 主机8080 -> 容器80
-docker run -d -p 8080:80 -p 8443:443 nginx  # 多个端口
-docker run -d -p 0.0.0.0:8080:80 nginx      # 绑定所有接口
-docker run -d -p 127.0.0.1:8080:80 nginx    # 只绑定 localhost
-docker run -d -p 8080:80/tcp nginx          # 指定协议
-docker run -d -p 8080:80/udp nginx          # UDP 协议</code></pre>
-                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                </div>
-            </div>
-
-            <div class="code-block">
-                <h3>网络故障排查</h3>
-                <div class="code-container">
-                    <pre><code class="language-bash"># 检查容器网络配置
-docker inspect container1 | jq '.[0].NetworkSettings'
-
-# 检查容器网络连接
-docker network inspect bridge | jq '.[0].Containers'
-
-# 测试容器网络连接
-docker exec container1 ping -c 3 google.com
-docker exec container1 curl http://example.com
-
-# 检查容器端口监听
-docker exec container1 netstat -tuln
-
-# 查看 DNS 解析
-docker exec container1 cat /etc/resolv.conf
-
-# 测试容器间连接
-docker exec container1 ping -c 3 container2
-
-# 查看网络流量
-docker stats --no-stream
-
-# 查看网络统计
-docker network inspect bridge | jq '.[0].IPAM.Config'
-
-# 清理未使用的网络
-docker network prune</code></pre>
-                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                </div>
-            </div>
-
-            <div class="info-card">
-                <h3>Docker 网络最佳实践</h3>
-                <ul>
-                    <li><strong>使用自定义网络</strong>：避免使用默认 bridge 网络</li>
-                    <li><strong>网络隔离</strong>：不同应用使用不同网络</li>
-                    <li><strong>使用服务名</strong>：容器间通过服务名通信，不要使用 IP</li>
-                    <li><strong>内部网络</strong>：敏感服务使用 internal 网络</li>
-                    <li><strong>端口限制</strong>：只暴露必要的端口</li>
-                    <li><strong>监控网络</strong>：定期检查网络流量和连接</li>
-                    <li><strong>使用 Compose</strong>：使用 Docker Compose 管理复杂网络</li>
-                    <li><strong>网络加密</strong>：跨主机通信使用加密的 overlay 网络</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <!-- Docker 数据卷详解 -->
-    <section id="volume" class="section bg-light">
-        <div class="container">
-            <h2 class="section-title">Docker 数据卷详解</h2>
-
-            <div class="info-card">
-                <h3>💾 为什么需要理解 Docker 数据卷？</h3>
-                <p>Docker 容器是临时的，容器删除后数据会丢失。数据卷提供了持久化存储解决方案，帮助您：</p>
-                <ul>
-                    <li>持久化容器数据</li>
-                    <li>在容器间共享数据</li>
-                    <li>实现数据备份和恢复</li>
-                    <li>分离应用和数据</li>
-                    <li>提高 I/O 性能</li>
-                    <li>实现数据迁移</li>
-                </ul>
-            </div>
-
-            <div class="code-block">
-                <h3>数据卷类型</h3>
-                <div class="code-container">
-                    <pre><code class="language-bash"># 1. 命名卷（Named Volumes）
-docker volume create my-volume
-docker run -d --name myapp \
-  -v my-volume:/data \
-  nginx:alpine
-
-# 2. 匿名卷（Anonymous Volumes）
-docker run -d --name myapp \
-  -v /data \
-  nginx:alpine
-
-# 3. 绑定挂载（Bind Mounts）
-docker run -d --name myapp \
-  -v /host/path:/container/path \
-  nginx:alpine
-
-# 4. tmpfs 挂载（临时文件系统）
-docker run -d --name myapp \
-  --tmpfs /tmp \
-  nginx:alpine
-
-# 5. 只读卷
-docker run -d --name myapp \
-  -v my-volume:/data:ro \
-  nginx:alpine</code></pre>
-                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                </div>
-            </div>
-
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">🏷️</div>
-                    <h3>命名卷</h3>
-                    <p>由 Docker 管理，存储在 /var/lib/docker/volumes。适合持久化数据，独立于容器生命周期。</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📂</div>
-                    <h3>绑定挂载</h3>
-                    <p>将主机目录挂载到容器，直接访问主机文件系统。适合开发和配置文件管理。</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">💨</div>
-                    <h3>匿名卷</h3>
-                    <p>自动创建的无名卷，通常在 Dockerfile 中使用。适合临时数据存储。</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
-                    <h3>tmpfs 挂载</h3>
-                    <p>数据存储在内存中，容器重启后数据丢失。适合临时文件和缓存。</p>
-                </div>
-            </div>
-
-            <div class="code-block">
-                <h3>命名卷操作</h3>
-                <div class="code-container">
-                    <pre><code class="language-bash"># 创建命名卷
-docker volume create my-volume
-
-# 创建带标签的卷
-docker volume create \
-  --label project=myapp \
-  --label environment=production \
-  my-volume
-
-# 查看所有卷
-docker volume ls
-
-# 查看卷详细信息
-docker volume inspect my-volume
-
-# 查看卷数据
-ls -la /var/lib/docker/volumes/my-volume/_data/
-
-# 使用命名卷运行容器
-docker run -d --name myapp \
-  -v my-volume:/data \
-  nginx:alpine
-
-# 连接卷到运行中的容器
-docker volume create another-volume
-docker run -d --name another-app \
-  -v another-volume:/data \
-  nginx:alpine
-
-# 在容器间共享卷
-docker run -d --name app1 -v shared-data:/app nginx
-docker run -d --name app2 -v shared-data:/data nginx
-
-# 删除卷（卷未被使用时）
-docker volume rm my-volume
-
-# 删除所有未使用的卷
-docker volume prune
-
-# 删除所有卷（包括正在使用的）
-docker volume ls -q | xargs docker volume rm</code></pre>
-                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                </div>
-            </div>
-
-            <div class="code-block">
-                <h3>绑定挂载详解</h3>
-                <div class="code-container">
-                    <pre><code class="language-bash"># 基本绑定挂载
-docker run -d --name myapp \
-  -v /host/path:/container/path \
-  nginx:alpine
-
-# 指定读写权限
-docker run -d --name myapp \
-  -v /host/path:/container/path:ro \
-  nginx:alpine
-
-# 只写权限
-docker run -d --name myapp \
-  -v /host/path:/container/path:rw \
-  nginx:alpine
-
-# 挂载多个目录
-docker run -d --name myapp \
-  -v /host/html:/usr/share/nginx/html \
-  -v /host/logs:/var/log/nginx \
-  -v /host/conf:/etc/nginx/conf.d \
-  nginx:alpine
-
-# 使用相对路径（相对于 Docker Compose 文件）
-docker run -d --name myapp \
-  -v ./html:/usr/share/nginx/html \
-  nginx:alpine
-
-# 挂载单个文件
-docker run -d --name myapp \
-  -v /host/nginx.conf:/etc/nginx/nginx.conf:ro \
-  nginx:alpine
-
-# 使用 SELinux 标签（Linux）
-docker run -d --name myapp \
-  -v /host/data:/container/data:z \
-  nginx:alpine
-
-# 使用 macOS 共享优化
-docker run -d --name myapp \
-  -v /host/data:/container/data:delegated \
-  nginx:alpine</code></pre>
-                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                </div>
-            </div>
-
-            <div class="code-block">
-                <h3>Docker Compose 卷配置</h3>
-                <div class="code-container">
-                    <pre><code class="language-yaml">version: '3.8'
-
-services:
-  db:
-    image: postgres:15
-    environment:
-      POSTGRES_DB: myapp
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-    volumes:
-      - type: volume
-        source: pgdata
-        target: /var/lib/postgresql/data
-      - type: bind
-        source: ./init.sql
-        target: /docker-entrypoint-initdb.d/init.sql
-        read_only: true
-    restart: unless-stopped
-
-  web:
-    image: nginx:alpine
-    ports:
-      - "80:80"
-    volumes:
-      - type: volume
-        source: nginx-cache
-        target: /var/cache/nginx
-      - type: bind
-        source: ./html
-        target: /usr/share/nginx/html
-        read_only: true
-      - type: bind
-        source: ./logs
-        target: /var/log/nginx
-    restart: unless-stopped
-
-  app:
-    image: myapp:latest
-    environment:
-      - DATA_DIR=/data
-    volumes:
-      - type: volume
-        source: app-data
-        target: /data
-      - type: tmpfs
-        target: /tmp
-        tmpfs:
-          size: 100m
-          mode: 1777
-    restart: unless-stopped
-
-volumes:
-  pgdata:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: /data/postgres
-
-  nginx-cache:
-    driver: local
-
-  app-data:
-    driver: local
-    labels:
-      project: myapp
-      environment: production</code></pre>
-                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                </div>
-            </div>
-
-            <div class="code-block">
-                <h3>卷备份和恢复</h3>
-                <div class="code-container">
-                    <pre><code class="language-bash"># 备份命名卷
-docker run --rm \
-  -v my-volume:/data \
-  -v $(pwd):/backup \
-  alpine tar czf /backup/my-volume-backup.tar.gz /data
-
-# 恢复命名卷
-docker run --rm \
-  -v my-volume:/data \
-  -v $(pwd):/backup \
-  alpine sh -c "cd /data && tar xzf /backup/my-volume-backup.tar.gz --strip 1"
-
-# 备份绑定挂载
-tar czf host-data-backup.tar.gz /host/path
-
-# 使用容器备份（适用于任何卷类型）
-docker run --rm \
-  --volumes-from myapp \
-  -v $(pwd):/backup \
-  alpine tar czf /backup/container-backup.tar.gz /data
-
-# 恢复到新容器
-docker run -d --name new-app \
-  -v my-volume:/data \
-  alpine sh -c "cd /data && tar xzf /backup/container-backup.tar.gz --strip 1"
-
-# 使用 rsync 同步数据
-docker run --rm \
-  -v my-volume:/data \
-  -v /backup:/backup \
-  alpine sh -c "apk add rsync && rsync -av /backup/ /data/"</code></pre>
-                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                </div>
-            </div>
-
-            <div class="code-block">
-                <h3>卷性能优化</h3>
-                <div class="code-container">
-                    <pre><code class="language-bash"># 使用 tmpfs 提升性能（临时数据）
-docker run -d --name myapp \
-  --tmpfs /tmp:size=1g \
-  --tmpfs /cache:size=2g \
-  nginx:alpine
-
-# macOS 绑定挂载优化（使用 :delegated）
-docker run -d --name myapp \
-  -v /host/path:/container/path:delegated \
-  nginx:alpine
-
-# macOS 绑定挂载优化（使用 :cached）
-docker run -d --name myapp \
-  -v /host/path:/container/path:cached \
-  nginx:alpine
-
-# 使用本地卷驱动（自定义路径）
-docker volume create \
-  --driver local \
-  --opt type=none \
-  --opt device=/custom/path \
-  --opt o=bind \
-  my-custom-volume
-
-# 使用 NFS 卷（生产环境）
-docker volume create \
-  --driver local \
-  --opt type=nfs \
-  --opt o=addr=nfs-server,rw \
-  --opt device=:/path/to/nfs/share \
-  nfs-volume
-
-# 使用卷驱动插件（第三方）
-docker volume create \
-  --driver rexray/ebs \
-  --name my-ebs-volume \
-  --size 10</code></pre>
-                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                </div>
-            </div>
-
-            <div class="code-block">
-                <h3>卷故障排查</h3>
-                <div class="code-container">
-                    <pre><code class="language-bash"># 查看卷使用情况
-docker volume ls -f dangling=true
-
-# 查看卷大小
-du -sh /var/lib/docker/volumes/*
-
-# 检查容器卷挂载
-docker inspect myapp | jq '.[0].Mounts'
-
-# 查看卷权限
-docker exec myapp ls -la /data
-
-# 修复卷权限问题
-docker exec myapp chown -R 1000:1000 /data
-
-# 测试卷读写
-docker exec myapp touch /data/test
-docker exec myapp echo "hello" > /data/test.txt
-docker exec myapp cat /data/test.txt
-
-# 查看卷使用情况
-docker system df -v | grep VOLUME
-
-# 清理未使用的卷
-docker volume prune</code></pre>
-                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                </div>
-            </div>
-
-            <div class="info-card">
-                <h3>Docker 卷最佳实践</h3>
-                <ul>
-                    <li><strong>使用命名卷</strong>：生产环境优先使用命名卷而非绑定挂载</li>
-                    <li><strong>定期备份</strong>：重要数据必须定期备份</li>
-                    <li><strong>权限管理</strong>：正确设置卷的读写权限</li>
-                    <li><strong>监控使用</strong>：定期检查卷的使用情况和大小</li>
-                    <li><strong>文档化</strong>：记录每个卷的用途和依赖关系</li>
-                    <li><strong>使用标签</strong>：为卷添加标签便于管理</li>
-                    <li><strong>分离关注点</strong>：数据和应用分离，便于维护和迁移</li>
-                    <li><strong>使用 tmpfs</strong>：临时文件使用 tmpfs 提升性能</li>
-                    <li><strong>网络卷</strong>：生产环境使用 NFS 或云存储</li>
-                    <li><strong>清理策略</strong>：定期清理未使用的卷释放空间</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <!-- 常用命令 -->
-    <section id="commands" class="section">
-        <div class="container">
-            <h2 class="section-title">常用命令速查</h2>
-
-            <div class="commands-grid">
-                <div class="command-category">
-                    <h3>镜像操作</h3>
-                    <div class="command-list">
-                        <div class="command-item">
-                            <code>docker pull image:tag</code>
-                            <span>拉取镜像</span>
-                        </div>
-                        <div class="command-item">
-                            <code>docker build -t name .</code>
-                            <span>构建镜像</code>
-                        </div>
-                        <div class="command-item">
-                            <code>docker images</code>
-                            <span>列出镜像</span>
-                        </div>
-                        <div class="command-item">
-                            <code>docker rmi image</code>
-                            <span>删除镜像</span>
-                        </div>
-                        <div class="command-item">
-                            <code>docker tag source target</code>
-                            <span>标记镜像</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="command-category">
-                    <h3>容器操作</h3>
-                    <div class="command-list">
-                        <div class="command-item">
-                            <code>docker run image</code>
-                            <span>运行容器</span>
-                        </div>
-                        <div class="command-item">
-                            <code>docker ps</code>
-                            <span>列出运行中的容器</span>
-                        </div>
-                        <div class="command-item">
-                            <code>docker ps -a</code>
-                            <span>列出所有容器</span>
-                        </div>
-                        <div class="command-item">
-                            <code>docker stop container</code>
-                            <span>停止容器</span>
-                        </div>
-                        <div class="command-item">
-                            <code>docker rm container</code>
-                            <span>删除容器</span>
-                        </div>
-                        <div class="command-item">
-                            <code>docker logs container</code>
-                            <span>查看日志</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="command-category">
-                    <h3>容器管理</h3>
-                    <div class="command-list">
-                        <div class="command-item">
-                            <code>docker exec -it container sh</code>
-                            <span>进入容器</span>
-                        </div>
-                        <div class="command-item">
-                            <code>docker cp local container:path</code>
-                            <span>复制文件到容器</span>
-                        </div>
-                        <div class="command-item">
-                            <code>docker inspect container</code>
-                            <span>查看容器详情</span>
-                        </div>
-                        <div class="command-item">
-                            <code>docker stats</code>
-                            <span>查看资源使用</span>
-                        </div>
-                        <div class="command-item">
-                            <code>docker port container</code>
-                            <span>查看端口映射</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="command-category">
-                    <h3>Docker Compose</h3>
-                    <div class="command-list">
-                        <div class="command-item">
-                            <code>docker-compose up -d</code>
-                            <span>启动所有服务</span>
-                        </div>
-                        <div class="command-item">
-                            <code>docker-compose down</code>
-                            <span>停止所有服务</span>
-                        </div>
-                        <div class="command-item">
-                            <code>docker-compose ps</code>
-                            <span>查看服务状态</span>
-                        </div>
-                        <div class="command-item">
-                            <code>docker-compose logs</code>
-                            <span>查看服务日志</span>
-                        </div>
-                        <div class="command-item">
-                            <code>docker-compose build</code>
-                            <span>构建镜像</span>
-                        </div>
-                        <div class="command-item">
-                            <code>docker-compose restart</code>
-                            <span>重启服务</span>
-                        </div>
-                        <div class="command-item">
-                            <code>docker-compose exec web sh</code>
-                            <span>进入容器</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="command-category">
-                    <h3>清理命令</h3>
-                    <div class="command-list">
-                        <div class="command-item">
-                            <code>docker system prune</code>
-                            <span>清理未使用资源</span>
-                        </div>
-                        <div class="command-item">
-                            <code>docker volume prune</code>
-                            <span>清理未使用卷</span>
-                        </div>
-                        <div class="command-item">
-                            <code>docker network prune</code>
-                            <span>清理未使用网络</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 实战示例 -->
-    <section id="examples" class="section bg-light">
-        <div class="container">
-            <h2 class="section-title">实战示例</h2>
-
-            <div class="examples-grid">
-                <div class="example-card">
-                    <h3>🌐 Web 应用部署</h3>
-                    <p>使用 Nginx 部署静态网站</p>
-                    <div class="example-code">
-                        <pre><code class="language-dockerfile">FROM nginx:alpine
-COPY . /usr/share/nginx/html</code></pre>
-                    </div>
-                    <button class="btn btn-small" onclick="expandExample(this)">查看完整示例</button>
-                </div>
-
-                <div class="example-card">
-                    <h3>🗄️ 数据库部署</h3>
-                    <p>快速启动 MySQL 数据库</p>
-                    <div class="example-code">
-                        <pre><code class="language-bash">docker run -d \
-  --name mysql \
-  -e MYSQL_ROOT_PASSWORD=123456 \
-  -p 3306:3306 \
-  mysql:8.0</code></pre>
-                    </div>
-                    <button class="btn btn-small" onclick="expandExample(this)">查看完整示例</button>
-                </div>
-
-                <div class="example-card">
-                    <h3>🐍 Python 应用</h3>
-                    <p>容器化 Python Flask 应用</p>
-                    <div class="example-code">
-                        <pre><code class="language-dockerfile">FROM python:3.11-slim
-WORKDIR /app
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-COPY . .
-CMD ["python", "app.py"]</code></pre>
-                    </div>
-                    <button class="btn btn-small" onclick="expandExample(this)">查看完整示例</button>
-                </div>
-
-                <div class="example-card">
-                    <h3>🐳 WASM 应用</h3>
-                    <p>构建轻量级 WASM 容器应用</p>
-                    <div class="example-code">
-                        <pre><code class="language-dockerfile"># 构建阶段
-FROM ghcr.io/spinframework/spin:latest AS builder
-COPY spin.toml .
-RUN spin build
-
-# 运行阶段
-FROM scratch
-COPY --from=builder /app/spin.toml .
-COPY --from=builder /app/app.wasm ./app.wasm
-CMD ["spin", "up"]</code></pre>
-                    </div>
-                    <button class="btn btn-small" onclick="expandExample(this)">查看完整示例</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 最佳实践 -->
-    <section id="practices" class="section">
-        <div class="container">
-            <h2 class="section-title">Docker 最佳实践</h2>
-
-            <div class="info-card">
-                <h3>📋 为什么需要遵循最佳实践？</h3>
-                <p>遵循 Docker 最佳实践可以带来显著的好处：提高安全性、优化性能、降低成本、简化维护、提升团队协作效率。</p>
-            </div>
-
-            <!-- 分类显示最佳实践 -->
-            <div class="tabs">
-                <div class="tab-buttons">
-                    <button class="tab-button active" data-tab="practices-build">构建优化</button>
-                    <button class="tab-button" data-tab="practices-security">安全加固</button>
-                    <button class="tab-button" data-tab="practices-network">网络配置</button>
-                    <button class="tab-button" data-tab="practices-volume">数据管理</button>
-                    <button class="tab-button" data-tab="practices-new-features">新特性</button>
-                </div>
-
-                <!-- 构建优化 -->
-                <div class="tab-content active" id="practices-build">
-                    <div class="practices-list">
-                        <div class="practice-item">
-                            <div class="practice-icon">✅</div>
-                            <div class="practice-content">
-                                <h3>使用轻量级基础镜像</h3>
-                                <p>选择 Alpine 或 slim 版本的基础镜像，可以显著减少镜像大小。例如使用 <code>node:20-alpine</code> 而不是 <code>node:20</code>。Alpine 镜像通常只有 5MB，而标准镜像可能超过 100MB。</p>
-                                <div class="code-container">
-                                    <pre><code class="language-bash"># 推荐
-FROM node:20-alpine
-
-# 不推荐
-FROM node:20</code></pre>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="practice-item">
-                            <div class="practice-icon">✅</div>
-                            <div class="practice-content">
-                                <h3>多阶段构建</h3>
-                                <p>将构建和运行环境分离，最终镜像只包含运行时所需的文件。这可以大幅减小镜像体积并提高安全性。</p>
-                                <div class="code-container">
-                                    <pre><code class="language-dockerfile"># 构建阶段
-FROM node:20-alpine AS builder
-WORKDIR /app
-COPY package*.json ./
-RUN --mount=type=cache,target=/root/.npm npm ci
-COPY . .
-RUN npm run build
-
-# 运行阶段
-FROM node:20-alpine
-WORKDIR /app
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
-CMD ["node", "dist/index.js"]</code></pre>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="practice-item">
-                            <div class="practice-icon">✅</div>
-                            <div class="practice-content">
-                                <h3>最小化层数</h3>
-                                <p>合并相关的 RUN 命令，减少 Dockerfile 中的层数。过多的层会增加镜像大小和构建时间。每个 RUN 命令都会创建一个新层。</p>
-                                <div class="code-container">
-                                    <pre><code class="language-dockerfile"># 不推荐：多个 RUN 命令
-RUN apk add --no-cache git
-RUN apk add --no-cache curl
-RUN apk add --no-cache wget
-
-# 推荐：合并为一个命令
-RUN apk add --no-cache git curl wget</code></pre>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="practice-item">
-                            <div class="practice-icon">✅</div>
-                            <div class="practice-content">
-                                <h3>利用缓存</h3>
-                                <p>将不常变化的指令放在前面，充分利用 Docker 的层缓存机制。这样可以大幅加快构建速度。</p>
-                                <div class="code-container">
-                                    <pre><code class="language-dockerfile"># 推荐：先复制依赖文件
-COPY package*.json ./
-RUN npm ci
-
-# 后再复制源代码（代码变化频繁）
-COPY . .</code></pre>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="practice-item">
-                            <div class="practice-icon">✅</div>
-                            <div class="practice-content">
-                                <h3>使用 .dockerignore</h3>
-                                <p>创建 .dockerignore 文件排除不需要的文件（如 node_modules、.git、.DS_Store），减少构建上下文大小和构建时间。</p>
-                                <div class="code-container">
-                                    <pre><code class="language-bash"># .dockerignore 示例
-node_modules
-.git
-.gitignore
-.env
-.env.local
-*.log
-coverage
-.DS_Store
-.vscode
-.idea</code></pre>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="practice-item">
-                            <div class="practice-icon">✅</div>
-                            <div class="practice-content">
-                                <h3>使用 BuildKit 2.0</h3>
-                                <p>启用 BuildKit 和缓存挂载，利用分布式构建和智能缓存，构建速度提升 5-10 倍。</p>
-                                <div class="code-container">
-                                    <pre><code class="language-bash"># 启用 BuildKit
-export DOCKER_BUILDKIT=1
-
-# 使用缓存挂载
-RUN --mount=type=cache,target=/root/.npm npm ci
-
-# 使用 SSH
-RUN --mount=type=ssh git clone git@github.com:org/repo.git</code></pre>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 安全加固 -->
-                <div class="tab-content" id="practices-security">
-                    <div class="practices-list">
-                        <div class="practice-item">
-                            <div class="practice-icon">🔒</div>
-                            <div class="practice-content">
-                                <h3>以非 root 用户运行</h3>
-                                <p>在 Dockerfile 中创建并切换到非 root 用户，提高容器安全性。以 root 用户运行容器会带来安全风险。</p>
-                                <div class="code-container">
-                                    <pre><code class="language-dockerfile"># 创建非 root 用户
-RUN addgroup -g 1001 -S appuser && \
-    adduser -S appuser -u 1001
+                <div class="info-card">
+                    <h3>综合最佳实践清单</h3>
+                    <ul>
+                        <li>使用特定的标签而非 latest</li>
+                        <li>使用 .dockerignore 文件排除不需要的文件</li>
+                        <li>定期更新基础镜像和依赖</li>
+                        <li>使用 Docker 官方镜像作为基础</li>
+                        <li>为容器设置资源限制</li>
+                        <li>使用 secrets 管理敏感信息</li>
+                        <li>实施镜像签名和验证</li>
+                        <li>使用 Docker Bench for Security 审查配置</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <!-- AI 工具 -->
+        <section id="ai-tools" class="section">
+            <div class="container">
+                <h2 class="section-title">AI 工具在 Docker 中的应用</h2>
 
-# 切换到非 root 用户
-USER appuser</code></pre>
-                                </div>
-                            </div>
-                        </div>
+                <div class="info-card">
+                    <h3>🤖 AI 驱动的 Docker 工具</h3>
+                    <p>现代 Docker 生态系统集成了多种 AI 工具，帮助开发者优化镜像构建、提高安全性、增强监控能力，并简化开发流程。</p>
+                </div>
 
-                        <div class="practice-item">
-                            <div class="practice-icon">🔒</div>
-                            <div class="practice-content">
-                                <h3>使用健康检查</h3>
-                                <p>定义 HEALTHCHECK 指令，确保容器真正可用，便于编排系统自动恢复不健康的容器。</p>
-                                <div class="code-container">
-                                    <pre><code class="language-dockerfile">HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:3000/health || exit 1</code></pre>
-                                </div>
-                            </div>
-                        </div>
+                <div class="code-block">
+                    <h3>AI 优化的 Dockerfile 生成</h3>
+                    <div class="code-container">
+                        <pre><code class="language-bash"># 使用 Dagger 进行 AI 驱动的构建
+# dagger/ci.mts
+import Client from "@dagger.io/dagger";
 
-                        <div class="practice-item">
-                            <div class="practice-icon">🔒</div>
-                            <div class="practice-content">
-                                <h3>镜像签名和验证</h3>
-                                <p>使用 Docker Content Trust 或 Cosign 对镜像进行签名，确保镜像来源可信且未被篡改。</p>
-                                <div class="code-container">
-                                    <pre><code class="language-bash"># 启用内容信任
-export DOCKER_CONTENT_TRUST=1
+async function buildAndTest() {
+  const client = new Client();
+  
+  try {
+    const source = client.host().directory("./");
+    
+    // AI 优化的构建流程
+    const build = await client
+      .container()
+      .from("node:18-alpine")
+      .withDirectory("/src", source)
+      .withWorkdir("/src")
+      .withExec(["npm", "ci"])
+      .withExec(["npm", "run", "build"])
+      .directory("./dist");
+    
+    // AI 驱动的安全扫描
+    const scanResult = await client
+      .container()
+      .from("aquasec/trivy:latest")
+      .withMountedDirectory("/app", source)
+      .withExec(["filesystem", "--security-checks", "vuln,config,secret", "/app"])
+      .stdout();
+    
+    console.log(scanResult);
+    
+    // 返回构建产物
+    return build;
+  } finally {
+    await client.close();
+  }
+}
 
-# 拉取已签名的镜像
-docker pull myrepo/myimage:signed
+buildAndTest();
 
-# 签名镜像
-docker trust sign myrepo/myimage:latest
-
-# 验证签名
-docker trust inspect myrepo/myimage:latest</code></pre>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="practice-item">
-                            <div class="practice-icon">🔒</div>
-                            <div class="practice-content">
-                                <h3>定期使用 Docker Scout 扫描</h3>
-                                <p>集成 Docker Scout 到 CI/CD 流程，自动扫描镜像漏洞，及时发现并修复安全问题。</p>
-                                <div class="code-container">
-                                    <pre><code class="language-bash"># 扫描镜像
-docker scout cves myapp:latest
-
-# 快速扫描
-docker scout quickview myapp:latest
-
-# 生成 SBOM
-docker scout sbom myapp:latest --output sbom.json</code></pre>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="practice-item">
-                            <div class="practice-icon">🔒</div>
-                            <div class="practice-content">
-                                <h3>生成和维护 SBOM</h3>
-                                <p>使用 Docker Scout 生成软件物料清单（SBOM），满足合规要求并便于供应链安全审计。</p>
-                                <div class="code-container">
-                                    <pre><code class="language-bash"># 生成 SBOM
-docker scout sbom myapp:latest --output sbom.json
-
-# 分析 SBOM
-docker scout sbom myapp:latest --format spdx-json
-
-# 导出为不同格式
-docker scout sbom myapp:latest --output sbom.spdx.json
-docker scout sbom myapp:latest --output sbom.cyclonedx.json</code></pre>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="practice-item">
-                            <div class="practice-icon">🔒</div>
-                            <div class="practice-content">
-                                <h3>使用 Secrets 管理敏感信息</h3>
-                                <p>不要在 Dockerfile 或 docker-compose.yml 中硬编码密码、API 密钥等敏感信息。使用 Docker secrets 或环境变量。</p>
-                                <div class="code-container">
-                                    <pre><code class="language-bash"># 使用环境变量
-docker run -e DB_PASSWORD=secret myapp:latest
-
-# 使用 Docker secrets（Swarm）
-echo "my-secret-password" | docker secret create db_password -
-
-# 使用 BuildKit secrets
-docker build --secret id=db_password .</code></pre>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="practice-item">
-                            <div class="practice-icon">🔒</div>
-                            <div class="practice-content">
-                                <h3>设置资源限制</h3>
-                                <p>为容器设置 CPU、内存限制，防止单个容器占用过多资源导致系统不稳定。</p>
-                                <div class="code-container">
-                                    <pre><code class="language-bash"># 设置内存限制
-docker run -m 512m myapp:latest
-
-# 设置 CPU 限制
-docker run --cpus="1.5" myapp:latest
-
-# Docker Compose 中设置
-services:
-  web:
-    deploy:
-      resources:
-        limits:
-          cpus: '0.50'
-          memory: 512M
-        reservations:
-          cpus: '0.25'
-          memory: 128M</code></pre>
-                                </div>
-                            </div>
-                        </div>
+# 运行 AI 优化的构建
+npx dagger call build-and-test</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
                     </div>
                 </div>
 
-                <!-- 网络配置 -->
-                <div class="tab-content" id="practices-network">
-                    <div class="practices-list">
-                        <div class="practice-item">
-                            <div class="practice-icon">🌐</div>
-                            <div class="practice-content">
-                                <h3>使用自定义网络</h3>
-                                <p>避免使用默认的 bridge 网络，创建自定义网络以便更好地管理和隔离应用。</p>
-                                <div class="code-container">
-                                    <pre><code class="language-bash"># 创建自定义网络
-docker network create my-network
-
-# 将容器连接到自定义网络
-docker run --network my-network myapp:latest</code></pre>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="practice-item">
-                            <div class="practice-icon">🌐</div>
-                            <div class="practice-content">
-                                <h3>使用服务名通信</h3>
-                                <p>容器间通过服务名通信，不要使用 IP 地址。这样更灵活且易于维护。</p>
-                                <div class="code-container">
-                                    <pre><code class="language-bash"># 推荐：使用服务名
-curl http://db:5432
-
-# 不推荐：使用 IP
-curl http://172.17.0.2:5432</code></pre>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="practice-item">
-                            <div class="practice-icon">🌐</div>
-                            <div class="practice-content">
-                                <h3>网络隔离</h3>
-                                <p>不同应用使用不同网络，敏感服务使用内部网络（internal: true），不能访问外网。</p>
-                                <div class="code-container">
-                                    <pre><code class="language-yaml">networks:
-  frontend:
-    driver: bridge
-  backend:
-    driver: bridge
-    internal: true  # 隔离网络</code></pre>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="practice-item">
-                            <div class="practice-icon">🌐</div>
-                            <div class="practice-content">
-                                <h3>最小化端口暴露</h3>
-                                <p>只暴露必要的端口，不要将所有端口都暴露到主机。使用 -p 参数精确指定端口映射。</p>
-                                <div class="code-container">
-                                    <pre><code class="language-bash"># 推荐：只暴露必要端口
-docker run -p 8080:80 nginx:alpine
-
-# 不推荐：暴露所有端口
-docker run --net=host nginx:alpine</code></pre>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="practice-item">
-                            <div class="practice-icon">🌐</div>
-                            <div class="practice-content">
-                                <h3>使用 HTTPS</h3>
-                                <p>生产环境必须使用 HTTPS，配置 SSL/TLS 证书保护数据传输安全。</p>
-                                <div class="code-container">
-                                    <pre><code class="language-yaml">services:
-  web:
-    image: nginx:alpine
-    ports:
-      - "443:443"
-    volumes:
-      - ./ssl:/etc/nginx/ssl</code></pre>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 数据管理 -->
-                <div class="tab-content" id="practices-volume">
-                    <div class="practices-list">
-                        <div class="practice-item">
-                            <div class="practice-icon">💾</div>
-                            <div class="practice-content">
-                                <h3>使用命名卷</h3>
-                                <p>生产环境优先使用命名卷而非绑定挂载。命名卷由 Docker 管理，更易于备份和迁移。</p>
-                                <div class="code-container">
-                                    <pre><code class="language-bash"># 创建命名卷
-docker volume create my-data
-
-# 使用命名卷
-docker run -v my-data:/data myapp:latest</code></pre>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="practice-item">
-                            <div class="practice-icon">💾</div>
-                            <div class="practice-content">
-                                <h3>定期备份数据</h3>
-                                <p>重要数据必须定期备份。使用 tar 或专用备份工具备份命名卷和绑定挂载。</p>
-                                <div class="code-container">
-                                    <pre><code class="language-bash"># 备份命名卷
-docker run --rm \
-  -v my-volume:/data \
-  -v $(pwd):/backup \
-  alpine tar czf /backup/my-volume-backup.tar.gz /data</code></pre>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="practice-item">
-                            <div class="practice-icon">💾</div>
-                            <div class="practice-content">
-                                <h3>不要在容器中存储重要数据</h3>
-                                <p>使用 Docker volumes 或 bind mounts 来持久化数据。容器删除后，容器内的数据会丢失。</p>
-                            </div>
-                        </div>
-
-                        <div class="practice-item">
-                            <div class="practice-icon">💾</div>
-                            <div class="practice-content">
-                                <h3>使用只读卷</h3>
-                                <p>对于不需要写入的数据，使用只读卷（:ro）提高安全性，防止意外修改。</p>
-                                <div class="code-container">
-                                    <pre><code class="language-bash"># 只读挂载
-docker run -v /host/config:/container/config:ro myapp:latest</code></pre>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="practice-item">
-                            <div class="practice-icon">💾</div>
-                            <div class="practice-content">
-                                <h3>使用 tmpfs 提升性能</h3>
-                                <p>对于临时文件和缓存，使用 tmpfs 挂载存储在内存中，提升性能。</p>
-                                <div class="code-container">
-                                    <pre><code class="language-bash"># 使用 tmpfs
-docker run --tmpfs /tmp:size=1g myapp:latest</code></pre>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 新特性 -->
-                <div class="tab-content" id="practices-new-features">
-                    <div class="practices-list">
-                        <div class="practice-item">
-                            <div class="practice-icon">⭐</div>
-                            <div class="practice-content">
-                                <h3>使用 WASM 容器</h3>
-                                <p>对于合适的场景（如微服务、边缘计算），优先使用 WASM 容器，获得更小的体积（<1MB）和更快的启动（10-50ms）。</p>
-                                <div class="code-container">
-                                    <pre><code class="language-bash"># 运行 WASM 容器
-docker run --runtime=wasm my-wasm-app:latest</code></pre>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="practice-item">
-                            <div class="practice-icon">⭐</div>
-                            <div class="practice-content">
-                                <h3>集成 AI 工具</h3>
-                                <p>使用 AI 工具优化 Dockerfile、分析性能和检测安全问题，提升开发效率。</p>
-                                <div class="code-container">
-                                    <pre><code class="language-bash"># AI 优化 Dockerfile
-dockerfile-gpt --app-type nodejs --optimize-for production
-
-# AI 安全扫描
-docker scout cves --ai-suggest-fixes myapp:latest</code></pre>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="practice-item">
-                            <div class="practice-icon">⭐</div>
-                            <div class="practice-content">
-                                <h3>使用 eBPF 监控</h3>
-                                <p>利用 eBPF 进行深度容器监控，零开销地收集性能指标和安全事件。</p>
-                                <div class="code-container">
-                                    <pre><code class="language-bash"># 安装 eBPF 监控工具
-kubectl apply -f https://raw.githubusercontent.com/kinvolk/inspektor-gadget/main/deploy/k8s/gadget.yaml
-
-# 监控容器网络流量
-sudo ig trace exec -n mynamespace</code></pre>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="practice-item">
-                            <div class="practice-icon">⭐</div>
-                            <div class="practice-content">
-                                <h3>使用 BuildKit 2.0 分布式构建</h3>
-                                <p>利用 BuildKit 2.0 的分布式构建功能，共享构建缓存，加快团队构建速度。</p>
-                                <div class="code-container">
-                                    <pre><code class="language-bash"># 创建远程构建器
-docker buildx create --name remote-builder \
-  --driver=docker-container \
-  --driver-opt image=moby/buildkit:latest
-
-# 使用远程构建器
-docker buildx build --builder=remote-builder -t myapp:latest .</code></pre>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="practice-item">
-                            <div class="practice-icon">⭐</div>
-                            <div class="practice-content">
-                                <h3>使用容器签名</h3>
-                                <p>采用 Cosign 或 Notary 等工具对镜像进行签名和验证，确保供应链安全。</p>
-                                <div class="code-container">
-                                    <pre><code class="language-bash"># 使用 Cosign 签名
-cosign sign myrepo/myimage:latest
-
-# 使用 Cosign 验证
-cosign verify myrepo/myimage:latest</code></pre>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="practice-item">
-                            <div class="practice-icon">⭐</div>
-                            <div class="practice-content">
-                                <h3>使用 OCI v1.2 规范</h3>
-                                <p>确保镜像符合 OCI v1.2 规范，提高兼容性和互操作性。</p>
-                            </div>
-                        </div>
-
-                        <div class="practice-item">
-                            <div class="practice-icon">⭐</div>
-                            <div class="practice-content">
-                                <h3>采用零信任架构</h3>
-                                <p>实施零信任安全模型，对所有容器进行持续验证和监控。</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- AI 工具 -->
-    <section id="ai-tools" class="section bg-light">
-        <div class="container">
-            <h2 class="section-title">🤖 AI 辅助 Docker 工具</h2>
-
-            <div class="info-card">
-                <h3>AI Docker 生态</h3>
-                <p>利用 AI 工具可以显著提升 Docker 开发效率，自动生成配置、优化镜像、检测漏洞，并提供智能建议。以下是主流的 AI Docker 工具。</p>
-            </div>
-
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">🤖</div>
-                    <h3>Docker AI Assistant</h3>
-                    <p>官方 AI 助手，集成在 Docker Desktop 中，提供智能 Dockerfile 生成、配置建议和问题诊断。</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">✨</div>
-                    <h3>Dockerfile-GPT</h3>
-                    <p>开源的 AI 工具，根据应用代码自动生成优化的 Dockerfile，支持多语言框架。</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🔍</div>
-                    <h3>ContainerAI</h3>
-                    <p>AI 驱动的容器安全分析，自动检测配置错误、安全漏洞和性能瓶颈。</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🚀</div>
-                    <h3>BuildOptimizer</h3>
-                    <p>使用机器学习优化构建过程，智能调整缓存策略、依赖顺序和并行构建。</p>
-                </div>
-            </div>
-
-            <div class="code-block">
-                <h3>使用 Docker AI Assistant 生成 Dockerfile</h3>
-                <div class="code-container">
-                    <pre><code class="language-bash"># 方法 1：使用 Docker Desktop AI 助手
-docker assistant generate-dockerfile \
-  --context ./my-app \
-  --language typescript \
-  --framework nextjs
-
-# 方法 2：使用 CLI 工具
-dockerfile-gpt --app-type nodejs \
-  --optimize-for production \
-  --target-size < 50MB
-
-# 方法 3：使用 Docker Scout AI（集成在扫描中）
-docker scout cves --ai-suggest-fixes myapp:latest</code></pre>
-                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                </div>
-            </div>
-
-            <div class="code-block">
-                <h3>AI 优化 Dockerfile 示例</h3>
-                <div class="code-container">
-                    <pre><code class="language-bash"># 原始 Dockerfile（AI 生成前）
-FROM node:18
-WORKDIR /app
-COPY . .
-RUN npm install
-RUN npm run build
-CMD ["node", "server.js"]
-
-# AI 优化后的 Dockerfile
+                <div class="code-block">
+                    <h3>使用 AI 生成 Dockerfile</h3>
+                    <div class="code-container">
+                        <pre><code class="language-dockerfile"># AI 推荐的优化 Dockerfile 结构
 # syntax=docker/dockerfile:1.4
-FROM node:20-alpine AS builder
+
+# 构建阶段
+FROM node:18-alpine AS builder
+
 WORKDIR /app
 
-# AI 建议的优化点：
-# 1. 使用最新 LTS 版本
-# 2. 使用 Alpine 减小镜像大小
-# 3. 多阶段构建分离构建和运行
-# 4. 利用 BuildKit 缓存挂载
-# 5. 分层复制以优化缓存
-
+# AI 优化的依赖安装 - 利用分层缓存
 COPY package*.json ./
 RUN --mount=type=cache,target=/root/.npm \
     npm ci --only=production
 
+# AI 推荐的代码复制顺序 - 利用缓存
 COPY . .
+
+# AI 优化的构建步骤
 RUN npm run build
 
-FROM node:20-alpine
+# 运行阶段 - AI 推荐的最小化镜像
+FROM node:18-alpine AS production
+
 WORKDIR /app
 
+# AI 推荐的安全配置
 RUN addgroup -g 1001 -S nodejs && \
     adduser -S nodejs -u 1001
 
+# 从构建阶段复制必要文件
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
-COPY package*.json ./
+COPY --from=builder /app/package*.json ./
 
 USER nodejs
+
 EXPOSE 3000
-HEALTHCHECK --interval=30s --timeout=3s \
-    CMD node -e "require('http').get('http://localhost:3000/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
 
-CMD ["node", "dist/server.js"]
+# AI 优化的健康检查
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:3000/health || exit 1
 
-# 结果：镜像大小从 500MB 减少到 80MB</code></pre>
-                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                </div>
-            </div>
-
-            <div class="code-block">
-                <h3>AI 安全分析和修复</h3>
-                <div class="code-container">
-                    <pre><code class="language-bash"># 使用 AI 进行安全扫描和修复
-docker scout cves --ai-fix myapp:latest
-
-# 输出示例：
-# 发现 3 个高危漏洞：
-# 1. lodash < 4.17.21
-#    AI 建议：升级到 4.17.21
-#    自动修复：npm install lodash@4.17.21
-#
-# 2. node:18-alpine
-#    AI 建议：升级到 node:20-alpine
-#    理由：node:18 已停止维护，存在已知安全风险
-#
-# 3. 使用 root 用户运行
-#    AI 建议：创建非 root 用户
-#    安全提升：容器逃逸风险降低 80%
-
-# 生成安全报告
-docker scout cves --ai-report security-report.json myapp:latest</code></pre>
-                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                </div>
-            </div>
-
-            <div class="code-block">
-                <h3>AI 驱动的性能优化</h3>
-                <div class="code-container">
-                    <pre><code class="language-bash"># 分析容器性能
-docker ai analyze-performance myapp:latest
-
-# 输出优化建议：
-# 1. 内存使用：120MB
-#    AI 建议：启用 --memory-limit=150MB
-#    预期节省：30% 内存
-#
-# 2. 启动时间：2.5s
-#    AI 建议：使用依赖预加载
-#    预期提升：启动时间 < 1s
-#
-# 3. 镜像层数：12 层
-#    AI 建议：合并 RUN 命令
-#    预期优化：减少到 8 层
-#
-# 4. 并发处理能力：50 req/s
-#    AI 建议：启用 HTTP/2 和 keep-alive
-#    预期提升：150 req/s
-
-# 自动应用优化
-docker ai optimize --apply-all myapp:latest</code></pre>
-                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                </div>
-            </div>
-
-            <div class="info-card">
-                <h3>AI 工具最佳实践</h3>
-                <ul>
-                    <li><strong>不要完全依赖 AI：</strong>AI 建议需要人工审核，特别是生产环境</li>
-                    <li><strong>逐步应用：</strong>先在测试环境验证 AI 建议，再应用到生产</li>
-                    <li><strong>持续学习：</strong>AI 工具会不断学习新的最佳实践，保持更新</li>
-                    <li><strong>团队协作：</strong>将 AI 工具集成到 CI/CD 流程，提升团队效率</li>
-                    <li><strong>安全优先：</strong>AI 生成的配置必须经过安全审计</li>
-                    <li><strong>文档化：</strong>记录 AI 建议和优化决策，便于团队知识共享</li>
-                </ul>
-            </div>
-
-            <div class="code-block">
-                <h3>集成 AI 工具到 CI/CD</h3>
-                <div class="code-container">
-                    <pre><code class="language-yaml"># .github/workflows/docker-ci.yml
-name: Docker CI with AI
-
-on: [push, pull_request]
-
-jobs:
-  build-and-scan:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Generate Dockerfile with AI
-        run: |
-          dockerfile-gpt --app-type nodejs --output Dockerfile
-
-      - name: Build image
-        run: docker buildx build -t myapp:${{ github.sha }} .
-
-      - name: AI Security Scan
-        run: |
-          docker scout cves --ai-fix \
-            --output security-report.json \
-            myapp:${{ github.sha }}
-
-      - name: AI Performance Analysis
-        run: |
-          docker ai analyze-performance \
-            --output performance-report.json \
-            myapp:${{ github.sha }}
-
-      - name: Upload Reports
-        uses: actions/upload-artifact@v4
-        with:
-          name: reports
-          path: |
-            security-report.json
-            performance-report.json</code></pre>
-                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 学习路径 -->
-    <section class="section bg-light">
-        <div class="container">
-            <h2 class="section-title">学习路径</h2>
-
-            <div class="learning-path">
-                <div class="path-step">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                        <h3>Docker 基础</h3>
-                        <p>了解容器概念、Docker 架构、安装和基本命令</p>
-                        <span class="step-duration">预计时间：2-3 天</span>
+CMD ["node", "server.js"]</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
                     </div>
                 </div>
 
-                <div class="path-step">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                        <h3>Dockerfile 编写</h3>
-                        <p>学习编写 Dockerfile、构建和优化镜像，掌握 BuildKit 新特性</p>
-                        <span class="step-duration">预计时间：3-5 天</span>
+                <div class="code-block">
+                    <h3>AI 驱动的安全扫描</h3>
+                    <div class="code-container">
+                        <pre><code class="language-bash"># 使用 Docker Scout（AI 驱动的安全工具）
+docker scout cves --exit-code 1 --severity critical,high myapp:latest
+
+# 生成 AI 分析的 SBOM
+docker scout sbom myapp:latest
+
+# 比较镜像差异（AI 驱动的分析）
+docker scout compare --to myapp:latest --from myapp:previous
+
+# 使用 Trivy 进行 AI 增强的安全扫描
+docker run --rm -v /tmp/scanned:/scan aquasec/trivy fs --security-checks vuln,config,secret /scan
+
+# AI 驱动的镜像分析
+docker scout quickview myapp:latest
+
+# CI/CD 中的 AI 安全检查
+docker scout cves --exit-code 1 --severity critical,high --only-fixed myapp:latest</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
                     </div>
                 </div>
 
-                <div class="path-step">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                        <h3>Docker Compose</h3>
-                        <p>掌握多容器应用的编排和管理，包括健康检查、依赖配置</p>
-                        <span class="step-duration">预计时间：2-3 天</span>
+                <div class="code-block">
+                    <h3>AI 优化的 Docker Compose</h3>
+                    <div class="code-container">
+                        <pre><code class="language-yaml">version: '3.8'
+
+services:
+  # AI 优化的 Web 服务配置
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      # AI 推荐的构建参数
+      args:
+        - NODE_ENV=production
+        - BUILD_OPTIMIZATION=aggressive
+    ports:
+      - "3000:3000"
+    environment:
+      # AI 推荐的环境配置
+      - NODE_ENV=production
+      - LOG_LEVEL=info
+      - HEALTH_CHECK_INTERVAL=30s
+    volumes:
+      # AI 推荐的卷配置
+      - ./logs:/app/logs
+    deploy:
+      # AI 推荐的资源限制
+      resources:
+        limits:
+          cpus: '1.5'
+          memory: 1G
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    restart: unless-stopped
+    # AI 优化的健康检查
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # AI 优化的数据库配置
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: myapp
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: secure_password
+    volumes:
+      # AI 推荐的持久化策略
+      - db_data:/var/lib/postgresql/data
+      - ./backups:/backups
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+        reservations:
+          cpus: '0.25'
+          memory: 512M
+    restart: unless-stopped
+
+volumes:
+  db_data:
+    # AI 推荐的卷驱动和选项
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /opt/postgres-data</code></pre>
+                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
                     </div>
                 </div>
 
-                <div class="path-step">
-                    <div class="step-number">4</div>
-                    <div class="step-content">
-                        <h3>WASM 容器</h3>
-                        <p>学习 WebAssembly 容器技术，构建轻量级高性能应用</p>
-                        <span class="step-duration">预计时间：2-3 天</span>
-                    </div>
-                </div>
-
-                <div class="path-step">
-                    <div class="step-number">5</div>
-                    <div class="step-content">
-                        <h3>AI 辅助开发</h3>
-                        <p>使用 AI 工具优化 Dockerfile、安全扫描和性能分析</p>
-                        <span class="step-duration">预计时间：2-3 天</span>
-                    </div>
-                </div>
-
-                <div class="path-step">
-                    <div class="step-number">6</div>
-                    <div class="step-content">
-                        <h3>实战项目</h3>
-                        <p>完成完整的容器化项目部署，包括 WASM 服务和 AI 工具集成</p>
-                        <span class="step-duration">预计时间：5-7 天</span>
-                    </div>
-                </div>
-
-                <div class="path-step">
-                    <div class="step-number">7</div>
-                    <div class="step-content">
-                        <h3>Kubernetes 入门</h3>
-                        <p>学习容器编排和集群管理，包括 Docker 和 Kubernetes 的协同</p>
-                        <span class="step-duration">预计时间：7-10 天</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 页脚 -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>🐳 Docker Tutorial</h3>
-                    <p>从零开始学习 Docker 容器技术</p>
-                </div>
-                <div class="footer-section">
-                    <h3>资源链接</h3>
+                <div class="info-card">
+                    <h3>AI 工具生态系统</h3>
                     <ul>
-                        <li><a href="https://docs.docker.com/" target="_blank">官方文档</a></li>
-                        <li><a href="https://hub.docker.com/" target="_blank">Docker Hub</a></li>
-                        <li><a href="https://www.docker.com/" target="_blank">官方网站</a></li>
+                        <li><strong>Docker Scout</strong>: AI 驱动的安全分析和镜像优化</li>
+                        <li><strong>Dagger</strong>: 用于构建 AI 优化的 CI/CD 管道</li>
+                        <li><strong>Trivy</strong>: AI 增强的漏洞扫描器</li>
+                        <li><strong>Harbor</strong>: AI 驱动的镜像仓库和安全扫描</li>
+                        <li><strong>BuildBuddy</strong>: AI 优化的构建分析平台</li>
+                        <li><strong>Dependabot</strong>: AI 驱动的依赖管理和安全更新</li>
                     </ul>
                 </div>
-                <div class="footer-section">
-                    <h3>联系我们</h3>
-                    <p>有问题？欢迎提交 Issue 或 Pull Request</p>
-                </div>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; Docker Tutorial. 用于学习和教育目的。</p>
-            </div>
-        </div>
-    </footer>
+        </section>
+    </main>
 
     <script src="script.js"></script>
+    <script>
+        // 复制代码功能
+        function copyCode(button) {
+            const codeBlock = button.previousElementSibling.querySelector('code');
+            navigator.clipboard.writeText(codeBlock.textContent).then(() => {
+                const originalText = button.textContent;
+                button.textContent = '已复制!';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                }, 2000);
+            });
+        }
+    </script>
 </body>
 </html>
