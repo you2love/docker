@@ -1,3 +1,28 @@
+// 初始化 Prism.js 语法高亮
+document.addEventListener('DOMContentLoaded', function() {
+    // 如果 Prism.js 已加载，初始化所有代码块
+    if (typeof Prism !== 'undefined') {
+        // 延迟执行以确保DOM完全加载
+        setTimeout(function() {
+            // 遍历所有pre标签
+            document.querySelectorAll('pre').forEach(function(pre) {
+                // 检查是否已经有语言类名
+                const hasLanguage = Array.from(pre.classList).some(className => 
+                    className.startsWith('language-')
+                );
+                
+                // 如果还没有语言类名，添加bash（默认）
+                if (!hasLanguage) {
+                    pre.classList.add('language-bash');
+                }
+            });
+            
+            // 初始化Prism.js高亮
+            Prism.highlightAll();
+        }, 100);
+    }
+});
+
 // 平滑滚动
 document.querySelectorAll('.tree-nav a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {

@@ -179,17 +179,17 @@
                 <div class="card">
                     <h3>镜像 (Image)</h3>
                     <p>只读模板，包含运行应用所需的代码、运行时、库和配置。</p>
-                    <pre><code>docker pull nginx:alpine</code></pre>
+                    <pre><code>lt;span class="language-bash"<pre><code>gt;docker pull nginx:alpine</code></pre>
                 </div>
                 <div class="card">
                     <h3>容器 (Container)</h3>
                     <p>镜像的运行实例，独立、隔离的执行环境。</p>
-                    <pre><code>docker run -d -p 80:80 nginx</code></pre>
+                    <pre><code>lt;span class="language-bash"<pre><code>gt;docker run -d -p 80:80 nginx</code></pre>
                 </div>
                 <div class="card">
                     <h3>仓库 (Registry)</h3>
                     <p>存储和分发镜像的服务，如 Docker Hub。</p>
-                    <pre><code>docker push user/image:tag</code></pre>
+                    <pre><code>lt;span class="language-bash"<pre><code>gt;docker push user/image:tag</code></pre>
                 </div>
             </div>
 
@@ -368,28 +368,28 @@
             <h2>安装 Docker</h2>
             
             <h3>macOS</h3>
-            <pre><code># Homebrew 安装
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# Homebrew 安装
 brew install --cask docker
 
 # 或下载 Docker Desktop
 # https://www.docker.com/products/docker-desktop</code></pre>
 
             <h3>Windows</h3>
-            <pre><code># 使用 winget
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# 使用 winget
 winget install Docker.DockerDesktop
 
 # 或使用 Chocolatey
 choco install docker-desktop</code></pre>
 
             <h3>Linux (Ubuntu)</h3>
-            <pre><code># 官方脚本安装
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# 官方脚本安装
 curl -fsSL https://get.docker.com | sh
 
 # 添加用户到 docker 组
 sudo usermod -aG docker $USER</code></pre>
 
             <h3>验证安装</h3>
-            <pre><code>docker --version
+            <pre><code>lt;span class="language-bash"<pre><code>gt;docker --version
 docker run hello-world</code></pre>
         </section>
 
@@ -399,7 +399,7 @@ docker run hello-world</code></pre>
             <p>Dockerfile 是定义镜像构建过程的文本文件，包含一系列指令用于构建 Docker 镜像。</p>
 
             <h3>基础示例</h3>
-            <pre><code># Node.js 应用
+            <pre><code class="language-dockerfile"># Node.js 应用
 FROM node:20-alpine
 
 WORKDIR /app
@@ -415,7 +415,7 @@ CMD ["node", "server.js"]</code></pre>
 
             <h3>多阶段构建</h3>
             <p>多阶段构建可以显著减小最终镜像大小，分离构建环境和运行环境。</p>
-            <pre><code># 构建阶段
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# 构建阶段
 FROM node:20-alpine AS builder
 WORKDIR /app
 COPY . .
@@ -539,7 +539,7 @@ CMD ["node", "dist/server.js"]</code></pre>
                     </tr>
                 </tbody>
             </table>
-            <pre><code># 组合使用示例
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# 组合使用示例
 ENTRYPOINT ["node"]
 CMD ["app.js"]
 
@@ -550,27 +550,27 @@ CMD ["app.js"]
             <div class="grid">
                 <div class="card">
                     <h4>❌ 错误：使用 latest 标签</h4>
-                    <pre><code>FROM node:latest  # 不推荐</code></pre>
+                    <pre><code>lt;span class="language-bash"<pre><code>gt;FROM node:latest  # 不推荐</code></pre>
                     <h4>✅ 正确：指定版本</h4>
-                    <pre><code>FROM node:20-alpine  # 推荐</code></pre>
+                    <pre><code>lt;span class="language-bash"<pre><code>gt;FROM node:20-alpine  # 推荐</code></pre>
                     <p>latest 标签会变化，导致构建不可重复</p>
                 </div>
                 <div class="card">
                     <h4>❌ 错误：忽略缓存顺序</h4>
-                    <pre><code>COPY . .
+                    <pre><code>lt;span class="language-bash"<pre><code>gt;COPY . .
 RUN npm install  # 任何文件变化都会重新执行</code></pre>
                     <h4>✅ 正确：利用缓存</h4>
-                    <pre><code>COPY package*.json ./
+                    <pre><code>lt;span class="language-bash"<pre><code>gt;COPY package*.json ./
 RUN npm install
 COPY . .  # 只在代码变化时才重新复制</code></pre>
                 </div>
                 <div class="card">
                     <h4>❌ 错误：以 root 运行</h4>
-                    <pre><code>FROM node:20-alpine
+                    <pre><code>lt;span class="language-bash"<pre><code>gt;FROM node:20-alpine
 # 默认 root 用户
 CMD ["node", "app.js"]</code></pre>
                     <h4>✅ 正确：非 root 用户</h4>
-                    <pre><code>FROM node:20-alpine
+                    <pre><code>lt;span class="language-bash"<pre><code>gt;FROM node:20-alpine
 RUN addgroup -g 1001 app && \
     adduser -u 1001 -G app user
 USER user
@@ -578,26 +578,26 @@ CMD ["node", "app.js"]</code></pre>
                 </div>
                 <div class="card">
                     <h4>❌ 错误：镜像过大</h4>
-                    <pre><code>FROM node:20  # Debian 基础镜像 ~900MB
+                    <pre><code>lt;span class="language-bash"<pre><code>gt;FROM node:20  # Debian 基础镜像 ~900MB
 RUN npm install</code></pre>
                     <h4>✅ 正确：使用 Alpine</h4>
-                    <pre><code>FROM node:20-alpine  # Alpine ~170MB
+                    <pre><code>lt;span class="language-bash"<pre><code>gt;FROM node:20-alpine  # Alpine ~170MB
 RUN npm install</code></pre>
                 </div>
                 <div class="card">
                     <h4>❌ 错误：多层 RUN 指令</h4>
-                    <pre><code>RUN apk add --no-cache git
+                    <pre><code>lt;span class="language-bash"<pre><code>gt;RUN apk add --no-cache git
 RUN apk add --no-cache curl
 RUN apk add --no-cache vim</code></pre>
                     <h4>✅ 正确：合并命令</h4>
-                    <pre><code>RUN apk add --no-cache \
+                    <pre><code>lt;span class="language-bash"<pre><code>gt;RUN apk add --no-cache \
     git curl vim</code></pre>
                 </div>
                 <div class="card">
                     <h4>❌ 错误：复制无用文件</h4>
-                    <pre><code>COPY . .  # 复制所有文件</code></pre>
+                    <pre><code>lt;span class="language-bash"<pre><code>gt;COPY . .  # 复制所有文件</code></pre>
                     <h4>✅ 正确：使用 .dockerignore</h4>
-                    <pre><code># .dockerignore
+                    <pre><code>lt;span class="language-bash"<pre><code>gt;# .dockerignore
 node_modules
 .git
 *.md
@@ -606,7 +606,7 @@ node_modules
             </div>
 
             <h3>最佳实践清单</h3>
-            <pre><code># 1. 使用特定版本的基础镜像
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# 1. 使用特定版本的基础镜像
 FROM node:20-alpine3.19
 
 # 2. 设置工作目录
@@ -643,7 +643,7 @@ CMD ["node", "server.js"]</code></pre>
         <!-- 构建镜像 -->
         <section id="build" class="section">
             <h2>构建镜像</h2>
-            <pre><code># 构建镜像
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# 构建镜像
 docker build -t myapp:v1 .
 
 # 使用 BuildKit（推荐）
@@ -748,7 +748,7 @@ docker buildx build --platform linux/amd64,linux/arm64 -t myapp:v1 .</code></pre
             </div>
 
             <h3>基本结构</h3>
-            <pre><code># docker-compose.yml 基本结构
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# docker-compose.yml 基本结构
 version: "3.8"  # 可选，新版本已不需要
 
 services:       # 定义服务
@@ -768,7 +768,7 @@ secrets:        # 定义机密（可选）
   db-password:</code></pre>
 
             <h3>完整示例</h3>
-            <pre><code>services:
+            <pre><code>lt;span class="language-bash"<pre><code>gt;services:
   web:
     build:
       context: .
@@ -840,7 +840,7 @@ volumes:
   redis-data:</code></pre>
 
             <h3>常用命令</h3>
-            <pre><code># 服务管理
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# 服务管理
 docker compose up -d              # 后台启动所有服务
 docker compose up -d --build      # 重建镜像后启动
 docker compose up -d web db       # 只启动指定服务
@@ -875,7 +875,7 @@ docker compose push               # 推送所有镜像</code></pre>
             <h3>常用场景</h3>
 
             <h4>场景 1：开发环境</h4>
-            <pre><code>services:
+            <pre><code>lt;span class="language-bash"<pre><code>gt;services:
   app:
     build: .
     ports:
@@ -903,7 +903,7 @@ volumes:
   dev-data:</code></pre>
 
             <h4>场景 2：微服务架构</h4>
-            <pre><code>services:
+            <pre><code>lt;span class="language-bash"<pre><code>gt;services:
   gateway:
     image: nginx:alpine
     ports:
@@ -950,7 +950,7 @@ networks:
     internal: true  # 只有内部服务可访问</code></pre>
 
             <h4>场景 3：CI/CD 测试</h4>
-            <pre><code>services:
+            <pre><code>lt;span class="language-bash"<pre><code>gt;services:
   app:
     build: .
     depends_on:
@@ -975,7 +975,7 @@ networks:
       - /var/lib/postgresql/data  # 使用内存存储，测试更快</code></pre>
 
             <h4>场景 4：多环境配置</h4>
-            <pre><code># docker-compose.yml（基础配置）
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# docker-compose.yml（基础配置）
 services:
   web:
     image: myapp
@@ -1007,26 +1007,26 @@ services:
             <div class="grid">
                 <div class="card">
                     <h4>❌ 错误：端口冲突</h4>
-                    <pre><code>ports:
+                    <pre><code>lt;span class="language-bash"<pre><code>gt;ports:
   - "80:80"  # 本地 80 端口已被占用</code></pre>
                     <h4>✅ 解决方案</h4>
-                    <pre><code>ports:
+                    <pre><code>lt;span class="language-bash"<pre><code>gt;ports:
   - "8080:80"  # 使用其他本地端口</code></pre>
                 </div>
                 <div class="card">
                     <h4>❌ 错误：服务启动顺序</h4>
-                    <pre><code>depends_on:
+                    <pre><code>lt;span class="language-bash"<pre><code>gt;depends_on:
   - db  # 只等待容器启动，不等待服务就绪</code></pre>
                     <h4>✅ 解决方案</h4>
-                    <pre><code>depends_on:
+                    <pre><code>lt;span class="language-bash"<pre><code>gt;depends_on:
   db:
     condition: service_healthy  # 等待健康检查通过</code></pre>
                 </div>
                 <div class="card">
                     <h4>❌ 错误：数据丢失</h4>
-                    <pre><code>docker compose down  # 默认不删除卷</code></pre>
+                    <pre><code>lt;span class="language-bash"<pre><code>gt;docker compose down  # 默认不删除卷</code></pre>
                     <h4>✅ 注意事项</h4>
-                    <pre><code># 删除所有数据（危险操作）
+                    <pre><code>lt;span class="language-bash"<pre><code>gt;# 删除所有数据（危险操作）
 docker compose down -v
 
 # 生产环境建议定期备份
@@ -1034,10 +1034,10 @@ docker compose exec db pg_dump ...</code></pre>
                 </div>
                 <div class="card">
                     <h4>❌ 错误：环境变量未传递</h4>
-                    <pre><code>environment:
+                    <pre><code>lt;span class="language-bash"<pre><code>gt;environment:
   - DB_PASS=$DB_PASSWORD  # 变量未定义时为空</code></pre>
                     <h4>✅ 解决方案</h4>
-                    <pre><code># 使用 .env 文件
+                    <pre><code>lt;span class="language-bash"<pre><code>gt;# 使用 .env 文件
 # .env
 DB_PASSWORD=secret
 
@@ -1047,16 +1047,16 @@ environment:
                 </div>
                 <div class="card">
                     <h4>❌ 错误：版本兼容问题</h4>
-                    <pre><code>version: "2"  # 旧版格式</code></pre>
+                    <pre><code>lt;span class="language-bash"<pre><code>gt;version: "2"  # 旧版格式</code></pre>
                     <h4>✅ 解决方案</h4>
-                    <pre><code>version: "3.8"  # 使用最新格式
+                    <pre><code>lt;span class="language-bash"<pre><code>gt;version: "3.8"  # 使用最新格式
 # 或直接省略 version（新版本推荐）</code></pre>
                 </div>
                 <div class="card">
                     <h4>❌ 错误：网络隔离问题</h4>
-                    <pre><code># 服务 A 无法访问服务 B</code></pre>
+                    <pre><code>lt;span class="language-bash"<pre><code>gt;# 服务 A 无法访问服务 B</code></pre>
                     <h4>✅ 解决方案</h4>
-                    <pre><code># 确保服务在同一网络
+                    <pre><code>lt;span class="language-bash"<pre><code>gt;# 确保服务在同一网络
 services:
   a:
     networks:
@@ -1070,7 +1070,7 @@ networks:
             </div>
 
             <h3>配置文件最佳实践</h3>
-            <pre><code># 1. 使用 .env 文件管理环境变量
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# 1. 使用 .env 文件管理环境变量
 # .env
 COMPOSE_PROJECT_NAME=myapp
 POSTGRES_PASSWORD=secret
@@ -1222,7 +1222,7 @@ secrets:
             </table>
 
             <h3>变量替换</h3>
-            <pre><code># .env 文件
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# .env 文件
 DB_HOST=db
 DB_PORT=5432
 DB_NAME=myapp
@@ -1244,7 +1244,7 @@ cp .env.example .env && docker compose up -d</code></pre>
 
             <h3>Profiles 功能</h3>
             <p>Profiles 允许按需启动不同服务组合：</p>
-            <pre><code>services:
+            <pre><code>lt;span class="language-bash"<pre><code>gt;services:
   web:
     image: nginx
     ports:
@@ -1279,7 +1279,7 @@ docker compose --profile debug --profile test up -d  # 启动全部</code></pre>
             <h3>更多应用场景</h3>
 
             <h4>场景 5：负载均衡</h4>
-            <pre><code>services:
+            <pre><code>lt;span class="language-bash"<pre><code>gt;services:
   nginx:
     image: nginx:alpine
     ports:
@@ -1302,7 +1302,7 @@ networks:
   app-network:</code></pre>
 
             <h4>场景 6：日志收集</h4>
-            <pre><code>services:
+            <pre><code>lt;span class="language-bash"<pre><code>gt;services:
   app:
     image: myapp
     logging:
@@ -1337,7 +1337,7 @@ volumes:
   es-data:</code></pre>
 
             <h4>场景 7：消息队列</h4>
-            <pre><code>services:
+            <pre><code>lt;span class="language-bash"<pre><code>gt;services:
   producer:
     build: ./producer
     environment:
@@ -1373,7 +1373,7 @@ volumes:
   rabbit-data:</code></pre>
 
             <h4>场景 8：数据库主从复制</h4>
-            <pre><code>services:
+            <pre><code>lt;span class="language-bash"<pre><code>gt;services:
   pg-master:
     image: postgres:16-alpine
     environment:
@@ -1406,7 +1406,7 @@ volumes:
   replica-data:</code></pre>
 
             <h3>扩展和继承</h3>
-            <pre><code># 使用 extends 继承配置（已弃用，推荐使用 YAML 锚点）
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# 使用 extends 继承配置（已弃用，推荐使用 YAML 锚点）
 # docker-compose.yml
 x-common-config: &common-config
   restart: unless-stopped
@@ -1455,7 +1455,7 @@ secrets:
             <h2>常用命令</h2>
             
             <h3>镜像管理</h3>
-            <pre><code>docker images                    # 列出镜像
+            <pre><code>lt;span class="language-bash"<pre><code>gt;docker images                    # 列出镜像
 docker pull nginx:alpine         # 拉取镜像
 docker rmi nginx:alpine          # 删除镜像
 docker tag myapp:v1 myapp:latest # 标记镜像
@@ -1463,7 +1463,7 @@ docker save -o app.tar myapp:v1  # 导出镜像
 docker load -i app.tar           # 导入镜像</code></pre>
 
             <h3>容器管理</h3>
-            <pre><code>docker ps                        # 列出运行中容器
+            <pre><code>lt;span class="language-bash"<pre><code>gt;docker ps                        # 列出运行中容器
 docker ps -a                     # 列出所有容器
 docker run -d -p 80:80 nginx     # 后台运行容器
 docker stop container_id         # 停止容器
@@ -1473,7 +1473,7 @@ docker logs -f container_id      # 查看日志
 docker cp file.txt container:/app # 复制文件到容器</code></pre>
 
             <h3>系统管理</h3>
-            <pre><code>docker system df                # 查看磁盘使用
+            <pre><code>lt;span class="language-bash"<pre><code>gt;docker system df                # 查看磁盘使用
 docker system prune             # 清理未使用资源
 docker system prune -a          # 清理所有未使用资源
 docker stats                    # 实时资源使用</code></pre>
@@ -1588,7 +1588,7 @@ docker stats                    # 实时资源使用</code></pre>
             </div>
 
             <h3>常用命令</h3>
-            <pre><code># 查看网络列表
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# 查看网络列表
 docker network ls
 
 # 创建自定义网络
@@ -1613,7 +1613,7 @@ docker network rm mynet</code></pre>
             <h3>应用场景示例</h3>
             
             <h4>场景 1：微服务通信</h4>
-            <pre><code># 创建应用网络
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# 创建应用网络
 docker network create app-network
 
 # 启动服务，同一网络内可通过服务名访问
@@ -1622,7 +1622,7 @@ docker run -d --name web --network app-network nginx
 # web 容器可通过 http://api:8080 访问 API</code></pre>
 
             <h4>场景 2：隔离不同环境</h4>
-            <pre><code># 开发环境网络
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# 开发环境网络
 docker network create dev-network
 
 # 测试环境网络
@@ -1633,7 +1633,7 @@ docker run -d --name dev-db --network dev-network postgres
 docker run -d --name test-db --network test-network postgres</code></pre>
 
             <h4>场景 3：DNS 解析</h4>
-            <pre><code># 同一网络内的容器自动获得 DNS 解析
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# 同一网络内的容器自动获得 DNS 解析
 docker run -d --name redis --network mynet redis
 docker run -d --name app --network mynet myapp
 
@@ -1645,7 +1645,7 @@ docker run -d --name app --network mynet myapp
 
             <h4>通讯架构图</h4>
             <div class="arch-diagram">
-                <pre><code>┌─────────────────────────────────────────────────────────────────┐
+                <pre><code>lt;span class="language-bash"<pre><code>gt;┌─────────────────────────────────────────────────────────────────┐
 │                         外部网络（互联网）                         │
 └─────────────────────────────────────────────────────────────────┘
                               ↑↓
@@ -1668,7 +1668,7 @@ docker run -d --name app --network mynet myapp
             </div>
 
             <h4>1. 容器访问外部网络</h4>
-            <pre><code># 容器访问互联网的过程：
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# 容器访问互联网的过程：
 # 1. 容器发送请求（源 IP: 172.17.0.2）
 # 2. 请求经过 docker0 网桥
 # 3. 通过 NAT（网络地址转换）转换为宿主机 IP
@@ -1686,7 +1686,7 @@ docker run --rm alpine ip addr show
 sudo iptables -t nat -L -n</code></pre>
 
             <h4>2. 外部访问容器（端口映射）</h4>
-            <pre><code># 端口映射原理：
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# 端口映射原理：
 # 外部请求 → 宿主机端口 → iptables 转发 → 容器端口
 
 # 映射单个端口
@@ -1713,7 +1713,7 @@ netstat -tlnp | grep 8080
 lsof -i :8080</code></pre>
 
             <h4>3. 容器间通讯</h4>
-            <pre><code># 同一 bridge 网络内的容器通讯：
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# 同一 bridge 网络内的容器通讯：
 
 # 方式 1：通过 IP 地址
 # 容器 A (172.17.0.2) → 容器 B (172.17.0.3)
@@ -1778,7 +1778,7 @@ docker exec -it app curl http://db:5432</code></pre>
             </table>
 
             <h4>5. 网络通讯完整示例</h4>
-            <pre><code># 场景：Web 应用 + 数据库 + Redis
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# 场景：Web 应用 + 数据库 + Redis
 
 # 1. 创建网络
 docker network create app-network
@@ -1817,7 +1817,7 @@ docker exec -it web ping redis    # Web → Redis
 curl http://localhost:3000        # 外部 → Web</code></pre>
 
             <h4>6. 常见网络问题排查</h4>
-            <pre><code># 问题 1：容器无法访问外部网络
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# 问题 1：容器无法访问外部网络
 # 检查 DNS
 docker run --rm alpine nslookup google.com
 docker run --rm alpine ping -c 3 8.8.8.8
@@ -1945,7 +1945,7 @@ netstat -tlnp | grep 8080</code></pre>
             </div>
 
             <h3>常用命令</h3>
-            <pre><code># 创建数据卷
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# 创建数据卷
 docker volume create mydata
 
 # 列出所有数据卷
@@ -1963,7 +1963,7 @@ docker volume prune</code></pre>
             <h3>应用场景示例</h3>
 
             <h4>场景 1：数据库持久化</h4>
-            <pre><code># PostgreSQL 数据持久化
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# PostgreSQL 数据持久化
 docker run -d \
   --name postgres \
   -v pgdata:/var/lib/postgresql/data \
@@ -1979,7 +1979,7 @@ docker run -d \
 # 数据恢复</code></pre>
 
             <h4>场景 2：开发环境热重载</h4>
-            <pre><code># 挂载本地代码目录，修改立即生效
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# 挂载本地代码目录，修改立即生效
 docker run -d \
   --name dev-app \
   -v $(pwd)/src:/app/src \
@@ -1991,7 +1991,7 @@ docker run -d \
 # 本地修改代码，容器内自动更新</code></pre>
 
             <h4>场景 3：配置文件管理</h4>
-            <pre><code># 挂载配置文件
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# 挂载配置文件
 docker run -d \
   --name nginx \
   -v $(pwd)/nginx.conf:/etc/nginx/nginx.conf:ro \
@@ -2002,7 +2002,7 @@ docker run -d \
 # :ro 表示只读挂载，防止容器修改配置</code></pre>
 
             <h4>场景 4：多容器共享数据</h4>
-            <pre><code># 创建共享数据卷
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# 创建共享数据卷
 docker volume create shared-data
 
 # 写入容器
@@ -2018,7 +2018,7 @@ docker run --name reader \
 
                         <h4>场景 5：敏感数据（tmpfs）</h4>
 
-                        <pre><code># 使用内存存储敏感数据
+                        <pre><code>lt;span class="language-bash"<pre><code>gt;# 使用内存存储敏感数据
 
             docker run -d \
 
@@ -2044,7 +2044,7 @@ docker run --name reader \
 
                         <div class="arch-diagram">
 
-                            <pre><code>┌─────────────────────────────────────────────────────────────────┐
+                            <pre><code>lt;span class="language-bash"<pre><code>gt;┌─────────────────────────────────────────────────────────────────┐
 
             │                         宿主机文件系统                            │
 
@@ -2118,7 +2118,7 @@ docker run --name reader \
 
                         <h4>1. 镜像分层与联合文件系统</h4>
 
-                        <pre><code># Docker 使用联合文件系统（UnionFS）将多个层合并为一个文件系统
+                        <pre><code>lt;span class="language-bash"<pre><code>gt;# Docker 使用联合文件系统（UnionFS）将多个层合并为一个文件系统
 
             
 
@@ -2160,7 +2160,7 @@ docker run --name reader \
 
                         <h4>2. 写时复制（Copy-on-Write）机制</h4>
 
-                        <pre><code># 场景：修改镜像中的文件
+                        <pre><code>lt;span class="language-bash"<pre><code>gt;# 场景：修改镜像中的文件
 
             
 
@@ -2216,7 +2216,7 @@ docker run --name reader \
 
                         <h4>3. 三种存储类型的交互方式</h4>
 
-                        <pre><code># ===== 1. Volume（命名卷）=====
+                        <pre><code>lt;span class="language-bash"<pre><code>gt;# ===== 1. Volume（命名卷）=====
 
             # Docker 管理的存储，与容器完全解耦
 
@@ -2332,7 +2332,7 @@ docker run --name reader \
 
                         <h4>4. 挂载行为详解</h4>
 
-                        <pre><code># 挂载时容器目录的行为：
+                        <pre><code>lt;span class="language-bash"<pre><code>gt;# 挂载时容器目录的行为：
 
             
 
@@ -2380,7 +2380,7 @@ docker run --name reader \
 
                         <h4>5. 数据流向示例</h4>
 
-                        <pre><code># 完整示例：Web 应用数据流向
+                        <pre><code>lt;span class="language-bash"<pre><code>gt;# 完整示例：Web 应用数据流向
 
             
 
@@ -2442,7 +2442,7 @@ docker run --name reader \
 
                         <h4>6. 文件系统问题排查</h4>
 
-                        <pre><code># 问题 1：磁盘空间不足
+                        <pre><code>lt;span class="language-bash"<pre><code>gt;# 问题 1：磁盘空间不足
 
             docker system df                    # 查看磁盘使用
 
@@ -2608,7 +2608,7 @@ docker run --name reader \
             </ul>
 
             <h3>快速搭建 Registry</h3>
-            <pre><code># 1. 最简单的启动方式
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# 1. 最简单的启动方式
 docker run -d \
   --name registry \
   -p 5000:5000 \
@@ -2633,7 +2633,7 @@ volumes:
   registry-data:</code></pre>
 
             <h3>推送和拉取镜像</h3>
-            <pre><code># 1. 标记镜像指向私有仓库
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# 1. 标记镜像指向私有仓库
 docker tag myapp:v1 localhost:5000/myapp:v1
 
 # 2. 推送镜像
@@ -2647,7 +2647,7 @@ curl http://localhost:5000/v2/_catalog
 curl http://localhost:5000/v2/myapp/tags/list</code></pre>
 
             <h3>配置 HTTPS（生产必需）</h3>
-            <pre><code># 方案 1：使用 Nginx 反向代理 + Let's Encrypt
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# 方案 1：使用 Nginx 反向代理 + Let's Encrypt
 
 # docker-compose.yml
 services:
@@ -2683,7 +2683,7 @@ volumes:
 # }</code></pre>
 
             <h3>配置认证</h3>
-            <pre><code># 1. 创建用户密码文件
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# 1. 创建用户密码文件
 docker run --rm \
   --entrypoint htpasswd \
   httpd:2 -Bbn admin password123 > htpasswd
@@ -2710,7 +2710,7 @@ docker push localhost:5000/myapp:v1
 docker logout localhost:5000</code></pre>
 
             <h3>完整生产配置</h3>
-            <pre><code># docker-compose.yml - 生产环境完整配置
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# docker-compose.yml - 生产环境完整配置
 services:
   registry:
     image: registry:2
@@ -2756,7 +2756,7 @@ volumes:
   registry-data:</code></pre>
 
             <h3>客户端配置</h3>
-            <pre><code># 配置 Docker 客户端信任私有仓库
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# 配置 Docker 客户端信任私有仓库
 
 # 1. 配置 insecure-registry（仅用于 HTTP，不推荐生产）
 # /etc/docker/daemon.json
@@ -2775,7 +2775,7 @@ sudo cp ca.crt /etc/docker/certs.d/registry.example.com/
 # 或使用 Let's Encrypt 等受信任的证书</code></pre>
 
             <h3>镜像管理操作</h3>
-            <pre><code># 查看所有仓库
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# 查看所有仓库
 curl -u admin:password123 http://localhost:5000/v2/_catalog
 
 # 查看某镜像的所有标签
@@ -2794,7 +2794,7 @@ curl -I -u admin:password123 \
 docker exec registry bin/registry garbage-collect /etc/docker/registry/config.yml</code></pre>
 
             <h3>备份与迁移</h3>
-            <pre><code># 备份 Registry 数据
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# 备份 Registry 数据
 docker run --rm \
   -v registry-data:/data \
   -v $(pwd)/backup:/backup \
@@ -2827,7 +2827,7 @@ docker run --rm \
 
             <h3>Harbor - 企业级 Registry</h3>
             <p>对于大型企业，推荐使用 Harbor，它提供了更丰富的功能：</p>
-            <pre><code># Harbor 功能特点：
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# Harbor 功能特点：
 # - Web 管理界面
 # - 基于角色的访问控制（RBAC）
 # - 漏洞扫描（Trivy 集成）
@@ -2900,19 +2900,19 @@ docker compose -f docker-compose.yml up -d
             <div class="grid">
                 <div class="card">
                     <h4>✅ 使用非 root 用户</h4>
-                    <pre><code>RUN addgroup -g 1001 appgroup && \
+                    <pre><code>lt;span class="language-bash"<pre><code>gt;RUN addgroup -g 1001 appgroup && \
     adduser -u 1001 -G appgroup appuser
 USER appuser</code></pre>
                 </div>
                 <div class="card">
                     <h4>✅ 最小化镜像</h4>
-                    <pre><code>FROM alpine:3.19
+                    <pre><code>lt;span class="language-bash"<pre><code>gt;FROM alpine:3.19
 # 或使用 distroless
 FROM gcr.io/distroless/static</code></pre>
                 </div>
                 <div class="card">
                     <h4>✅ 健康检查</h4>
-                    <pre><code>HEALTHCHECK --interval=30s \
+                    <pre><code>lt;span class="language-bash"<pre><code>gt;HEALTHCHECK --interval=30s \
   CMD wget -q --spider \
   http://localhost:3000/health</code></pre>
                 </div>
@@ -2937,7 +2937,7 @@ FROM gcr.io/distroless/static</code></pre>
                 </ul>
 
                 <h4>如何使用？</h4>
-                <pre><code># 1. 快速查看镜像安全概况
+                <pre><code>lt;span class="language-bash"<pre><code>gt;# 1. 快速查看镜像安全概况
 docker scout quickview nginx:latest
 
 # 2. 详细漏洞扫描
@@ -2956,7 +2956,7 @@ docker scout compare --from myapp:v1 --to myapp:v2
 docker scout cves --exit-code 1 --severity HIGH,CRITICAL myapp:latest</code></pre>
 
                 <h4>初学者常见问题</h4>
-                <pre><code>Q: 扫描结果显示很多漏洞，我该怎么办？
+                <pre><code>lt;span class="language-bash"<pre><code>gt;Q: 扫描结果显示很多漏洞，我该怎么办？
 A: 优先修复 CRITICAL 和 HIGH 级别的漏洞，Docker Scout 会给出具体的修复建议。
 
 Q: 每次构建都需要扫描吗？
@@ -2976,7 +2976,7 @@ A: 建议在 CI/CD 流程中加入自动扫描，确保不安全的镜像不会�
                 </ul>
 
                 <h4>如何使用？</h4>
-                <pre><code># 启动 Ask Gordon（需要 Docker Desktop）
+                <pre><code>lt;span class="language-bash"<pre><code>gt;# 启动 Ask Gordon（需要 Docker Desktop）
 docker ai
 
 # 示例对话：
@@ -2993,7 +2993,7 @@ Gordon: 这里有一些优化建议...
 [列出具体的优化方法]</code></pre>
 
                 <h4>常见使用场景</h4>
-                <pre><code># 场景 1：生成 Dockerfile
+                <pre><code>lt;span class="language-bash"<pre><code>gt;# 场景 1：生成 Dockerfile
 "帮我为一个 Python Flask 应用创建 Dockerfile"
 
 # 场景 2：诊断问题
@@ -3019,7 +3019,7 @@ Gordon: 这里有一些优化建议...
                 </ul>
 
                 <h4>如何使用？</h4>
-                <pre><code># 1. 安装 Dockerizer
+                <pre><code>lt;span class="language-bash"<pre><code>gt;# 1. 安装 Dockerizer
 npm install -g dockerizer
 
 # 2. 在项目目录中初始化
@@ -3043,7 +3043,7 @@ npx dockerizer init --framework nextjs
 npx dockerizer init --framework django</code></pre>
 
                 <h4>生成示例</h4>
-                <pre><code># Dockerizer 自动生成的 Dockerfile 示例
+                <pre><code>lt;span class="language-bash"<pre><code>gt;# Dockerizer 自动生成的 Dockerfile 示例
 # 项目类型：Node.js Express
 
 # --- 基础阶段 ---
@@ -3077,7 +3077,7 @@ CMD ["node", "server.js"]</code></pre>
                 </ul>
 
                 <h4>如何安装？</h4>
-                <pre><code># 方法 1：Docker 命令（推荐）
+                <pre><code>lt;span class="language-bash"<pre><code>gt;# 方法 1：Docker 命令（推荐）
 docker run -d \
   --name dockge \
   -p 5001:5001 \
@@ -3100,7 +3100,7 @@ services:
 # 打开浏览器：http://localhost:5001</code></pre>
 
                 <h4>主要功能</h4>
-                <pre><code># 1. 管理 Compose 项目
+                <pre><code>lt;span class="language-bash"<pre><code>gt;# 1. 管理 Compose 项目
 # - 查看所有服务状态
 # - 启动/停止/重启服务
 # - 查看实时日志
@@ -3132,7 +3132,7 @@ services:
                 </ul>
 
                 <h4>如何使用？</h4>
-                <pre><code># 1. 克隆项目
+                <pre><code>lt;span class="language-bash"<pre><code>gt;# 1. 克隆项目
 git clone https://github.com/docker/genai-stack
 cd genai-stack
 
@@ -3149,7 +3149,7 @@ docker compose up -d
 # - Streamlit：Web 界面</code></pre>
 
                 <h4>运行 AI 模型示例</h4>
-                <pre><code># 在容器中运行 Ollama
+                <pre><code>lt;span class="language-bash"<pre><code>gt;# 在容器中运行 Ollama
 docker exec -it ollama ollama pull llama2
 docker exec -it ollama ollama run llama2
 
@@ -3179,7 +3179,7 @@ docker exec -it ollama ollama pull mistral</code></pre>
                 </ul>
 
                 <h4>如何安装和使用？</h4>
-                <pre><code># 安装 Trivy
+                <pre><code>lt;span class="language-bash"<pre><code>gt;# 安装 Trivy
 # macOS
 brew install trivy
 
@@ -3209,7 +3209,7 @@ trivy image --format json --output report.json myapp:latest
 trivy image --severity HIGH,CRITICAL myapp:latest</code></pre>
 
                 <h4>CI/CD 集成示例</h4>
-                <pre><code># GitHub Actions
+                <pre><code>lt;span class="language-bash"<pre><code>gt;# GitHub Actions
 name: Security Scan
 on: [push]
 jobs:
@@ -3225,7 +3225,7 @@ jobs:
           exit-code: '1'  # 发现漏洞时失败</code></pre>
 
                 <h4>扫描结果解读</h4>
-                <pre><code>trivy image myapp:latest
+                <pre><code>lt;span class="language-bash"<pre><code>gt;trivy image myapp:latest
 
 # 输出示例：
 # ┌──────────────┬───────────────┬──────────────┬─────────────┐
@@ -3297,7 +3297,7 @@ jobs:
             <h4>Portainer - 最流行的管理界面</h4>
             <div class="card">
                 <p>Portainer 是一个轻量级的 Docker 管理界面，提供直观的 Web UI 来管理容器、镜像、网络和卷。</p>
-                <pre><code># 快速启动
+                <pre><code>lt;span class="language-bash"<pre><code>gt;# 快速启动
 docker run -d \
   --name portainer \
   -p 9443:9443 \
@@ -3328,7 +3328,7 @@ volumes:
             <h4>Lazydocker - 终端交互式管理</h4>
             <div class="card">
                 <p>Lazydocker 是一个终端 UI 工具，用键盘即可管理 Docker，适合喜欢命令行的用户。</p>
-                <pre><code># 安装（macOS）
+                <pre><code>lt;span class="language-bash"<pre><code>gt;# 安装（macOS）
 brew install jesseduffield/lazydocker/lazydocker
 
 # 安装（Linux）
@@ -3357,7 +3357,7 @@ lazydocker
             <h4>ctop - 容器实时监控</h4>
             <div class="card">
                 <p>ctop 提供实时的容器资源监控视图，类似 top 命令但专为容器设计。</p>
-                <pre><code># 安装（macOS）
+                <pre><code>lt;span class="language-bash"<pre><code>gt;# 安装（macOS）
 brew install ctop
 
 # 安装（Linux）
@@ -3385,7 +3385,7 @@ ctop
             <h4>Dive - 镜像分析工具</h4>
             <div class="card">
                 <p>Dive 帮助你分析 Docker 镜像每一层的内容，找出可以优化的地方，减小镜像体积。</p>
-                <pre><code># 安装（macOS）
+                <pre><code>lt;span class="language-bash"<pre><code>gt;# 安装（macOS）
 brew install dive
 
 # 安装（Linux）
@@ -3411,7 +3411,7 @@ dive --ci myapp:latest
             <h4>Hadolint - Dockerfile 语法检查</h4>
             <div class="card">
                 <p>Hadolint 是 Dockerfile 的 lint 工具，检查语法错误和最佳实践违反。</p>
-                <pre><code># 安装（macOS）
+                <pre><code>lt;span class="language-bash"<pre><code>gt;# 安装（macOS）
 brew install hadolint
 
 # 安装（Linux）
@@ -3446,7 +3446,7 @@ hadolint -f json Dockerfile
             <h4>DevContainer - 开发容器化</h4>
             <div class="card">
                 <p>DevContainer 让你在容器中进行开发，确保开发环境一致性，支持 VS Code 和 GitHub Codespaces。</p>
-                <pre><code># .devcontainer/devcontainer.json
+                <pre><code>lt;span class="language-bash"<pre><code>gt;# .devcontainer/devcontainer.json
 {
   "name": "My Dev Container",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
@@ -3498,7 +3498,7 @@ services:
             <h4>Watchtower - 自动更新容器</h4>
             <div class="card">
                 <p>Watchtower 监控运行中的容器，当镜像有更新时自动拉取并重启容器。</p>
-                <pre><code># 基本启动
+                <pre><code>lt;span class="language-bash"<pre><code>gt;# 基本启动
 docker run -d \
   --name watchtower \
   -v /var/run/docker.sock:/var/run/docker.sock \
@@ -3544,7 +3544,7 @@ environment:
             <h4>Skaffold - Kubernetes 开发工具</h4>
             <div class="card">
                 <p>Skaffold 是 Google 开发的命令行工具，简化 Kubernetes 应用的持续开发。</p>
-                <pre><code># 安装（macOS）
+                <pre><code>lt;span class="language-bash"<pre><code>gt;# 安装（macOS）
 brew install skaffold
 
 # 安装（Linux）
@@ -3582,7 +3582,7 @@ deploy:
             <h4>Tilt - 本地 Kubernetes 开发</h4>
             <div class="card">
                 <p>Tilt 为 Kubernetes 微服务开发提供即时反馈，支持多服务同时开发。</p>
-                <pre><code># 安装（macOS/Linux）
+                <pre><code>lt;span class="language-bash"<pre><code>gt;# 安装（macOS/Linux）
 curl -fsSL https://raw.githubusercontent.com/tilt-dev/tilt/master/scripts/install.sh | bash
 
 # 安装（macOS with Homebrew）
@@ -3616,7 +3616,7 @@ k8s_resource('web', port_forwards=3000)
             <h4>Traefik - 云原生边缘路由器</h4>
             <div class="card">
                 <p>Traefik 是现代化的反向代理和负载均衡器，自动发现 Docker 服务并配置路由。</p>
-                <pre><code># docker-compose.yml
+                <pre><code>lt;span class="language-bash"<pre><code>gt;# docker-compose.yml
 services:
   traefik:
     image: traefik:v3.0
@@ -3666,7 +3666,7 @@ certificatesResolvers:
             <h4>Prometheus + Grafana - 监控方案</h4>
             <div class="card">
                 <p>完整的 Docker 监控方案，Prometheus 收集指标，Grafana 可视化展示。</p>
-                <pre><code># docker-compose.yml
+                <pre><code>lt;span class="language-bash"<pre><code>gt;# docker-compose.yml
 services:
   prometheus:
     image: prom/prometheus:latest
@@ -3727,7 +3727,7 @@ scrape_configs:
             <h4>Dozzle - 轻量级日志查看</h4>
             <div class="card">
                 <p>Dozzle 是一个轻量级的容器日志查看工具，实时显示容器日志。</p>
-                <pre><code># 快速启动
+                <pre><code>lt;span class="language-bash"<pre><code>gt;# 快速启动
 docker run -d \
   --name dozzle \
   -p 9999:8080 \
@@ -3759,7 +3759,7 @@ services:
             <h4>Docker Bench for Security</h4>
             <div class="card">
                 <p>Docker 官方安全检查脚本，检查主机和 Docker 配置是否符合 CIS 安全基准。</p>
-                <pre><code># 运行检查
+                <pre><code>lt;span class="language-bash"<pre><code>gt;# 运行检查
 docker run --rm \
   --net host \
   --pid host \
@@ -3798,7 +3798,7 @@ docker run --rm \
             <h4>Clair - 镜像漏洞扫描</h4>
             <div class="card">
                 <p>Clair 是 CoreOS 开发的开源镜像漏洞扫描器，可集成到 CI/CD 流程。</p>
-                <pre><code># 使用 Clair 的客户端工具 clair-scanner
+                <pre><code>lt;span class="language-bash"<pre><code>gt;# 使用 Clair 的客户端工具 clair-scanner
 docker run --rm \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v $(pwd)/reports:/reports \
@@ -3924,7 +3924,7 @@ services:
                 <p>Podman 是 Red Hat 开发的容器引擎，与 Docker 完全兼容，但不需要守护进程，支持 rootless 模式。</p>
                 
                 <h5>核心特点</h5>
-                <pre><code># 与 Docker 的主要区别：
+                <pre><code>lt;span class="language-bash"<pre><code>gt;# 与 Docker 的主要区别：
 # 1. 无守护进程（daemonless）
 # 2. 默认 rootless 运行（更安全）
 # 3. 支持 Kubernetes YAML
@@ -3943,7 +3943,7 @@ sudo apt install podman
 sudo dnf install podman</code></pre>
 
                 <h5>基本使用</h5>
-                <pre><code># 命令与 Docker 几乎相同
+                <pre><code>lt;span class="language-bash"<pre><code>gt;# 命令与 Docker 几乎相同
 podman pull nginx:alpine
 podman run -d -p 8080:80 nginx
 podman ps
@@ -4002,7 +4002,7 @@ podman play kube pod.yaml</code></pre>
                 </table>
 
                 <h5>别名配置</h5>
-                <pre><code># 在 ~/.bashrc 或 ~/.zshrc 添加别名
+                <pre><code>lt;span class="language-bash"<pre><code>gt;# 在 ~/.bashrc 或 ~/.zshrc 添加别名
 alias docker=podman
 alias docker-compose=podman-compose
 
@@ -4013,7 +4013,7 @@ alias docker-compose=podman-compose
             <div class="card">
                 <p>containerd 是从 Docker 分离出来的容器运行时，专注于运行容器，被 Kubernetes 作为默认运行时。</p>
                 
-                <pre><code># 安装（Linux）
+                <pre><code>lt;span class="language-bash"<pre><code>gt;# 安装（Linux）
 wget https://github.com/containerd/containerd/releases/download/v1.7.13/containerd-1.7.13-linux-amd64.tar.gz
 tar xzf containerd-1.7.13-linux-amd64.tar.gz
 sudo mv bin/* /usr/local/bin/
@@ -4052,7 +4052,7 @@ ctr tasks list</code></pre>
             <h4>CRI-O - Kubernetes 专用运行时</h4>
             <div class="card">
                 <p>CRI-O 是专门为 Kubernetes 设计的轻量级容器运行时，实现 CRI（Container Runtime Interface）。</p>
-                <pre><code># 安装（Fedora/RHEL）
+                <pre><code>lt;span class="language-bash"<pre><code>gt;# 安装（Fedora/RHEL）
 sudo dnf install cri-o
 
 # 安装（Ubuntu）
@@ -4082,7 +4082,7 @@ crictl logs container_id</code></pre>
             <h4>Kaniko - 无 Docker 构建镜像</h4>
             <div class="card">
                 <p>Kaniko 可以在不需要 Docker 守护进程的情况下构建镜像，适合 CI/CD 环境。</p>
-                <pre><code># 在 Kubernetes 中使用
+                <pre><code>lt;span class="language-bash"<pre><code>gt;# 在 Kubernetes 中使用
 apiVersion: v1
 kind: Pod
 metadata:
@@ -4116,7 +4116,7 @@ docker run -it \
             <h4>Buildah - 无守护进程构建</h4>
             <div class="card">
                 <p>Buildah 是 Podman 的姐妹项目，专注于构建 OCI 镜像，无需 root 权限。</p>
-                <pre><code># 安装（Linux）
+                <pre><code>lt;span class="language-bash"<pre><code>gt;# 安装（Linux）
 sudo apt install buildah  # Ubuntu/Debian
 sudo dnf install buildah  # Fedora/RHEL
 
@@ -4142,7 +4142,7 @@ buildah commit mycontainer myapp:latest</code></pre>
             <h4>BuildKit - Docker 下一代构建器</h4>
             <div class="card">
                 <p>BuildKit 是 Docker 的新一代构建引擎，性能更强，支持并行构建和更好的缓存。</p>
-                <pre><code># 启用 BuildKit
+                <pre><code>lt;span class="language-bash"<pre><code>gt;# 启用 BuildKit
 export DOCKER_BUILDKIT=1
 docker build -t myapp:v1 .
 
@@ -4178,7 +4178,7 @@ buildctl build \
             <h4>Kubernetes - 容器编排标准</h4>
             <div class="card">
                 <p>Kubernetes 是容器编排的事实标准，适合大规模生产环境。</p>
-                <pre><code># 本地开发环境选择
+                <pre><code>lt;span class="language-bash"<pre><code>gt;# 本地开发环境选择
 # 1. minikube
 minikube start
 minikube dashboard
@@ -4230,7 +4230,7 @@ spec:
             <h4>Nomad - HashiCorp 编排工具</h4>
             <div class="card">
                 <p>Nomad 是 HashiCorp 开发的简单灵活的工作负载编排器。</p>
-                <pre><code># 安装（macOS）
+                <pre><code>lt;span class="language-bash"<pre><code>gt;# 安装（macOS）
 brew install nomad
 
 # 安装（Linux）
@@ -4277,7 +4277,7 @@ nomad job status webapp</code></pre>
             <h4>Docker Swarm - Docker 原生编排</h4>
             <div class="card">
                 <p>Docker Swarm 是 Docker 内置的编排功能，简单易用，适合中小规模集群。</p>
-                <pre><code># 初始化 Swarm
+                <pre><code>lt;span class="language-bash"<pre><code>gt;# 初始化 Swarm
 docker swarm init --advertise-addr <MANAGER-IP>
 
 # 添加工作节点
@@ -4323,7 +4323,7 @@ docker stack services myapp</code></pre>
             <h4>Dagger - 可编程 CI/CD</h4>
             <div class="card">
                 <p>Dagger 使用代码定义 CI/CD 流水线，在容器中运行，无需专有 CI 服务器。</p>
-                <pre><code># 安装
+                <pre><code>lt;span class="language-bash"<pre><code>gt;# 安装
 curl -fsSL https://dl.dagger.io/dagger/install.sh | sh
 dagger version
 
@@ -4361,7 +4361,7 @@ dagger run go run main.go</code></pre>
             <h4>Earthly - Make + Docker</h4>
             <div class="card">
                 <p>Earthly 结合 Makefile 和 Dockerfile 的优点，提供可重复的构建。</p>
-                <pre><code># 安装（macOS）
+                <pre><code>lt;span class="language-bash"<pre><code>gt;# 安装（macOS）
 brew install earthly/earthly/earthly
 
 # 安装（Linux）
@@ -4595,7 +4595,7 @@ earthly +test</code></pre>
                     </div>
                 </div>
             </div>
-            <pre><code># Dockerfile
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# Dockerfile
 FROM node:20-alpine
 WORKDIR /app
 COPY package*.json ./
@@ -4605,7 +4605,7 @@ EXPOSE 3000
 CMD ["node", "server.js"]</code></pre>
 
             <h3>案例 2：Python 应用</h3>
-            <pre><code># Dockerfile
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# Dockerfile
 FROM python:3.12-slim
 WORKDIR /app
 COPY requirements.txt .
@@ -4628,7 +4628,7 @@ CMD ["python", "app.py"]</code></pre>
                     </div>
                 </div>
             </div>
-            <pre><code># docker-compose.yml
+            <pre><code>lt;span class="language-bash"<pre><code>gt;# docker-compose.yml
 services:
   app:
     build: .
