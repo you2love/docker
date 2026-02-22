@@ -52,7 +52,7 @@
                     <summary>高级</summary>
                     <ul>
                         <li><a href="#security">安全实践</a></li>
-                        <li><a href="#ai-tools">AI 工具</a></li>
+                        <li><a href="#tools">周边工具</a></li>
                     </ul>
                 </details>
             </li>
@@ -2500,10 +2500,10 @@ FROM gcr.io/distroless/static</code></pre>
             </div>
         </section>
 
-        <!-- AI 工具 -->
-        <section id="ai-tools" class="section section-gray">
-            <h2>AI 工具集成</h2>
-            <p>Docker 生态系统集成了多项 AI 工具，帮助初学者更快上手，提升开发效率。</p>
+        <!-- 周边工具 -->
+        <section id="tools" class="section section-gray">
+            <h2>Docker 周边工具</h2>
+            <p>Docker 生态系统拥有丰富的周边工具，覆盖管理、监控、安全、开发等多个领域，帮助提升工作效率。</p>
 
             <h3>🔍 Docker Scout - 安全扫描工具</h3>
             <div class="card">
@@ -2869,6 +2869,625 @@ jobs:
                         <td>全面安全扫描</td>
                         <td>安全运维人员</td>
                         <td>⭐⭐ 中等</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>🖥️ 可视化管理工具</h3>
+            
+            <h4>Portainer - 最流行的管理界面</h4>
+            <div class="card">
+                <p>Portainer 是一个轻量级的 Docker 管理界面，提供直观的 Web UI 来管理容器、镜像、网络和卷。</p>
+                <pre><code># 快速启动
+docker run -d \
+  --name portainer \
+  -p 9443:9443 \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v portainer-data:/data \
+  --restart always \
+  portainer/portainer-ce:latest
+
+# 访问：https://localhost:9443
+# 首次访问需要设置管理员密码
+
+# Docker Compose 方式
+services:
+  portainer:
+    image: portainer/portainer-ce:latest
+    ports:
+      - "9443:9443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer-data:/data
+    restart: always
+
+volumes:
+  portainer-data:</code></pre>
+                <p><strong>主要功能：</strong>容器管理、镜像管理、网络配置、卷管理、用户权限控制、Stack 管理、模板部署</p>
+            </div>
+
+            <h4>Lazydocker - 终端交互式管理</h4>
+            <div class="card">
+                <p>Lazydocker 是一个终端 UI 工具，用键盘即可管理 Docker，适合喜欢命令行的用户。</p>
+                <pre><code># 安装（macOS）
+brew install jesseduffield/lazydocker/lazydocker
+
+# 安装（Linux）
+curl https://raw.githubusercontent.com/jesseduffield/lazydocker/master/scripts/install_update_linux.sh | bash
+
+# 安装（Windows）
+scoop install lazydocker
+
+# 或使用 Docker 运行
+docker run --rm -it \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  lazyteam/lazydocker
+
+# 启动
+lazydocker
+
+# 快捷键：
+# - 上/下：选择项目
+# - Enter：查看详情
+# - x：停止/删除
+# - l：查看日志
+# - s：进入容器 Shell
+# - ?：帮助</code></pre>
+            </div>
+
+            <h4>ctop - 容器实时监控</h4>
+            <div class="card">
+                <p>ctop 提供实时的容器资源监控视图，类似 top 命令但专为容器设计。</p>
+                <pre><code># 安装（macOS）
+brew install ctop
+
+# 安装（Linux）
+sudo wget https://github.com/bcicen/ctop/releases/download/v1.0.7/ctop-1.0.7-linux-amd64 -O /usr/local/bin/ctop
+sudo chmod +x /usr/local/bin/ctop
+
+# 使用 Docker 运行
+docker run --rm -it \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  quay.io/vektorlab/ctop:latest
+
+# 启动
+ctop
+
+# 快捷键：
+# - a：切换显示所有/运行中容器
+# - l：查看容器日志
+# - s：进入容器 Shell
+# - e：显示环境变量
+# - h：帮助</code></pre>
+            </div>
+
+            <h3>🔧 开发辅助工具</h3>
+
+            <h4>Dive - 镜像分析工具</h4>
+            <div class="card">
+                <p>Dive 帮助你分析 Docker 镜像每一层的内容，找出可以优化的地方，减小镜像体积。</p>
+                <pre><code># 安装（macOS）
+brew install dive
+
+# 安装（Linux）
+wget https://github.com/wagoodman/dive/releases/download/v0.12.0/dive_0.12.0_linux_amd64.deb
+sudo apt install ./dive_0.12.0_linux_amd64.deb
+
+# 分析镜像
+dive nginx:alpine
+
+# 分析本地构建的镜像
+dive myapp:latest
+
+# 在 CI 中使用
+dive --ci myapp:latest
+
+# 输出信息：
+# - 每层的文件变更
+# - 可能的优化建议
+# - 镜像效率评分
+# - 重复文件检测</code></pre>
+            </div>
+
+            <h4>Hadolint - Dockerfile 语法检查</h4>
+            <div class="card">
+                <p>Hadolint 是 Dockerfile 的 lint 工具，检查语法错误和最佳实践违反。</p>
+                <pre><code># 安装（macOS）
+brew install hadolint
+
+# 安装（Linux）
+wget -O hadolint https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64
+chmod +x hadolint
+sudo mv hadolint /usr/local/bin/
+
+# 使用 Docker 运行
+docker run --rm -i hadolint/hadolint < Dockerfile
+
+# 检查 Dockerfile
+hadolint Dockerfile
+
+# 只显示错误（忽略警告）
+hadolint --ignore DL3008 Dockerfile
+
+# 输出 JSON 格式
+hadolint -f json Dockerfile
+
+# 常见规则：
+# DL3000: 使用绝对 WORKDIR
+# DL3001: 不要使用 MAINTAINER（已废弃）
+# DL3003: 不要使用 WORKDIR 切换目录
+# DL3004: 不要以 root 用户构建
+# DL3008: 固定 apt 包版本
+# DL3015: 避免使用 --no-install-recommends 以外的选项
+
+# VS Code 集成
+# 安装扩展：exiasr.hadolint</code></pre>
+            </div>
+
+            <h4>DevContainer - 开发容器化</h4>
+            <div class="card">
+                <p>DevContainer 让你在容器中进行开发，确保开发环境一致性，支持 VS Code 和 GitHub Codespaces。</p>
+                <pre><code># .devcontainer/devcontainer.json
+{
+  "name": "My Dev Container",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "20"
+    },
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-sqlite",
+        "esbenp.prettier-vscode"
+      ]
+    }
+  },
+  "forwardPorts": [3000],
+  "postCreateCommand": "npm install",
+  "remoteUser": "vscode"
+}
+
+# 或使用 Docker Compose
+# .devcontainer/docker-compose.yml
+services:
+  app:
+    build: 
+      context: ..
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ../..:/workspaces:cached
+    command: sleep infinity
+    environment:
+      - DATABASE_URL=postgres://db:5432/dev
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: dev
+      POSTGRES_PASSWORD: dev
+
+# VS Code 命令面板：
+# Dev Containers: Reopen in Container
+# Dev Containers: Rebuild Container</code></pre>
+            </div>
+
+            <h3>⚙️ 自动化工具</h3>
+
+            <h4>Watchtower - 自动更新容器</h4>
+            <div class="card">
+                <p>Watchtower 监控运行中的容器，当镜像有更新时自动拉取并重启容器。</p>
+                <pre><code># 基本启动
+docker run -d \
+  --name watchtower \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  containrrr/watchtower
+
+# 指定检查间隔（秒）
+docker run -d \
+  --name watchtower \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -e WATCHTOWER_POLL_INTERVAL=3600 \
+  containrrr/watchtower
+
+# 只监控特定容器
+docker run -d \
+  --name watchtower \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  containrrr/watchtower myapp nginx
+
+# Docker Compose
+services:
+  watchtower:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WATCHTOWER_POLL_INTERVAL=3600
+      - WATCHTOWER_CLEANUP=true        # 删除旧镜像
+      - WATCHTOWER_INCLUDE_STOPPED=true # 包括停止的容器
+      - WATCHTOWER_NOTIFICATIONS=email  # 发送通知
+    restart: always
+
+# 通知配置（邮件示例）
+environment:
+  - WATCHTOWER_NOTIFICATIONS=email
+  - WATCHTOWER_NOTIFICATION_EMAIL_FROM=sender@example.com
+  - WATCHTOWER_NOTIFICATION_EMAIL_TO=admin@example.com
+  - WATCHTOWER_NOTIFICATION_EMAIL_SERVER=smtp.example.com
+  - WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PORT=587
+  - WATCHTOWER_NOTIFICATION_EMAIL_SERVER_USER=user
+  - WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PASSWORD=pass</code></pre>
+            </div>
+
+            <h4>Skaffold - Kubernetes 开发工具</h4>
+            <div class="card">
+                <p>Skaffold 是 Google 开发的命令行工具，简化 Kubernetes 应用的持续开发。</p>
+                <pre><code># 安装（macOS）
+brew install skaffold
+
+# 安装（Linux）
+curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
+chmod +x skaffold
+sudo mv skaffold /usr/local/bin
+
+# 初始化项目
+skaffold init
+
+# 开发模式（文件变化自动重新部署）
+skaffold dev
+
+# 构建并部署
+skaffold run
+
+# 清理部署
+skaffold delete
+
+# skaffold.yaml 示例
+apiVersion: skaffold/v4beta9
+kind: Config
+build:
+  artifacts:
+    - image: myapp
+      docker:
+        dockerfile: Dockerfile
+manifests:
+  rawYaml:
+    - k8s/*.yaml
+deploy:
+  kubectl: {}</code></pre>
+            </div>
+
+            <h4>Tilt - 本地 Kubernetes 开发</h4>
+            <div class="card">
+                <p>Tilt 为 Kubernetes 微服务开发提供即时反馈，支持多服务同时开发。</p>
+                <pre><code># 安装（macOS/Linux）
+curl -fsSL https://raw.githubusercontent.com/tilt-dev/tilt/master/scripts/install.sh | bash
+
+# 安装（macOS with Homebrew）
+brew install tilt-dev/tap/tilt
+
+# 启动 Tilt
+tilt up
+
+# Tiltfile 示例
+# Tiltfile
+docker_build('myapp', '.')
+k8s_yaml('k8s/')
+k8s_resource('myapp', port_forwards=3000)
+
+# 多服务示例
+docker_build('api', './api')
+docker_build('web', './web')
+k8s_yaml('k8s/')
+k8s_resource('api', port_forwards=8080)
+k8s_resource('web', port_forwards=3000)
+
+# 特点：
+# - 实时日志查看
+# - 资源监控面板
+# - 文件变化自动构建
+# - 支持 live_update（不重建镜像更新代码）</code></pre>
+            </div>
+
+            <h3>🌐 网络与代理</h3>
+
+            <h4>Traefik - 云原生边缘路由器</h4>
+            <div class="card">
+                <p>Traefik 是现代化的反向代理和负载均衡器，自动发现 Docker 服务并配置路由。</p>
+                <pre><code># docker-compose.yml
+services:
+  traefik:
+    image: traefik:v3.0
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"  # Dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./certs:/etc/certs:ro
+    restart: always
+
+  whoami:
+    image: traefik/whoami
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`whoami.example.com`)"
+      - "traefik.http.routers.whoami.entrypoints=web"
+
+# traefik.yml
+api:
+  dashboard: true
+  insecure: true
+
+entryPoints:
+  web:
+    address: ":80"
+  websecure:
+    address: ":443"
+
+providers:
+  docker:
+    exposedByDefault: false
+
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      email: admin@example.com
+      storage: /etc/certs/acme.json
+      httpChallenge:
+        entryPoint: web</code></pre>
+            </div>
+
+            <h3>📊 监控与日志</h3>
+
+            <h4>Prometheus + Grafana - 监控方案</h4>
+            <div class="card">
+                <p>完整的 Docker 监控方案，Prometheus 收集指标，Grafana 可视化展示。</p>
+                <pre><code># docker-compose.yml
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    ports:
+      - "8081:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+
+  node-exporter:
+    image: prom/node-exporter:latest
+    ports:
+      - "9100:9100"
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+
+volumes:
+  grafana-data:
+
+# prometheus.yml
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['cadvisor:8080']
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['node-exporter:9100']
+
+# 导入 Grafana Dashboard
+# 推荐 ID: 11600 (Docker and system monitoring)
+# 或 893 (Node Exporter Full)</code></pre>
+            </div>
+
+            <h4>Dozzle - 轻量级日志查看</h4>
+            <div class="card">
+                <p>Dozzle 是一个轻量级的容器日志查看工具，实时显示容器日志。</p>
+                <pre><code># 快速启动
+docker run -d \
+  --name dozzle \
+  -p 9999:8080 \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  amir20/dozzle:latest
+
+# Docker Compose
+services:
+  dozzle:
+    image: amir20/dozzle:latest
+    ports:
+      - "9999:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - DOZZLE_LEVEL=info
+      - DOZZLE_TAILSIZE=300
+
+# 访问：http://localhost:9999
+# 特点：
+# - 实时日志流
+# - 多容器同时查看
+# - 日志搜索过滤
+# - 无需配置</code></pre>
+            </div>
+
+            <h3>🔐 安全加固工具</h3>
+
+            <h4>Docker Bench for Security</h4>
+            <div class="card">
+                <p>Docker 官方安全检查脚本，检查主机和 Docker 配置是否符合 CIS 安全基准。</p>
+                <pre><code># 运行检查
+docker run --rm \
+  --net host \
+  --pid host \
+  --cap-add audit_control \
+  -v /var/lib:/var/lib \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v /usr/lib/systemd:/usr/lib/systemd \
+  -v /etc:/etc \
+  --label docker_bench_security \
+  docker/docker-bench-security
+
+# 输出分类：
+# [INFO] 检查项
+# [PASS] 通过
+# [WARN] 警告（需要关注）
+# [FAIL] 失败（需要修复）
+# [NOTE] 说明
+
+# 常见修复建议：
+# 1. 设置日志驱动
+#    --log-driver json-file --log-opts max-size=10m
+
+# 2. 禁用 inter-container communication
+#    --icc=false
+
+# 3. 启用 user namespace
+#    /etc/docker/daemon.json: {"userns-remap": "default"}
+
+# 4. 限制容器 capabilities
+#    --cap-drop ALL --cap-add CHOWN
+
+# 5. 使用 seccomp profile
+#    --security-opt seccomp=default.json</code></pre>
+            </div>
+
+            <h4>Clair - 镜像漏洞扫描</h4>
+            <div class="card">
+                <p>Clair 是 CoreOS 开发的开源镜像漏洞扫描器，可集成到 CI/CD 流程。</p>
+                <pre><code># 使用 Clair 的客户端工具 clair-scanner
+docker run --rm \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v $(pwd)/reports:/reports \
+  arminc/clair-local-scan:v2.0.8 \
+  --clair http://clair:6060 \
+  --report /reports/$(basename $IMAGE).json \
+  myapp:latest
+
+# 或使用 Clair V4
+services:
+  clair:
+    image: quay.io/coreos/clair:v4.5.0
+    ports:
+      - "6060:6060"
+      - "6061:6061"
+    volumes:
+      - ./config.yaml:/etc/clair/config.yaml
+
+# 与 Harbor 集成
+# Harbor 内置 Clair 扫描器
+# 在 Harbor 配置中启用漏洞扫描即可</code></pre>
+            </div>
+
+            <h3>🛠️ 完整工具清单</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>类别</th>
+                        <th>工具</th>
+                        <th>用途</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td rowspan="3"><strong>可视化管理</strong></td>
+                        <td>Portainer</td>
+                        <td>Web 管理界面</td>
+                    </tr>
+                    <tr>
+                        <td>Lazydocker</td>
+                        <td>终端 UI 管理</td>
+                    </tr>
+                    <tr>
+                        <td>Dockge</td>
+                        <td>Compose 项目管理</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2"><strong>监控</strong></td>
+                        <td>ctop</td>
+                        <td>容器资源监控</td>
+                    </tr>
+                    <tr>
+                        <td>Prometheus + Grafana</td>
+                        <td>完整监控方案</td>
+                    </tr>
+                    <tr>
+                        <td><strong>日志</strong></td>
+                        <td>Dozzle</td>
+                        <td>轻量级日志查看</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="3"><strong>开发</strong></td>
+                        <td>Dive</td>
+                        <td>镜像层分析</td>
+                    </tr>
+                    <tr>
+                        <td>Hadolint</td>
+                        <td>Dockerfile 检查</td>
+                    </tr>
+                    <tr>
+                        <td>DevContainer</td>
+                        <td>容器化开发环境</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2"><strong>自动化</strong></td>
+                        <td>Watchtower</td>
+                        <td>自动更新容器</td>
+                    </tr>
+                    <tr>
+                        <td>Skaffold/Tilt</td>
+                        <td>K8s 开发流程</td>
+                    </tr>
+                    <tr>
+                        <td><strong>网络</strong></td>
+                        <td>Traefik</td>
+                        <td>反向代理/负载均衡</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="3"><strong>安全</strong></td>
+                        <td>Docker Scout</td>
+                        <td>官方安全扫描</td>
+                    </tr>
+                    <tr>
+                        <td>Trivy</td>
+                        <td>漏洞扫描</td>
+                    </tr>
+                    <tr>
+                        <td>Docker Bench</td>
+                        <td>安全基准检查</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2"><strong>AI 相关</strong></td>
+                        <td>Ask Gordon</td>
+                        <td>AI 助手</td>
+                    </tr>
+                    <tr>
+                        <td>GenAI Stack</td>
+                        <td>AI 应用开发栈</td>
                     </tr>
                 </tbody>
             </table>
