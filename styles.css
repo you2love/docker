@@ -133,8 +133,8 @@ body {
 /* 主内容区 */
 .main {
     margin-left: var(--sidebar-width);
-    padding: 40px;
-    max-width: 900px;
+    padding: 40px 60px;
+    max-width: none;
 }
 
 /* 区块 */
@@ -150,9 +150,9 @@ body {
 
 .section-gray {
     background: var(--bg-gray);
-    margin-left: -40px;
-    margin-right: -40px;
-    padding: 40px;
+    margin-left: -60px;
+    margin-right: -60px;
+    padding: 40px 60px;
     border-radius: 8px;
 }
 
