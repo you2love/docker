@@ -19,9 +19,35 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // 初始化Prism.js高亮
             Prism.highlightAll();
+            
+            // 初始化代码折叠功能
+            initCodeFolding();
         }, 100);
     }
 });
+
+// 初始化代码折叠功能
+function initCodeFolding() {
+    document.querySelectorAll('pre').forEach(pre => {
+        // 检查代码块是否过长需要折叠
+        if (pre.scrollHeight > 500) {
+            // 添加折叠类
+            pre.classList.add('collapsed');
+            
+            // 创建折叠按钮
+            const foldButton = document.createElement('button');
+            foldButton.className = 'fold-toggle';
+            foldButton.textContent = '展开';
+            foldButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                pre.classList.toggle('collapsed');
+                this.textContent = pre.classList.contains('collapsed') ? '展开' : '收起';
+            });
+            
+            pre.appendChild(foldButton);
+        }
+    });
+}
 
 // 平滑滚动
 document.querySelectorAll('.tree-nav a[href^="#"]').forEach(anchor => {

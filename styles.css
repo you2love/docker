@@ -206,6 +206,54 @@ pre code {
     line-height: 1.5;
 }
 
+pre.collapsed {
+    max-height: 500px;
+    overflow: hidden;
+    position: relative;
+}
+
+pre.collapsed::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: linear-gradient(transparent, var(--pre-bg));
+    pointer-events: none;
+}
+
+pre.collapsed:hover {
+    max-height: 500px;
+}
+
+pre.collapsed .fold-toggle {
+    display: block !important;
+}
+
+pre:not(.collapsed) .fold-toggle {
+    display: none !important;
+}
+
+pre.collapsed .fold-toggle {
+    display: block;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+pre.collapsed .fold-toggle:hover {
+    background: var(--primary-dark);
+}
+
 /* 复制按钮 */
 .copy-btn {
     position: absolute;
