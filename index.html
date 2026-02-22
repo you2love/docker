@@ -2112,77 +2112,199 @@ docker run --name reader \
 
             
 
-                        <h4>存储架构图</h4>
+                                                <h4>存储架构图</h4>
 
-                        <div class="arch-diagram">
+            
 
-                            <pre><code>┌─────────────────────────────────────────────────────────────────┐
+                                                <p>容器存储系统由多个层次组成，从下到上分别是：</p>
 
-            │                         宿主机文件系统                            │
+            
 
-            │  ┌─────────────────────────────────────────────────────────┐   │
+                        
 
-            │  │         /var/lib/docker/volumes/                        │   │
+            
 
-            │  │         ├── mydata/_data/    ← 命名卷存储位置            │   │
+                                                <div class="storage-diagram">
 
-            │  │         └── anonymous/_data/ ← 匿名卷存储位置            │   │
+            
 
-            │  └─────────────────────────────────────────────────────────┘   │
+                                                    <div class="storage-layer">
 
-            │  ┌─────────────────────────────────────────────────────────┐   │
+            
 
-            │  │         /home/user/project/                             │   │
+                                                        <div class="layer-name">宿主机文件系统</div>
 
-            │  │         └── src/             ← 绑定挂载源目录            │   │
+            
 
-            │  └─────────────────────────────────────────────────────────┘   │
+                                                        <div class="layer-content">
 
-            │  ┌─────────────────────────────────────────────────────────┐   │
+            
 
-            │  │         内存 (RAM)                                       │   │
+                                                            <div class="storage-type">
 
-            │  │         └── tmpfs 数据           ← tmpfs 存储           │   │
+            
 
-            │  └─────────────────────────────────────────────────────────┘   │
+                                                                <strong>📁 命名卷</strong>
 
-            └─────────────────────────────────────────────────────────────────┘
+            
 
-                                          ↑↓ 挂载
+                                                                <div class="storage-location">/var/lib/docker/volumes/mydata/_data</div>
 
-            ┌─────────────────────────────────────────────────────────────────┐
+            
 
-            │                         容器文件系统                              │
+                                                                <div class="storage-desc">Docker管理的持久化存储</div>
 
-            │  ┌─────────────────────────────────────────────────────────┐   │
+            
 
-            │  │  /app/data/              ← 挂载点（挂载后覆盖原内容）     │   │
+                                                            </div>
 
-            │  │  /app/src/               ← 挂载点                        │   │
+            
 
-            │  │  /run/secrets/           ← tmpfs 挂载点                  │   │
+                                                            <div class="storage-type">
 
-            │  └─────────────────────────────────────────────────────────┘   │
+            
 
-            │  ┌─────────────────────────────────────────────────────────┐   │
+                                                                <strong>📁 绑定挂载</strong>
 
-            │  │  镜像层（只读）                                          │   │
+            
 
-            │  │  ├── Layer 1: 基础系统                                   │   │
+                                                                <div class="storage-location">/home/user/project/src</div>
 
-            │  │  ├── Layer 2: 依赖包                                     │   │
+            
 
-            │  │  └── Layer 3: 应用代码                                   │   │
+                                                                <div class="storage-desc">直接映射到宿主机目录</div>
 
-            │  └─────────────────────────────────────────────────────────┘   │
+            
 
-            │  ┌─────────────────────────────────────────────────────────┐   │
+                                                            </div>
 
-            │  │  容器层（可写）← 容器运行时修改的文件写入这里             │   │
+            
 
-            │  └─────────────────────────────────────────────────────────┘   │
+                                                            <div class="storage-type">
 
-            └─────────────────────────────────────────────────────────────────┘</code></pre>
+            
+
+                                                                <strong>💾 内存存储</strong>
+
+            
+
+                                                                <div class="storage-location">/run/secrets</div>
+
+            
+
+                                                                <div class="storage-desc">tmpfs存储（容器停止后消失）</div>
+
+            
+
+                                                            </div>
+
+            
+
+                                                        </div>
+
+            
+
+                                                    </div>
+
+            
+
+                        
+
+            
+
+                                                    <div class="storage-arrow">↓ 挂载</div>
+
+            
+
+                        
+
+            
+
+                                                    <div class="storage-layer">
+
+            
+
+                                                        <div class="layer-name">容器文件系统</div>
+
+            
+
+                                                        <div class="layer-content">
+
+            
+
+                                                            <div class="container-layer">
+
+            
+
+                                                                <div class="layer-name">镜像层（只读）</div>
+
+            
+
+                                                                <div class="layer-items">
+
+            
+
+                                                                    <div class="layer-item">基础系统层</div>
+
+            
+
+                                                                    <div class="layer-item">依赖包层</div>
+
+            
+
+                                                                    <div class="layer-item">应用代码层</div>
+
+            
+
+                                                                </div>
+
+            
+
+                                                            </div>
+
+            
+
+                                                            <div class="container-layer">
+
+            
+
+                                                                <div class="layer-name">容器层（可写）</div>
+
+            
+
+                                                                <div class="layer-desc">运行时修改的文件存储在这里</div>
+
+            
+
+                                                            </div>
+
+            
+
+                                                        </div>
+
+            
+
+                                                    </div>
+
+            
+
+                                                </div>
+
+            
+
+                        
+
+            
+
+                                                <p style="text-align: center; margin-top: 20px; color: #666;">
+
+            
+
+                                                    <strong>挂载点示例：</strong> /app/data → 宿主机目录，/app/src → 代码目录
+
+            
+
+                                                </p>
 
                         </div>
 
