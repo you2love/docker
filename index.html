@@ -53,6 +53,7 @@
                     <ul>
                         <li><a href="#security">安全实践</a></li>
                         <li><a href="#tools">周边工具</a></li>
+                        <li><a href="#alternatives">Docker 替代品</a></li>
                     </ul>
                 </details>
             </li>
@@ -3491,6 +3492,592 @@ services:
                     </tr>
                 </tbody>
             </table>
+        </section>
+
+        <!-- Docker 替代品 -->
+        <section id="alternatives" class="section">
+            <h2>Docker 替代品</h2>
+            <p>虽然 Docker 是最流行的容器化平台，但市面上还有其他优秀的替代方案，各有特点和适用场景。</p>
+
+            <h3>容器运行时替代品</h3>
+
+            <h4>Podman - 无守护进程的容器引擎</h4>
+            <div class="card">
+                <p>Podman 是 Red Hat 开发的容器引擎，与 Docker 完全兼容，但不需要守护进程，支持 rootless 模式。</p>
+                
+                <h5>核心特点</h5>
+                <pre><code># 与 Docker 的主要区别：
+# 1. 无守护进程（daemonless）
+# 2. 默认 rootless 运行（更安全）
+# 3. 支持 Kubernetes YAML
+# 4. 兼容 Docker CLI 命令
+
+# 安装（macOS）
+brew install podman
+podman machine init
+podman machine start
+
+# 安装（Linux - Ubuntu）
+sudo apt update
+sudo apt install podman
+
+# 安装（Linux - Fedora/RHEL）
+sudo dnf install podman</code></pre>
+
+                <h5>基本使用</h5>
+                <pre><code># 命令与 Docker 几乎相同
+podman pull nginx:alpine
+podman run -d -p 8080:80 nginx
+podman ps
+podman images
+podman exec -it container_id sh
+podman logs container_id
+
+# 构建镜像
+podman build -t myapp:v1 .
+
+# 使用 Docker Compose 兼容工具
+podman-compose up -d
+
+# 生成 Kubernetes YAML
+podman generate kube mycontainer > pod.yaml
+
+# 从 Kubernetes YAML 部署
+podman play kube pod.yaml</code></pre>
+
+                <h5>Podman vs Docker</h5>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>特性</th>
+                            <th>Docker</th>
+                            <th>Podman</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>守护进程</td>
+                            <td>需要 dockerd</td>
+                            <td>无守护进程</td>
+                        </tr>
+                        <tr>
+                            <td>Root 权限</td>
+                            <td>默认需要 root</td>
+                            <td>默认 rootless</td>
+                        </tr>
+                        <tr>
+                            <td>Docker 兼容</td>
+                            <td>-</td>
+                            <td>CLI 完全兼容</td>
+                        </tr>
+                        <tr>
+                            <td>Kubernetes 集成</td>
+                            <td>需要额外工具</td>
+                            <td>原生支持</td>
+                        </tr>
+                        <tr>
+                            <td>安全性</td>
+                            <td>中等</td>
+                            <td>更高（rootless）</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h5>别名配置</h5>
+                <pre><code># 在 ~/.bashrc 或 ~/.zshrc 添加别名
+alias docker=podman
+alias docker-compose=podman-compose
+
+# 这样可以直接使用 Docker 命令习惯</code></pre>
+            </div>
+
+            <h4>containerd - 工业级容器运行时</h4>
+            <div class="card">
+                <p>containerd 是从 Docker 分离出来的容器运行时，专注于运行容器，被 Kubernetes 作为默认运行时。</p>
+                
+                <pre><code># 安装（Linux）
+wget https://github.com/containerd/containerd/releases/download/v1.7.13/containerd-1.7.13-linux-amd64.tar.gz
+tar xzf containerd-1.7.13-linux-amd64.tar.gz
+sudo mv bin/* /usr/local/bin/
+
+# 创建 systemd 服务
+sudo mkdir -p /usr/local/lib/systemd/system/
+sudo cat > /usr/local/lib/systemd/system/containerd.service << EOF
+[Unit]
+Description=containerd container runtime
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/containerd
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl enable --now containerd
+
+# 使用 ctr 命令管理容器
+ctr images pull docker.io/library/nginx:alpine
+ctr run -d docker.io/library/nginx:alpine mynginx
+ctr containers list
+ctr tasks list</code></pre>
+
+                <h5>适用场景</h5>
+                <ul>
+                    <li>Kubernetes 集群节点运行时</li>
+                    <li>需要轻量级容器运行时的场景</li>
+                    <li>嵌入式或边缘计算环境</li>
+                </ul>
+            </div>
+
+            <h4>CRI-O - Kubernetes 专用运行时</h4>
+            <div class="card">
+                <p>CRI-O 是专门为 Kubernetes 设计的轻量级容器运行时，实现 CRI（Container Runtime Interface）。</p>
+                <pre><code># 安装（Fedora/RHEL）
+sudo dnf install cri-o
+
+# 安装（Ubuntu）
+sudo apt install cri-o
+
+# 启动服务
+sudo systemctl enable --now crio
+
+# CRI-O 专为 Kubernetes 优化
+# 不提供独立 CLI，通过 crictl 管理
+
+# 安装 crictl
+wget https://github.com/kubernetes-sigs/cri-tools/releases/download/v1.29.0/crictl-v1.29.0-linux-amd64.tar.gz
+tar xzf crictl-v1.29.0-linux-amd64.tar.gz
+sudo mv crictl /usr/local/bin/
+
+# 常用命令
+crictl pull nginx:alpine
+crictl images
+crictl pods
+crictl ps
+crictl logs container_id</code></pre>
+            </div>
+
+            <h3>镜像构建工具</h3>
+
+            <h4>Kaniko - 无 Docker 构建镜像</h4>
+            <div class="card">
+                <p>Kaniko 可以在不需要 Docker 守护进程的情况下构建镜像，适合 CI/CD 环境。</p>
+                <pre><code># 在 Kubernetes 中使用
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kaniko
+spec:
+  containers:
+  - name: kaniko
+    image: gcr.io/kaniko-project/executor:latest
+    args:
+    - "--dockerfile=Dockerfile"
+    - "--context=git://github.com/user/repo"
+    - "--destination=user/image:tag"
+    volumeMounts:
+    - name: docker-config
+      mountPath: /kaniko/.docker
+  volumes:
+  - name: docker-config
+    configMap:
+      name: docker-config
+
+# 在容器中运行
+docker run -it \
+  -v $(pwd):/workspace \
+  -v ~/.docker/config.json:/kaniko/.docker/config.json \
+  gcr.io/kaniko-project/executor:latest \
+  --dockerfile=Dockerfile \
+  --context=/workspace \
+  --destination=myregistry/myapp:v1</code></pre>
+            </div>
+
+            <h4>Buildah - 无守护进程构建</h4>
+            <div class="card">
+                <p>Buildah 是 Podman 的姐妹项目，专注于构建 OCI 镜像，无需 root 权限。</p>
+                <pre><code># 安装（Linux）
+sudo apt install buildah  # Ubuntu/Debian
+sudo dnf install buildah  # Fedora/RHEL
+
+# 从 Dockerfile 构建
+buildah build -t myapp:v1 .
+
+# 交互式构建
+container=$(buildah from alpine)
+buildah run $container -- apk add nginx
+buildah config --cmd "nginx -g 'daemon off;'" $container
+buildah commit $container myapp:nginx
+
+# 推送镜像
+buildah push myapp:v1 docker://registry.example.com/myapp:v1
+
+# 无需 Dockerfile 的构建方式
+buildah from alpine
+buildah copy mycontainer app.py /app/
+buildah run mycontainer -- pip install flask
+buildah commit mycontainer myapp:latest</code></pre>
+            </div>
+
+            <h4>BuildKit - Docker 下一代构建器</h4>
+            <div class="card">
+                <p>BuildKit 是 Docker 的新一代构建引擎，性能更强，支持并行构建和更好的缓存。</p>
+                <pre><code># 启用 BuildKit
+export DOCKER_BUILDKIT=1
+docker build -t myapp:v1 .
+
+# 使用 buildx（Docker 内置）
+docker buildx version
+
+# 创建多平台构建器
+docker buildx create --name mybuilder --use
+docker buildx inspect --bootstrap
+
+# 多平台构建
+docker buildx build --platform linux/amd64,linux/arm64 -t myapp:v1 .
+
+# 直接使用 BuildKit daemon
+# 安装
+wget https://github.com/moby/buildkit/releases/download/v0.12.5/buildkit-v0.12.5.linux-amd64.tar.gz
+tar xzf buildkit-v0.12.5.linux-amd64.tar.gz
+sudo mv bin/* /usr/local/bin/
+
+# 启动服务
+sudo buildkitd &
+
+# 使用 buildctl 构建
+buildctl build \
+  --frontend dockerfile.v0 \
+  --local context=. \
+  --local dockerfile=. \
+  --output type=docker,name=myapp:v1 | docker load</code></pre>
+            </div>
+
+            <h3>容器编排平台</h3>
+
+            <h4>Kubernetes - 容器编排标准</h4>
+            <div class="card">
+                <p>Kubernetes 是容器编排的事实标准，适合大规模生产环境。</p>
+                <pre><code># 本地开发环境选择
+# 1. minikube
+minikube start
+minikube dashboard
+
+# 2. kind（Kubernetes in Docker）
+kind create cluster
+kind delete cluster
+
+# 3. k3s（轻量级 Kubernetes）
+curl -sfL https://get.k3s.io | sh -
+
+# 4. k3d（k3s in Docker）
+k3d cluster create mycluster
+
+# 基本概念
+# Pod: 最小部署单元
+# Deployment: 管理 Pod 副本
+# Service: 网络服务发现
+# ConfigMap/Secret: 配置管理
+# Ingress: HTTP 路由
+
+# 示例部署
+kubectl create deployment nginx --image=nginx
+kubectl expose deployment nginx --port=80 --type=NodePort
+kubectl get pods,svc
+
+# YAML 部署
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: webapp
+  template:
+    metadata:
+      labels:
+        app: webapp
+    spec:
+      containers:
+      - name: webapp
+        image: myapp:v1
+        ports:
+        - containerPort: 3000</code></pre>
+            </div>
+
+            <h4>Nomad - HashiCorp 编排工具</h4>
+            <div class="card">
+                <p>Nomad 是 HashiCorp 开发的简单灵活的工作负载编排器。</p>
+                <pre><code># 安装（macOS）
+brew install nomad
+
+# 安装（Linux）
+wget https://releases.hashicorp.com/nomad/1.7.7/nomad_1.7.7_linux_amd64.zip
+unzip nomad_1.7.7_linux_amd64.zip
+sudo mv nomad /usr/local/bin/
+
+# 启动开发模式
+nomad agent -dev
+
+# 运行 Docker 任务
+job "webapp" {
+  datacenters = ["dc1"]
+  type = "service"
+
+  group "web" {
+    count = 2
+
+    task "server" {
+      driver = "docker"
+      config {
+        image = "nginx:alpine"
+        port_map {
+          http = 80
+        }
+      }
+      resources {
+        cpu    = 500
+        memory = 256
+        network {
+          mbits = 10
+          port "http" {}
+        }
+      }
+    }
+  }
+}
+
+# 运行作业
+nomad job run webapp.nomad
+nomad job status webapp</code></pre>
+            </div>
+
+            <h4>Docker Swarm - Docker 原生编排</h4>
+            <div class="card">
+                <p>Docker Swarm 是 Docker 内置的编排功能，简单易用，适合中小规模集群。</p>
+                <pre><code># 初始化 Swarm
+docker swarm init --advertise-addr <MANAGER-IP>
+
+# 添加工作节点
+docker swarm join-token worker
+
+# 部署服务
+docker service create \
+  --name web \
+  --replicas 3 \
+  --publish 80:80 \
+  nginx:alpine
+
+# 管理服务
+docker service ls
+docker service ps web
+docker service scale web=5
+docker service update --image nginx:latest web
+
+# 使用 Stack 部署
+# docker-compose.yml
+version: "3.8"
+services:
+  web:
+    image: nginx
+    deploy:
+      replicas: 3
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "80:80"
+
+# 部署 Stack
+docker stack deploy -c docker-compose.yml myapp
+docker stack ls
+docker stack services myapp</code></pre>
+            </div>
+
+            <h3>开发环境工具</h3>
+
+            <h4>Dagger - 可编程 CI/CD</h4>
+            <div class="card">
+                <p>Dagger 使用代码定义 CI/CD 流水线，在容器中运行，无需专有 CI 服务器。</p>
+                <pre><code># 安装
+curl -fsSL https://dl.dagger.io/dagger/install.sh | sh
+dagger version
+
+# 使用 Go SDK 编写流水线
+# main.go
+package main
+
+import (
+    "context"
+    "dagger.io/dagger"
+)
+
+func main() {
+    ctx := context.Background()
+    client, _ := dagger.Connect(ctx)
+    defer client.Close()
+
+    // 获取源代码
+    source := client.Host().Directory()
+
+    // 构建镜像
+    image := client.Container().
+        Build(source)
+
+    // 运行测试
+    _, err := image.
+        WithExec([]string{"go", "test", "./..."}).
+        ExitCode(ctx)
+}
+
+# 运行
+dagger run go run main.go</code></pre>
+            </div>
+
+            <h4>Earthly - Make + Docker</h4>
+            <div class="card">
+                <p>Earthly 结合 Makefile 和 Dockerfile 的优点，提供可重复的构建。</p>
+                <pre><code># 安装（macOS）
+brew install earthly/earthly/earthly
+
+# 安装（Linux）
+sudo /bin/sh -c 'wget https://github.com/earthly/earthly/releases/download/v0.8.0/earthly-linux-amd64 -O /usr/local/bin/earthly && chmod +x /usr/local/bin/earthly'
+
+# Earthfile
+VERSION 0.8
+
+FROM golang:1.22-alpine
+
+build:
+    COPY go.mod go.sum ./
+    RUN go mod download
+    COPY . .
+    RUN go build -o app .
+    SAVE ARTIFACT app
+
+docker:
+    FROM alpine:3.19
+    COPY +build/app /app
+    ENTRYPOINT ["/app"]
+    SAVE IMAGE myapp:latest
+
+test:
+    FROM +build
+    RUN go test ./...
+
+# 执行构建
+earthly +build
+earthly +docker
+earthly +test</code></pre>
+            </div>
+
+            <h3>替代品对比总结</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>类别</th>
+                        <th>工具</th>
+                        <th>主要优势</th>
+                        <th>适用场景</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td rowspan="3"><strong>容器运行时</strong></td>
+                        <td>Podman</td>
+                        <td>无守护进程、rootless</td>
+                        <td>安全要求高的环境</td>
+                    </tr>
+                    <tr>
+                        <td>containerd</td>
+                        <td>轻量、稳定</td>
+                        <td>Kubernetes 节点</td>
+                    </tr>
+                    <tr>
+                        <td>CRI-O</td>
+                        <td>K8s 原生</td>
+                        <td>Kubernetes 专用</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="3"><strong>镜像构建</strong></td>
+                        <td>Kaniko</td>
+                        <td>无 Docker 构建</td>
+                        <td>CI/CD 流水线</td>
+                    </tr>
+                    <tr>
+                        <td>Buildah</td>
+                        <td>rootless 构建</td>
+                        <td>安全构建环境</td>
+                    </tr>
+                    <tr>
+                        <td>BuildKit</td>
+                        <td>高性能、多平台</td>
+                        <td>现代 Docker 构建</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="3"><strong>容器编排</strong></td>
+                        <td>Kubernetes</td>
+                        <td>行业标准、功能强大</td>
+                        <td>大规模生产环境</td>
+                    </tr>
+                    <tr>
+                        <td>Nomad</td>
+                        <td>简单灵活</td>
+                        <td>混合工作负载</td>
+                    </tr>
+                    <tr>
+                        <td>Docker Swarm</td>
+                        <td>Docker 原生、易用</td>
+                        <td>中小规模集群</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>如何选择？</h3>
+            <div class="grid">
+                <div class="card">
+                    <h4>继续使用 Docker</h4>
+                    <ul>
+                        <li>个人开发和学习</li>
+                        <li>中小团队项目</li>
+                        <li>需要最广泛的社区支持</li>
+                        <li>使用 Docker Desktop 的 macOS/Windows 用户</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>考虑 Podman</h4>
+                    <ul>
+                        <li>需要更高的安全性</li>
+                        <li>Linux 服务器环境</li>
+                        <li>想要 rootless 容器</li>
+                        <li>企业级 Red Hat 环境</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>考虑 Kubernetes</h4>
+                    <ul>
+                        <li>大规模微服务架构</li>
+                        <li>需要自动扩缩容</li>
+                        <li>多云/混合云部署</li>
+                        <li>企业生产环境</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>考虑 Nomad</h4>
+                    <ul>
+                        <li>需要编排多种工作负载</li>
+                        <li>想要更简单的操作</li>
+                        <li>已有 HashiCorp 工具栈</li>
+                        <li>边缘计算场景</li>
+                    </ul>
+                </div>
+            </div>
         </section>
 
         <!-- 实战 -->
