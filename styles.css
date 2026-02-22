@@ -235,63 +235,70 @@ pre:not(.collapsed) .fold-toggle {
     display: none !important;
 }
 
+/* 确保按钮样式优先级高于Prism.js */
+pre[class*="language-"] .fold-toggle,
 pre .fold-toggle {
-    position: absolute;
-    top: 8px;
-    left: 8px;
-    background: rgba(255, 255, 255, 0.15);
-    color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: 500;
-    cursor: pointer;
-    z-index: 10;
-    transition: all 0.2s ease;
-    backdrop-filter: blur(4px);
+    position: absolute !important;
+    top: 8px !important;
+    left: 8px !important;
+    background: rgba(255, 255, 255, 0.8) !important;
+    color: #000000 !important;
+    border: 2px solid #000000 !important;
+    padding: 4px 8px !important;
+    border-radius: 4px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    z-index: 1000 !important;
+    transition: all 0.2s ease !important;
+    backdrop-filter: blur(4px) !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
 }
 
-pre:hover .fold-toggle {
-    opacity: 1;
-    background: rgba(255, 255, 255, 0.25);
-    border-color: rgba(255, 255, 255, 0.5);
-    transform: translateY(-1px);
+pre:hover .fold-toggle,
+pre[class*="language-"]:hover .fold-toggle {
+    opacity: 1 !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    border-color: #000000 !important;
+    transform: translateY(-1px) !important;
 }
 
 pre .fold-toggle:hover {
-    background: rgba(255, 255, 255, 0.35);
-    border-color: rgba(255, 255, 255, 0.7);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    background: #ffffff !important;
+    border-color: #000000 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
 }
 
+pre[class*="language-"] .copy-btn,
 pre .copy-btn {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    padding: 4px 8px;
-    font-size: 16px;
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 4px;
-    color: #ffffff;
-    cursor: pointer;
-    opacity: 0;
-    transition: all 0.2s ease;
-    backdrop-filter: blur(4px);
+    position: absolute !important;
+    top: 8px !important;
+    right: 8px !important;
+    padding: 4px 8px !important;
+    font-size: 16px !important;
+    background: rgba(255, 255, 255, 0.8) !important;
+    border: 2px solid #000000 !important;
+    border-radius: 4px !important;
+    color: #000000 !important;
+    cursor: pointer !important;
+    opacity: 0 !important;
+    transition: all 0.2s ease !important;
+    backdrop-filter: blur(4px) !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
 }
 
-pre:hover .copy-btn {
-    opacity: 1;
-    background: rgba(255, 255, 255, 0.25);
-    border-color: rgba(255, 255, 255, 0.5);
-    transform: translateY(-1px);
+pre:hover .copy-btn,
+pre[class*="language-"]:hover .copy-btn {
+    opacity: 1 !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    border-color: #000000 !important;
+    transform: translateY(-1px) !important;
 }
 
 pre .copy-btn:hover {
-    background: rgba(255, 255, 255, 0.35);
-    border-color: rgba(255, 255, 255, 0.7);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    background: #ffffff !important;
+    border-color: #000000 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
 }
 
 /* 复制按钮 */
