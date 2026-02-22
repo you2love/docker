@@ -59,34 +59,44 @@
 
                 <div class="features-grid">
                     <div class="feature-card">
-                        <div class="feature-icon">🏗️</div>
-                        <h3>BuildKit 2.0</h3>
-                        <p>分布式构建、智能缓存、并行执行，构建速度提升 5-10 倍。支持远程构建和团队共享缓存。</p>
+                        <div class="feature-icon">🤖</div>
+                        <h3>Ask Gordon</h3>
+                        <p>Docker 内置的 AI 助手，通过自然语言交互帮助编写、分析和优化 Dockerfile。命令：<code>docker ai</code></p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🧠</div>
+                        <h3>Docker Model Runner</h3>
+                        <p>管理和运行 AI 模型的官方工具，支持本地推理和与 Compose 集成。已在 4.45.0 中 GA。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎼</div>
+                        <h3>Compose v5</h3>
+                        <p>引入新的官方 Go SDK，提供全面的 API 用于集成 Compose 功能。在 4.56.0 中发布。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔗</div>
+                        <h3>MCP Toolkit</h3>
+                        <p>Model Context Protocol 工具包，已在 Docker Desktop 中广泛集成，支持 100+ MCP 服务器。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📦</div>
+                        <h3>containerd image store</h3>
+                        <p>新的镜像存储后端，在 Docker Engine v29 中成为默认。提供更好的性能和兼容性。</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">🔍</div>
                         <h3>Docker Scout</h3>
-                        <p>AI 驱动的漏洞扫描、SBOM 生成、合规检查。实时监控镜像安全状态，自动修复安全风险。</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">🔒</div>
-                        <h3>镜像签名</h3>
-                        <p>基于 Cosign 的原生签名验证，确保镜像完整性和来源可信。支持硬件密钥和云 KMS。</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">📊</div>
-                        <h3>eBPF 监控</h3>
-                        <p>基于 eBPF 的深度容器监控，零开销的性能追踪、网络分析和安全审计。</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">🤖</div>
-                        <h3>AI Dockerfile 生成</h3>
-                        <p>使用大语言模型自动生成优化 Dockerfile，智能选择基础镜像和依赖版本。</p>
+                        <p>AI 增强的漏洞扫描、SBOM 生成、合规检查。实时监控镜像安全状态，自动修复安全风险。</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">⚡</div>
-                        <h3>OCI v1.2 支持</h3>
-                        <p>完整的 OCI 规范支持，兼容所有符合标准的容器运行时和工具链。</p>
+                        <h3>cgroup v2 支持</h3>
+                        <p>cgroup v1 已废弃，cgroup v2 成为推荐选项。支持到 2029 年 5 月，建议尽快迁移。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔥</div>
+                        <h3>nftables 支持</h3>
+                        <p>实验性的 nftables 防火墙后端，可设置 <code>--firewall-backend=nftables</code> 启用。</p>
                     </div>
                 </div>
 
@@ -167,6 +177,48 @@ sysdig container.name=web-app
 # 使用 Falco 进行安全监控
 falco -r /etc/falco/rules.local.yaml</code></pre>
                         <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    </div>
+                </div>
+
+                <!-- 废弃特性 -->
+                <div class="section">
+                    <div class="container">
+                        <h2 class="section-title">⚠️ 废弃特性</h2>
+                        <p class="section-desc">以下特性已被标记为废弃或移除，请及时迁移到新的解决方案</p>
+
+                        <div class="deprecated-grid">
+                            <div class="deprecated-card">
+                                <div class="deprecated-icon">🔮</div>
+                                <h3>WASM 工作负载</h3>
+                                <p>已在 Docker Desktop 4.55.0 (2025-12-16) 中标记为废弃</p>
+                                <p><strong>移除计划：</strong>未来的 Docker Desktop 版本</p>
+                                <p><strong>替代方案：</strong>使用传统 Linux 容器</p>
+                            </div>
+
+                            <div class="deprecated-card">
+                                <div class="deprecated-icon">⚖️</div>
+                                <h3>cgroup v1</h3>
+                                <p>已在 Docker Engine v29 中标记为废弃</p>
+                                <p><strong>支持期限：</strong>至少到 2029 年 5 月</p>
+                                <p><strong>替代方案：</strong>迁移到 cgroup v2</p>
+                            </div>
+
+                            <div class="deprecated-card">
+                                <div class="deprecated-icon">🔒</div>
+                                <h3>Docker Content Trust</h3>
+                                <p>已从 Docker CLI 中移除</p>
+                                <p><strong>移除版本：</strong>Docker Engine v29.0.0</p>
+                                <p><strong>替代方案：</strong>可作为单独插件构建使用</p>
+                            </div>
+
+                            <div class="deprecated-card">
+                                <div class="deprecated-icon">📦</div>
+                                <h3>Legacy 图形驱动</h3>
+                                <p>containerd image store 成为新安装的默认选项</p>
+                                <p><strong>变更版本：</strong>Docker Engine v29.0.0</p>
+                                <p><strong>说明：</strong>不影响现有配置，仅影响新安装</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
