@@ -8,86 +8,198 @@
     <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
-    <header class="header">
-        <div class="container">
-            <h1 class="logo">🐳 Docker 教程</h1>
-            <nav class="nav">
-                <a href="#intro">入门</a>
-                <a href="#dockerfile">Dockerfile</a>
-                <a href="#compose">Compose</a>
-                <a href="#advanced">进阶</a>
-                <a href="#practice">实战</a>
-            </nav>
+    <!-- 左侧导航 -->
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <span class="sidebar-logo">🐳</span>
+            <span class="sidebar-title">Docker 教程</span>
         </div>
-    </header>
+        <ul class="tree-nav">
+            <li><a href="#intro">什么是 Docker</a></li>
+            <li>
+                <details open>
+                    <summary>入门</summary>
+                    <ul>
+                        <li><a href="#install">安装 Docker</a></li>
+                        <li><a href="#concepts">核心概念</a></li>
+                        <li><a href="#architecture">架构图</a></li>
+                    </ul>
+                </details>
+            </li>
+            <li>
+                <details open>
+                    <summary>基础</summary>
+                    <ul>
+                        <li><a href="#dockerfile">Dockerfile</a></li>
+                        <li><a href="#build">构建镜像</a></li>
+                    </ul>
+                </details>
+            </li>
+            <li>
+                <details open>
+                    <summary>进阶</summary>
+                    <ul>
+                        <li><a href="#compose">Docker Compose</a></li>
+                        <li><a href="#commands">常用命令</a></li>
+                        <li><a href="#network">网络</a></li>
+                        <li><a href="#volume">数据卷</a></li>
+                    </ul>
+                </details>
+            </li>
+            <li>
+                <details>
+                    <summary>高级</summary>
+                    <ul>
+                        <li><a href="#security">安全实践</a></li>
+                        <li><a href="#ai-tools">AI 工具</a></li>
+                    </ul>
+                </details>
+            </li>
+            <li><a href="#practice">实战案例</a></li>
+        </ul>
+    </nav>
 
+    <!-- 主内容区 -->
     <main class="main">
         <!-- 简介 -->
         <section id="intro" class="section">
-            <div class="container">
-                <h2>什么是 Docker？</h2>
-                <p>Docker 是一个开源的容器化平台，可以将应用程序及其依赖打包到一个可移植的容器中。</p>
-                
-                <div class="grid">
-                    <div class="card">
-                        <h3>镜像 (Image)</h3>
-                        <p>只读模板，包含运行应用所需的代码、运行时、库和配置。</p>
-                        <pre><code>docker pull nginx:alpine</code></pre>
-                    </div>
-                    <div class="card">
-                        <h3>容器 (Container)</h3>
-                        <p>镜像的运行实例，独立、隔离的执行环境。</p>
-                        <pre><code>docker run -d -p 80:80 nginx</code></pre>
-                    </div>
-                    <div class="card">
-                        <h3>仓库 (Registry)</h3>
-                        <p>存储和分发镜像的服务，如 Docker Hub。</p>
-                        <pre><code>docker push user/image:tag</code></pre>
-                    </div>
+            <h2>什么是 Docker？</h2>
+            <p>Docker 是一个开源的容器化平台，可以将应用程序及其依赖打包到一个可移植的容器中。</p>
+        </section>
+
+        <!-- 核心概念 -->
+        <section id="concepts" class="section section-gray">
+            <h2>核心概念</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>镜像 (Image)</h3>
+                    <p>只读模板，包含运行应用所需的代码、运行时、库和配置。</p>
+                    <pre><code>docker pull nginx:alpine</code></pre>
+                </div>
+                <div class="card">
+                    <h3>容器 (Container)</h3>
+                    <p>镜像的运行实例，独立、隔离的执行环境。</p>
+                    <pre><code>docker run -d -p 80:80 nginx</code></pre>
+                </div>
+                <div class="card">
+                    <h3>仓库 (Registry)</h3>
+                    <p>存储和分发镜像的服务，如 Docker Hub。</p>
+                    <pre><code>docker push user/image:tag</code></pre>
                 </div>
             </div>
         </section>
 
+        <!-- Docker 架构图 -->
+        <section id="architecture" class="section">
+            <h2>Docker 架构图</h2>
+            <div class="architecture">
+                <div class="arch-box arch-client">
+                    <div class="arch-title">Docker Client</div>
+                    <div class="arch-desc">docker CLI / Docker Desktop</div>
+                </div>
+                <div class="arch-arrow">↓ docker build/run/pull</div>
+                <div class="arch-box arch-daemon">
+                    <div class="arch-title">Docker Daemon (dockerd)</div>
+                    <div class="arch-desc">监听 API 请求，管理镜像、容器、网络、卷</div>
+                </div>
+                <div class="arch-row">
+                    <div class="arch-box arch-containerd">
+                        <div class="arch-title">containerd</div>
+                        <div class="arch-desc">容器运行时</div>
+                    </div>
+                    <div class="arch-box arch-runc">
+                        <div class="arch-title">runc</div>
+                        <div class="arch-desc">OCI 运行时</div>
+                    </div>
+                </div>
+                <div class="arch-row">
+                    <div class="arch-box arch-image">
+                        <div class="arch-title">Images</div>
+                        <div class="arch-desc">镜像存储</div>
+                    </div>
+                    <div class="arch-box arch-container">
+                        <div class="arch-title">Containers</div>
+                        <div class="arch-desc">容器实例</div>
+                    </div>
+                    <div class="arch-box arch-network">
+                        <div class="arch-title">Networks</div>
+                        <div class="arch-desc">网络</div>
+                    </div>
+                    <div class="arch-box arch-volume">
+                        <div class="arch-title">Volumes</div>
+                        <div class="arch-desc">数据卷</div>
+                    </div>
+                </div>
+                <div class="arch-box arch-host">
+                    <div class="arch-title">Host OS (Linux / macOS / Windows)</div>
+                </div>
+            </div>
+            <h3>架构说明</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>组件</th>
+                        <th>说明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Docker Client</strong></td>
+                        <td>用户与 Docker 交互的界面，如 docker CLI 命令</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Docker Daemon</strong></td>
+                        <td>后台服务，处理客户端请求，管理镜像和容器</td>
+                    </tr>
+                    <tr>
+                        <td><strong>containerd</strong></td>
+                        <td>容器运行时，管理容器生命周期</td>
+                    </tr>
+                    <tr>
+                        <td><strong>runc</strong></td>
+                        <td>OCI 兼容的容器运行时，实际创建容器</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
         <!-- 安装 -->
-        <section class="section section-gray">
-            <div class="container">
-                <h2>安装 Docker</h2>
-                
-                <h3>macOS</h3>
-                <pre><code># Homebrew 安装
+        <section id="install" class="section">
+            <h2>安装 Docker</h2>
+            
+            <h3>macOS</h3>
+            <pre><code># Homebrew 安装
 brew install --cask docker
 
 # 或下载 Docker Desktop
 # https://www.docker.com/products/docker-desktop</code></pre>
 
-                <h3>Windows</h3>
-                <pre><code># 使用 winget
+            <h3>Windows</h3>
+            <pre><code># 使用 winget
 winget install Docker.DockerDesktop
 
 # 或使用 Chocolatey
 choco install docker-desktop</code></pre>
 
-                <h3>Linux (Ubuntu)</h3>
-                <pre><code># 官方脚本安装
+            <h3>Linux (Ubuntu)</h3>
+            <pre><code># 官方脚本安装
 curl -fsSL https://get.docker.com | sh
 
 # 添加用户到 docker 组
 sudo usermod -aG docker $USER</code></pre>
 
-                <h3>验证安装</h3>
-                <pre><code>docker --version
+            <h3>验证安装</h3>
+            <pre><code>docker --version
 docker run hello-world</code></pre>
-            </div>
         </section>
 
         <!-- Dockerfile -->
-        <section id="dockerfile" class="section">
-            <div class="container">
-                <h2>Dockerfile</h2>
-                <p>Dockerfile 是定义镜像构建过程的文本文件。</p>
+        <section id="dockerfile" class="section section-gray">
+            <h2>Dockerfile</h2>
+            <p>Dockerfile 是定义镜像构建过程的文本文件。</p>
 
-                <h3>基础示例</h3>
-                <pre><code># Node.js 应用
+            <h3>基础示例</h3>
+            <pre><code># Node.js 应用
 FROM node:20-alpine
 
 WORKDIR /app
@@ -101,8 +213,8 @@ EXPOSE 3000
 
 CMD ["node", "server.js"]</code></pre>
 
-                <h3>多阶段构建</h3>
-                <pre><code># 构建阶段
+            <h3>多阶段构建</h3>
+            <pre><code># 构建阶段
 FROM node:20-alpine AS builder
 WORKDIR /app
 COPY . .
@@ -116,56 +228,59 @@ COPY --from=builder /app/node_modules ./node_modules
 EXPOSE 3000
 CMD ["node", "dist/server.js"]</code></pre>
 
-                <h3>常用指令</h3>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>指令</th>
-                            <th>说明</th>
-                            <th>示例</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>FROM</code></td>
-                            <td>指定基础镜像</td>
-                            <td><code>FROM node:20-alpine</code></td>
-                        </tr>
-                        <tr>
-                            <td><code>WORKDIR</code></td>
-                            <td>设置工作目录</td>
-                            <td><code>WORKDIR /app</code></td>
-                        </tr>
-                        <tr>
-                            <td><code>COPY</code></td>
-                            <td>复制文件</td>
-                            <td><code>COPY . .</code></td>
-                        </tr>
-                        <tr>
-                            <td><code>RUN</code></td>
-                            <td>执行命令</td>
-                            <td><code>RUN npm install</code></td>
-                        </tr>
-                        <tr>
-                            <td><code>EXPOSE</code></td>
-                            <td>声明端口</td>
-                            <td><code>EXPOSE 3000</code></td>
-                        </tr>
-                        <tr>
-                            <td><code>CMD</code></td>
-                            <td>容器启动命令</td>
-                            <td><code>CMD ["node", "app.js"]</code></td>
-                        </tr>
-                        <tr>
-                            <td><code>ENV</code></td>
-                            <td>设置环境变量</td>
-                            <td><code>ENV NODE_ENV=production</code></td>
-                        </tr>
-                    </tbody>
-                </table>
+            <h3>常用指令</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>指令</th>
+                        <th>说明</th>
+                        <th>示例</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>FROM</code></td>
+                        <td>指定基础镜像</td>
+                        <td><code>FROM node:20-alpine</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>WORKDIR</code></td>
+                        <td>设置工作目录</td>
+                        <td><code>WORKDIR /app</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>COPY</code></td>
+                        <td>复制文件</td>
+                        <td><code>COPY . .</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>RUN</code></td>
+                        <td>执行命令</td>
+                        <td><code>RUN npm install</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>EXPOSE</code></td>
+                        <td>声明端口</td>
+                        <td><code>EXPOSE 3000</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>CMD</code></td>
+                        <td>容器启动命令</td>
+                        <td><code>CMD ["node", "app.js"]</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>ENV</code></td>
+                        <td>设置环境变量</td>
+                        <td><code>ENV NODE_ENV=production</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
 
-                <h3>构建镜像</h3>
-                <pre><code># 构建镜像
+        <!-- 构建镜像 -->
+        <section id="build" class="section">
+            <h2>构建镜像</h2>
+            <pre><code># 构建镜像
 docker build -t myapp:v1 .
 
 # 使用 BuildKit（推荐）
@@ -173,17 +288,15 @@ DOCKER_BUILDKIT=1 docker build -t myapp:v1 .
 
 # 多平台构建
 docker buildx build --platform linux/amd64,linux/arm64 -t myapp:v1 .</code></pre>
-            </div>
         </section>
 
         <!-- Docker Compose -->
         <section id="compose" class="section section-gray">
-            <div class="container">
-                <h2>Docker Compose</h2>
-                <p>定义和运行多容器应用的工具。</p>
+            <h2>Docker Compose</h2>
+            <p>定义和运行多容器应用的工具。</p>
 
-                <h3>docker-compose.yml 示例</h3>
-                <pre><code>services:
+            <h3>docker-compose.yml 示例</h3>
+            <pre><code>services:
   web:
     build: .
     ports:
@@ -212,8 +325,8 @@ volumes:
   db-data:
   redis-data:</code></pre>
 
-                <h3>常用命令</h3>
-                <pre><code># 启动服务
+            <h3>常用命令</h3>
+            <pre><code># 启动服务
 docker compose up -d
 
 # 查看状态
@@ -227,24 +340,22 @@ docker compose down
 
 # 重建并启动
 docker compose up -d --build</code></pre>
-            </div>
         </section>
 
         <!-- 常用命令 -->
-        <section class="section">
-            <div class="container">
-                <h2>常用命令</h2>
-                
-                <h3>镜像管理</h3>
-                <pre><code>docker images                    # 列出镜像
+        <section id="commands" class="section">
+            <h2>常用命令</h2>
+            
+            <h3>镜像管理</h3>
+            <pre><code>docker images                    # 列出镜像
 docker pull nginx:alpine         # 拉取镜像
 docker rmi nginx:alpine          # 删除镜像
 docker tag myapp:v1 myapp:latest # 标记镜像
 docker save -o app.tar myapp:v1  # 导出镜像
 docker load -i app.tar           # 导入镜像</code></pre>
 
-                <h3>容器管理</h3>
-                <pre><code>docker ps                        # 列出运行中容器
+            <h3>容器管理</h3>
+            <pre><code>docker ps                        # 列出运行中容器
 docker ps -a                     # 列出所有容器
 docker run -d -p 80:80 nginx     # 后台运行容器
 docker stop container_id         # 停止容器
@@ -253,22 +364,18 @@ docker exec -it container_id sh  # 进入容器
 docker logs -f container_id      # 查看日志
 docker cp file.txt container:/app # 复制文件到容器</code></pre>
 
-                <h3>系统管理</h3>
-                <pre><code>docker system df                # 查看磁盘使用
+            <h3>系统管理</h3>
+            <pre><code>docker system df                # 查看磁盘使用
 docker system prune             # 清理未使用资源
 docker system prune -a          # 清理所有未使用资源
 docker stats                    # 实时资源使用</code></pre>
-            </div>
         </section>
 
-        <!-- 进阶 -->
-        <section id="advanced" class="section section-gray">
-            <div class="container">
-                <h2>进阶主题</h2>
-
-                <h3>网络</h3>
-                <p>Docker 提供多种网络模式：</p>
-                <pre><code># 创建网络
+        <!-- 网络 -->
+        <section id="network" class="section section-gray">
+            <h2>网络</h2>
+            <p>Docker 提供多种网络模式：</p>
+            <pre><code># 创建网络
 docker network create mynet
 
 # 运行容器并连接网络
@@ -277,9 +384,12 @@ docker run -d --name db --network mynet postgres
 
 # 容器间通过名称访问
 # web 容器可以通过 "db" 作为主机名访问数据库</code></pre>
+        </section>
 
-                <h3>数据卷</h3>
-                <pre><code># 创建数据卷
+        <!-- 数据卷 -->
+        <section id="volume" class="section">
+            <h2>数据卷</h2>
+            <pre><code># 创建数据卷
 docker volume create mydata
 
 # 使用数据卷
@@ -290,32 +400,38 @@ docker run -v $(pwd):/app nginx
 
 # 只读挂载
 docker run -v $(pwd):/app:ro nginx</code></pre>
+        </section>
 
-                <h3>安全最佳实践</h3>
-                <div class="grid">
-                    <div class="card">
-                        <h4>✅ 使用非 root 用户</h4>
-                        <pre><code>RUN addgroup -g 1001 appgroup && \
+        <!-- 安全实践 -->
+        <section id="security" class="section section-gray">
+            <h2>安全最佳实践</h2>
+            <div class="grid">
+                <div class="card">
+                    <h4>✅ 使用非 root 用户</h4>
+                    <pre><code>RUN addgroup -g 1001 appgroup && \
     adduser -u 1001 -G appgroup appuser
 USER appuser</code></pre>
-                    </div>
-                    <div class="card">
-                        <h4>✅ 最小化镜像</h4>
-                        <pre><code>FROM alpine:3.19
+                </div>
+                <div class="card">
+                    <h4>✅ 最小化镜像</h4>
+                    <pre><code>FROM alpine:3.19
 # 或使用 distroless
 FROM gcr.io/distroless/static</code></pre>
-                    </div>
-                    <div class="card">
-                        <h4>✅ 健康检查</h4>
-                        <pre><code>HEALTHCHECK --interval=30s \
+                </div>
+                <div class="card">
+                    <h4>✅ 健康检查</h4>
+                    <pre><code>HEALTHCHECK --interval=30s \
   CMD wget -q --spider \
   http://localhost:3000/health</code></pre>
-                    </div>
                 </div>
+            </div>
+        </section>
 
-                <h3>AI 工具集成</h3>
-                <p>2026 年的 Docker 集成了多项 AI 工具：</p>
-                <pre><code># Docker Scout - 安全扫描
+        <!-- AI 工具 -->
+        <section id="ai-tools" class="section">
+            <h2>AI 工具集成</h2>
+            <p>Docker 集成了多项 AI 工具：</p>
+            <pre><code># Docker Scout - 安全扫描
 docker scout cves myapp:latest
 
 # Ask Gordon - AI 助手
@@ -323,16 +439,14 @@ docker ai
 
 # 生成 SBOM
 docker scout sbom myapp:latest</code></pre>
-            </div>
         </section>
 
         <!-- 实战 -->
-        <section id="practice" class="section">
-            <div class="container">
-                <h2>实战案例</h2>
+        <section id="practice" class="section section-gray">
+            <h2>实战案例</h2>
 
-                <h3>案例 1：Web 应用</h3>
-                <pre><code># Dockerfile
+            <h3>案例 1：Web 应用</h3>
+            <pre><code># Dockerfile
 FROM node:20-alpine
 WORKDIR /app
 COPY package*.json ./
@@ -341,8 +455,8 @@ COPY . .
 EXPOSE 3000
 CMD ["node", "server.js"]</code></pre>
 
-                <h3>案例 2：Python 应用</h3>
-                <pre><code># Dockerfile
+            <h3>案例 2：Python 应用</h3>
+            <pre><code># Dockerfile
 FROM python:3.12-slim
 WORKDIR /app
 COPY requirements.txt .
@@ -351,8 +465,8 @@ COPY . .
 EXPOSE 8000
 CMD ["python", "app.py"]</code></pre>
 
-                <h3>案例 3：完整开发环境</h3>
-                <pre><code># docker-compose.yml
+            <h3>案例 3：完整开发环境</h3>
+            <pre><code># docker-compose.yml
 services:
   app:
     build: .
@@ -378,29 +492,12 @@ services:
 
 volumes:
   db-data:</code></pre>
-            </div>
         </section>
 
-        <!-- 参考资源 -->
-        <section class="section section-gray">
-            <div class="container">
-                <h2>参考资源</h2>
-                <ul class="links">
-                    <li><a href="https://docs.docker.com/" target="_blank">Docker 官方文档</a></li>
-                    <li><a href="https://hub.docker.com/" target="_blank">Docker Hub</a></li>
-                    <li><a href="https://docs.docker.com/scout/" target="_blank">Docker Scout 文档</a></li>
-                    <li><a href="https://docs.docker.com/build/buildkit/" target="_blank">BuildKit 文档</a></li>
-                    <li><a href="https://docs.docker.com/compose/" target="_blank">Docker Compose 文档</a></li>
-                </ul>
-            </div>
-        </section>
-    </main>
-
-    <footer class="footer">
-        <div class="container">
+        <footer class="footer">
             <p>Docker 技术教程</p>
-        </div>
-    </footer>
+        </footer>
+    </main>
 
     <script src="script.js"></script>
 </body>
