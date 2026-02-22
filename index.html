@@ -374,29 +374,214 @@ docker stats                    # 实时资源使用</code></pre>
         <!-- 网络 -->
         <section id="network" class="section section-gray">
             <h2>网络</h2>
-            <p>Docker 提供多种网络模式：</p>
-            <pre><code># 创建网络
+            <p>Docker 提供多种网络模式，满足不同应用场景：</p>
+
+            <h3>网络类型</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>类型</th>
+                        <th>说明</th>
+                        <th>应用场景</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>bridge</strong></td>
+                        <td>默认网络，容器间可通过 IP 通信</td>
+                        <td>单机多容器应用</td>
+                    </tr>
+                    <tr>
+                        <td><strong>host</strong></td>
+                        <td>容器共享主机网络，无网络隔离</td>
+                        <td>高性能网络应用、监控</td>
+                    </tr>
+                    <tr>
+                        <td><strong>none</strong></td>
+                        <td>禁用网络</td>
+                        <td>安全隔离、离线任务</td>
+                    </tr>
+                    <tr>
+                        <td><strong>overlay</strong></td>
+                        <td>跨主机网络（需 Swarm）</td>
+                        <td>分布式集群应用</td>
+                    </tr>
+                    <tr>
+                        <td><strong>macvlan</strong></td>
+                        <td>容器拥有独立 MAC 地址</td>
+                        <td>需要物理网络直接访问</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>常用命令</h3>
+            <pre><code># 查看网络列表
+docker network ls
+
+# 创建自定义网络
 docker network create mynet
 
-# 运行容器并连接网络
-docker run -d --name web --network mynet nginx
-docker run -d --name db --network mynet postgres
+# 创建指定类型的网络
+docker network create -d bridge mynet
+docker network create -d host myhost
 
-# 容器间通过名称访问
-# web 容器可以通过 "db" 作为主机名访问数据库</code></pre>
+# 查看网络详情
+docker network inspect mynet
+
+# 连接容器到网络
+docker network connect mynet container_name
+
+# 断开容器网络
+docker network disconnect mynet container_name
+
+# 删除网络
+docker network rm mynet</code></pre>
+
+            <h3>应用场景示例</h3>
+            
+            <h4>场景 1：微服务通信</h4>
+            <pre><code># 创建应用网络
+docker network create app-network
+
+# 启动服务，同一网络内可通过服务名访问
+docker run -d --name api --network app-network myapi
+docker run -d --name web --network app-network nginx
+# web 容器可通过 http://api:8080 访问 API</code></pre>
+
+            <h4>场景 2：隔离不同环境</h4>
+            <pre><code># 开发环境网络
+docker network create dev-network
+
+# 测试环境网络
+docker network create test-network
+
+# 开发和测试环境完全隔离
+docker run -d --name dev-db --network dev-network postgres
+docker run -d --name test-db --network test-network postgres</code></pre>
+
+            <h4>场景 3：DNS 解析</h4>
+            <pre><code># 同一网络内的容器自动获得 DNS 解析
+docker run -d --name redis --network mynet redis
+docker run -d --name app --network mynet myapp
+
+# app 容器内可直接使用主机名连接
+# redis://redis:6379</code></pre>
         </section>
 
         <!-- 数据卷 -->
         <section id="volume" class="section">
             <h2>数据卷</h2>
+            <p>数据卷用于持久化容器数据，独立于容器生命周期。</p>
+
+            <h3>存储类型对比</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>类型</th>
+                        <th>说明</th>
+                        <th>应用场景</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Volume</strong></td>
+                        <td>Docker 管理的存储，存储在 /var/lib/docker/volumes</td>
+                        <td>数据库、持久化数据、多容器共享</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Bind Mount</strong></td>
+                        <td>绑定主机目录到容器</td>
+                        <td>开发环境、配置文件挂载</td>
+                    </tr>
+                    <tr>
+                        <td><strong>tmpfs</strong></td>
+                        <td>存储在内存中，容器停止即消失</td>
+                        <td>敏感数据、临时缓存</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>常用命令</h3>
             <pre><code># 创建数据卷
 docker volume create mydata
 
-# 使用数据卷
-docker run -v mydata:/app/data nginx
+# 列出所有数据卷
+docker volume ls
 
-# 绑定挂载
-docker run -v $(pwd):/app nginx
+# 查看数据卷详情
+docker volume inspect mydata
+
+# 删除数据卷
+docker volume rm mydata
+
+# 清理未使用的数据卷
+docker volume prune</code></pre>
+
+            <h3>应用场景示例</h3>
+
+            <h4>场景 1：数据库持久化</h4>
+            <pre><code># PostgreSQL 数据持久化
+docker run -d \
+  --name postgres \
+  -v pgdata:/var/lib/postgresql/data \
+  -e POSTGRES_PASSWORD=secret \
+  postgres:16-alpine
+
+# 即使容器删除，数据仍然保留
+docker rm -f postgres
+docker run -d \
+  --name postgres \
+  -v pgdata:/var/lib/postgresql/data \
+  postgres:16-alpine
+# 数据恢复</code></pre>
+
+            <h4>场景 2：开发环境热重载</h4>
+            <pre><code># 挂载本地代码目录，修改立即生效
+docker run -d \
+  --name dev-app \
+  -v $(pwd)/src:/app/src \
+  -v $(pwd)/package.json:/app/package.json \
+  -p 3000:3000 \
+  node:20-alpine \
+  npm run dev
+
+# 本地修改代码，容器内自动更新</code></pre>
+
+            <h4>场景 3：配置文件管理</h4>
+            <pre><code># 挂载配置文件
+docker run -d \
+  --name nginx \
+  -v $(pwd)/nginx.conf:/etc/nginx/nginx.conf:ro \
+  -v $(pwd)/html:/usr/share/nginx/html:ro \
+  -p 80:80 \
+  nginx:alpine
+
+# :ro 表示只读挂载，防止容器修改配置</code></pre>
+
+            <h4>场景 4：多容器共享数据</h4>
+            <pre><code># 创建共享数据卷
+docker volume create shared-data
+
+# 写入容器
+docker run -d --name writer \
+  -v shared-data:/data \
+  alpine sh -c "echo 'hello' > /data/file.txt"
+
+# 读取容器
+docker run --name reader \
+  -v shared-data:/data \
+  alpine cat /data/file.txt
+# 输出: hello</code></pre>
+
+            <h4>场景 5：敏感数据（tmpfs）</h4>
+            <pre><code># 使用内存存储敏感数据
+docker run -d \
+  --name app \
+  --tmpfs /run/secrets:rw,size=10m,mode=1777 \
+  myapp
+
+# 数据不会写入磁盘，容器停止即消失</code></pre>
+        </section>
 
 # 只读挂载
 docker run -v $(pwd):/app:ro nginx</code></pre>
