@@ -72,6 +72,107 @@
         <!-- 核心概念 -->
         <section id="concepts" class="section section-gray">
             <h2>核心概念</h2>
+            
+            <!-- 概念关系思维导图 -->
+            <div class="mindmap">
+                <div class="mindmap-root">
+                    <div class="mindmap-center">🐳 Docker 核心概念</div>
+                    <div class="mindmap-branches">
+                        <div class="mindmap-branch">
+                            <div class="mindmap-node primary">📦 镜像 Image</div>
+                            <div class="mindmap-children">
+                                <div class="mindmap-leaf">只读模板</div>
+                                <div class="mindmap-leaf">分层存储</div>
+                                <div class="mindmap-leaf">版本标签</div>
+                            </div>
+                        </div>
+                        <div class="mindmap-branch">
+                            <div class="mindmap-node success">🏃 容器 Container</div>
+                            <div class="mindmap-children">
+                                <div class="mindmap-leaf">镜像实例</div>
+                                <div class="mindmap-leaf">隔离环境</div>
+                                <div class="mindmap-leaf">可读写层</div>
+                            </div>
+                        </div>
+                        <div class="mindmap-branch">
+                            <div class="mindmap-node warning">🏠 仓库 Registry</div>
+                            <div class="mindmap-children">
+                                <div class="mindmap-leaf">镜像存储</div>
+                                <div class="mindmap-leaf">版本分发</div>
+                                <div class="mindmap-leaf">Docker Hub</div>
+                            </div>
+                        </div>
+                        <div class="mindmap-branch">
+                            <div class="mindmap-node info">⚙️ 其他组件</div>
+                            <div class="mindmap-children">
+                                <div class="mindmap-leaf">网络 Network</div>
+                                <div class="mindmap-leaf">数据卷 Volume</div>
+                                <div class="mindmap-leaf">Dockerfile</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 概念工作流程图 -->
+            <h3>概念关系流程</h3>
+            <div class="flowchart">
+                <div class="flow-step">
+                    <div class="flow-box outline">
+                        <div class="flow-icon">📝</div>
+                        Dockerfile
+                    </div>
+                    <div class="flow-label">定义镜像构建步骤</div>
+                </div>
+                <div class="flow-arrow"></div>
+                <div class="flow-step">
+                    <div class="flow-box primary">
+                        <div class="flow-icon">📦</div>
+                        镜像 Image
+                    </div>
+                    <div class="flow-label">只读模板</div>
+                </div>
+                <div class="flow-arrow"></div>
+                <div class="flow-step">
+                    <div class="flow-box success">
+                        <div class="flow-icon">🏃</div>
+                        容器 Container
+                    </div>
+                    <div class="flow-label">运行实例</div>
+                </div>
+            </div>
+
+            <!-- 镜像与仓库交互图 -->
+            <h3>镜像与仓库交互</h3>
+            <div class="flowchart">
+                <div class="flow-step">
+                    <div class="flow-box info">
+                        <div class="flow-icon">🏠</div>
+                        Registry<br>仓库
+                    </div>
+                    <div class="flow-label">Docker Hub / 私有仓库</div>
+                </div>
+                <div class="flow-arrow left"></div>
+                <div class="flow-step">
+                    <div class="flow-box primary">
+                        <div class="flow-icon">📦</div>
+                        镜像<br>Image
+                    </div>
+                </div>
+                <div class="flow-arrow"></div>
+                <div class="flow-step">
+                    <div class="flow-box success">
+                        <div class="flow-icon">🏃</div>
+                        容器<br>Container
+                    </div>
+                </div>
+            </div>
+            <p style="text-align: center; color: var(--text-light); font-size: 14px;">
+                <code>docker pull</code> 从仓库拉取镜像 → <code>docker run</code> 从镜像启动容器 → <code>docker push</code> 推送镜像到仓库
+            </p>
+
+            <!-- 详细卡片 -->
+            <h3>概念详解</h3>
             <div class="grid">
                 <div class="card">
                     <h3>镜像 (Image)</h3>
@@ -89,11 +190,39 @@
                     <pre><code>docker push user/image:tag</code></pre>
                 </div>
             </div>
+
+            <!-- 镜像分层图 -->
+            <h3>镜像分层结构</h3>
+            <div class="layer-diagram">
+                <div class="layer-stack">
+                    <div class="layer layer-app">
+                        应用层 Application Layer
+                        <span class="layer-size">~10MB</span>
+                    </div>
+                    <div class="layer layer-deps">
+                        依赖层 Dependencies
+                        <span class="layer-size">~50MB</span>
+                    </div>
+                    <div class="layer layer-runtime">
+                        运行时 Runtime (Node/Python)
+                        <span class="layer-size">~100MB</span>
+                    </div>
+                    <div class="layer layer-os">
+                        基础系统 Base OS (Alpine/Debian)
+                        <span class="layer-size">~5-150MB</span>
+                    </div>
+                </div>
+            </div>
+            <p style="text-align: center; color: var(--text-light); font-size: 14px;">
+                每层只读，容器运行时添加可写层（Copy-on-Write）
+            </p>
         </section>
 
         <!-- Docker 架构图 -->
         <section id="architecture" class="section">
             <h2>Docker 架构图</h2>
+            
+            <!-- 架构层级图 -->
             <div class="architecture">
                 <div class="arch-box arch-client">
                     <div class="arch-title">Docker Client</div>
@@ -136,6 +265,73 @@
                     <div class="arch-title">Host OS (Linux / macOS / Windows)</div>
                 </div>
             </div>
+
+            <!-- docker run 请求序列图 -->
+            <h3>docker run 请求流程</h3>
+            <div class="sequence-simple">
+                <div class="sequence-step">
+                    <div class="sequence-step-num">1</div>
+                    <div class="sequence-step-content">
+                        <div class="sequence-step-title">用户执行命令</div>
+                        <div class="sequence-step-desc"><code>docker run -d nginx:alpine</code></div>
+                    </div>
+                </div>
+                <div class="sequence-step">
+                    <div class="sequence-step-num">2</div>
+                    <div class="sequence-step-content">
+                        <div class="sequence-step-title">Client 发送请求到 Daemon</div>
+                        <div class="sequence-step-desc">通过 REST API 发送创建容器请求</div>
+                    </div>
+                </div>
+                <div class="sequence-step">
+                    <div class="sequence-step-num">3</div>
+                    <div class="sequence-step-content">
+                        <div class="sequence-step-title">Daemon 检查本地镜像</div>
+                        <div class="sequence-step-desc">本地不存在则从 Registry 拉取</div>
+                    </div>
+                </div>
+                <div class="sequence-step">
+                    <div class="sequence-step-num">4</div>
+                    <div class="sequence-step-content">
+                        <div class="sequence-step-title">调用 containerd 创建容器</div>
+                        <div class="sequence-step-desc">准备容器配置和 rootfs</div>
+                    </div>
+                </div>
+                <div class="sequence-step">
+                    <div class="sequence-step-num">5</div>
+                    <div class="sequence-step-content">
+                        <div class="sequence-step-title">containerd 调用 runc</div>
+                        <div class="sequence-step-desc">使用 OCI 规范创建容器进程</div>
+                    </div>
+                </div>
+                <div class="sequence-step">
+                    <div class="sequence-step-num">6</div>
+                    <div class="sequence-step-content">
+                        <div class="sequence-step-title">容器启动运行</div>
+                        <div class="sequence-step-desc">返回容器 ID 给用户</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 组件交互图 -->
+            <h3>组件交互关系</h3>
+            <div class="interaction-diagram">
+                <div class="interaction-center">
+                    <div class="interaction-hub">
+                        <div class="interaction-hub-icon">🐳</div>
+                        <div class="interaction-hub-text">Docker<br>Daemon</div>
+                    </div>
+                    <div class="interaction-nodes">
+                        <div class="interaction-node interaction-node-1">CLI<br>客户端</div>
+                        <div class="interaction-node interaction-node-2">Registry<br>仓库</div>
+                        <div class="interaction-node interaction-node-3">Images<br>镜像</div>
+                        <div class="interaction-node interaction-node-4">Containers<br>容器</div>
+                        <div class="interaction-node interaction-node-5">Networks<br>网络</div>
+                        <div class="interaction-node interaction-node-6">Volumes<br>数据卷</div>
+                    </div>
+                </div>
+            </div>
+
             <h3>架构说明</h3>
             <table class="table">
                 <thead>
@@ -459,6 +655,95 @@ docker buildx build --platform linux/amd64,linux/arm64 -t myapp:v1 .</code></pre
         <section id="compose" class="section section-gray">
             <h2>Docker Compose</h2>
             <p>Docker Compose 是定义和运行多容器应用的工具，使用 YAML 文件配置服务、网络和数据卷。</p>
+
+            <!-- Compose 架构图 -->
+            <h3>服务架构示意</h3>
+            <div class="interaction-diagram">
+                <div class="interaction-center" style="min-height: 280px;">
+                    <div class="interaction-hub">
+                        <div class="interaction-hub-icon">🌐</div>
+                        <div class="interaction-hub-text">Nginx<br>网关</div>
+                    </div>
+                    <div class="interaction-nodes">
+                        <div class="interaction-node interaction-node-1" style="top: -20px;">💻 Web<br>前端</div>
+                        <div class="interaction-node interaction-node-2" style="top: 60px; right: -20px;">⚡ API<br>后端</div>
+                        <div class="interaction-node interaction-node-3" style="bottom: 20px; right: 0;">🗄️ DB<br>数据库</div>
+                        <div class="interaction-node interaction-node-4" style="bottom: -20px;">📦 Redis<br>缓存</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 服务依赖流程图 -->
+            <h3>服务启动顺序</h3>
+            <div class="flowchart">
+                <div class="flow-step">
+                    <div class="flow-box secondary">
+                        <div class="flow-icon">🗄️</div>
+                        DB
+                    </div>
+                    <div class="flow-label">数据库</div>
+                </div>
+                <div class="flow-arrow"></div>
+                <div class="flow-step">
+                    <div class="flow-box secondary">
+                        <div class="flow-icon">📦</div>
+                        Redis
+                    </div>
+                    <div class="flow-label">缓存</div>
+                </div>
+                <div class="flow-arrow"></div>
+                <div class="flow-step">
+                    <div class="flow-box primary">
+                        <div class="flow-icon">⚡</div>
+                        API
+                    </div>
+                    <div class="flow-label">后端服务</div>
+                </div>
+                <div class="flow-arrow"></div>
+                <div class="flow-step">
+                    <div class="flow-box success">
+                        <div class="flow-icon">💻</div>
+                        Web
+                    </div>
+                    <div class="flow-label">前端服务</div>
+                </div>
+            </div>
+
+            <!-- Compose 文件结构思维导图 -->
+            <h3>配置文件结构</h3>
+            <div class="mindmap">
+                <div class="mindmap-root">
+                    <div class="mindmap-center">📄 docker-compose.yml</div>
+                    <div class="mindmap-branches">
+                        <div class="mindmap-branch">
+                            <div class="mindmap-node primary">services</div>
+                            <div class="mindmap-children">
+                                <div class="mindmap-leaf">image / build</div>
+                                <div class="mindmap-leaf">ports / expose</div>
+                                <div class="mindmap-leaf">environment</div>
+                                <div class="mindmap-leaf">volumes</div>
+                                <div class="mindmap-leaf">depends_on</div>
+                            </div>
+                        </div>
+                        <div class="mindmap-branch">
+                            <div class="mindmap-node success">networks</div>
+                            <div class="mindmap-children">
+                                <div class="mindmap-leaf">driver</div>
+                                <div class="mindmap-leaf">internal</div>
+                                <div class="mindmap-leaf">external</div>
+                            </div>
+                        </div>
+                        <div class="mindmap-branch">
+                            <div class="mindmap-node warning">volumes</div>
+                            <div class="mindmap-children">
+                                <div class="mindmap-leaf">命名卷</div>
+                                <div class="mindmap-leaf">driver</div>
+                                <div class="mindmap-leaf">external</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <h3>基本结构</h3>
             <pre><code># docker-compose.yml 基本结构
@@ -1197,6 +1482,45 @@ docker stats                    # 实时资源使用</code></pre>
             <h2>网络</h2>
             <p>Docker 提供多种网络模式，满足不同应用场景：</p>
 
+            <!-- 网络类型思维导图 -->
+            <div class="mindmap">
+                <div class="mindmap-root">
+                    <div class="mindmap-center">🌐 Docker 网络</div>
+                    <div class="mindmap-branches">
+                        <div class="mindmap-branch">
+                            <div class="mindmap-node primary">bridge</div>
+                            <div class="mindmap-children">
+                                <div class="mindmap-leaf">默认网络</div>
+                                <div class="mindmap-leaf">独立 IP</div>
+                                <div class="mindmap-leaf">端口映射</div>
+                            </div>
+                        </div>
+                        <div class="mindmap-branch">
+                            <div class="mindmap-node success">host</div>
+                            <div class="mindmap-children">
+                                <div class="mindmap-leaf">共享主机网络</div>
+                                <div class="mindmap-leaf">无隔离</div>
+                                <div class="mindmap-leaf">高性能</div>
+                            </div>
+                        </div>
+                        <div class="mindmap-branch">
+                            <div class="mindmap-node warning">none</div>
+                            <div class="mindmap-children">
+                                <div class="mindmap-leaf">禁用网络</div>
+                                <div class="mindmap-leaf">完全隔离</div>
+                            </div>
+                        </div>
+                        <div class="mindmap-branch">
+                            <div class="mindmap-node info">overlay</div>
+                            <div class="mindmap-children">
+                                <div class="mindmap-leaf">跨主机</div>
+                                <div class="mindmap-leaf">Swarm 集群</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <h3>网络类型</h3>
             <table class="table">
                 <thead>
@@ -1234,6 +1558,32 @@ docker stats                    # 实时资源使用</code></pre>
                     </tr>
                 </tbody>
             </table>
+
+            <h3>网络架构示意图</h3>
+            <div class="layer-diagram">
+                <div class="layer-stack" style="max-width: 600px;">
+                    <div class="layer" style="background: linear-gradient(135deg, #6c757d 0%, #545b62 100%); color: white;">
+                        外部网络（互联网）
+                    </div>
+                    <div class="layer" style="background: linear-gradient(135deg, #17a2b8 0%, #138496 100%); color: white;">
+                        宿主机网络接口 (eth0)
+                    </div>
+                    <div class="layer" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white;">
+                        Docker 网桥 (docker0 / 172.17.0.1)
+                    </div>
+                    <div style="display: flex; gap: 8px; margin-top: 4px;">
+                        <div class="layer" style="background: linear-gradient(135deg, #28a745 0%, #20903c 100%); color: white; flex: 1;">
+                            容器A<br><small>172.17.0.2</small>
+                        </div>
+                        <div class="layer" style="background: linear-gradient(135deg, #28a745 0%, #20903c 100%); color: white; flex: 1;">
+                            容器B<br><small>172.17.0.3</small>
+                        </div>
+                        <div class="layer" style="background: linear-gradient(135deg, #28a745 0%, #20903c 100%); color: white; flex: 1;">
+                            容器C<br><small>172.17.0.4</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <h3>常用命令</h3>
             <pre><code># 查看网络列表
@@ -1498,6 +1848,44 @@ netstat -tlnp | grep 8080</code></pre>
             <h2>数据卷</h2>
             <p>数据卷用于持久化容器数据，独立于容器生命周期。</p>
 
+            <!-- 存储类型对比图 -->
+            <div class="compare-diagram">
+                <div class="compare-side">
+                    <div class="compare-title">📦 Volume</div>
+                    <div class="compare-item good">Docker 管理</div>
+                    <div class="compare-item good">跨平台兼容</div>
+                    <div class="compare-item good">易于备份迁移</div>
+                    <div class="compare-item good">多容器共享</div>
+                    <div class="compare-item">路径：/var/lib/docker/volumes/</div>
+                </div>
+                <div class="compare-vs">VS</div>
+                <div class="compare-side">
+                    <div class="compare-title">📁 Bind Mount</div>
+                    <div class="compare-item good">直接访问主机文件</div>
+                    <div class="compare-item good">开发热重载</div>
+                    <div class="compare-item">依赖主机路径</div>
+                    <div class="compare-item">需要绝对路径</div>
+                    <div class="compare-item">路径：主机任意目录</div>
+                </div>
+            </div>
+
+            <!-- 存储架构交互图 -->
+            <h3>存储架构关系</h3>
+            <div class="interaction-diagram">
+                <div class="interaction-center">
+                    <div class="interaction-hub">
+                        <div class="interaction-hub-icon">🐳</div>
+                        <div class="interaction-hub-text">容器<br>Container</div>
+                    </div>
+                    <div class="interaction-nodes">
+                        <div class="interaction-node interaction-node-1">📦 Volume<br>Docker管理</div>
+                        <div class="interaction-node interaction-node-2">📁 Bind Mount<br>主机目录</div>
+                        <div class="interaction-node interaction-node-3">💾 tmpfs<br>内存存储</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 存储类型表格 -->
             <h3>存储类型对比</h3>
             <table class="table">
                 <thead>
@@ -1525,6 +1913,34 @@ netstat -tlnp | grep 8080</code></pre>
                     </tr>
                 </tbody>
             </table>
+
+            <!-- 数据流向图 -->
+            <h3>数据流向示意</h3>
+            <div class="flowchart">
+                <div class="flow-step">
+                    <div class="flow-box primary">
+                        <div class="flow-icon">📝</div>
+                        写入数据<br>/app/data
+                    </div>
+                    <div class="flow-label">容器内路径</div>
+                </div>
+                <div class="flow-arrow"></div>
+                <div class="flow-step">
+                    <div class="flow-box success">
+                        <div class="flow-icon">📦</div>
+                        Volume<br>mydata
+                    </div>
+                    <div class="flow-label">Docker 管理</div>
+                </div>
+                <div class="flow-arrow"></div>
+                <div class="flow-step">
+                    <div class="flow-box info">
+                        <div class="flow-icon">💾</div>
+                        /var/lib/docker<br>/volumes/mydata
+                    </div>
+                    <div class="flow-label">宿主机存储</div>
+                </div>
+            </div>
 
             <h3>常用命令</h3>
             <pre><code># 创建数据卷
@@ -4084,7 +4500,99 @@ earthly +test</code></pre>
         <section id="practice" class="section section-gray">
             <h2>实战案例</h2>
 
+            <!-- CI/CD 流程图 -->
+            <h3>CI/CD 容器化流程</h3>
+            <div class="flowchart">
+                <div class="flow-step">
+                    <div class="flow-box outline">
+                        <div class="flow-icon">📝</div>
+                        代码提交
+                    </div>
+                    <div class="flow-label">Git Push</div>
+                </div>
+                <div class="flow-arrow"></div>
+                <div class="flow-step">
+                    <div class="flow-box primary">
+                        <div class="flow-icon">🔨</div>
+                        构建镜像
+                    </div>
+                    <div class="flow-label">docker build</div>
+                </div>
+                <div class="flow-arrow"></div>
+                <div class="flow-step">
+                    <div class="flow-box warning">
+                        <div class="flow-icon">🔍</div>
+                        安全扫描
+                    </div>
+                    <div class="flow-label">Trivy/Scout</div>
+                </div>
+                <div class="flow-arrow"></div>
+                <div class="flow-step">
+                    <div class="flow-box info">
+                        <div class="flow-icon">📤</div>
+                        推送仓库
+                    </div>
+                    <div class="flow-label">Registry</div>
+                </div>
+                <div class="flow-arrow"></div>
+                <div class="flow-step">
+                    <div class="flow-box success">
+                        <div class="flow-icon">🚀</div>
+                        部署上线
+                    </div>
+                    <div class="flow-label">K8s/Swarm</div>
+                </div>
+            </div>
+
+            <!-- 开发环境架构图 -->
+            <h3>开发环境架构</h3>
+            <div class="layer-diagram">
+                <div class="layer-stack" style="max-width: 500px;">
+                    <div class="layer" style="background: linear-gradient(135deg, #28a745 0%, #20903c 100%); color: white;">
+                        💻 开发机 (IDE + 热重载)
+                    </div>
+                    <div class="layer" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white;">
+                        🐳 Docker Compose (多服务编排)
+                    </div>
+                    <div style="display: flex; gap: 8px; margin-top: 4px;">
+                        <div class="layer" style="background: linear-gradient(135deg, #17a2b8 0%, #138496 100%); color: white; flex: 1; padding: 12px;">
+                            App<br><small>:3000</small>
+                        </div>
+                        <div class="layer" style="background: linear-gradient(135deg, #6f42c1 0%, #5a32a3 100%); color: white; flex: 1; padding: 12px;">
+                            DB<br><small>:5432</small>
+                        </div>
+                        <div class="layer" style="background: linear-gradient(135deg, #f9a825 0%, #f57f17 100%); color: white; flex: 1; padding: 12px;">
+                            Redis<br><small>:6379</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <h3>案例 1：Web 应用</h3>
+            <div class="timeline">
+                <div class="timeline-line">
+                    <div class="timeline-item success">
+                        <div class="timeline-title">选择基础镜像</div>
+                        <div class="timeline-desc">FROM node:20-alpine</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">设置工作目录</div>
+                        <div class="timeline-desc">WORKDIR /app</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">安装依赖</div>
+                        <div class="timeline-desc">COPY package*.json ./ → RUN npm ci</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">复制代码</div>
+                        <div class="timeline-desc">COPY . .</div>
+                    </div>
+                    <div class="timeline-item success">
+                        <div class="timeline-title">启动应用</div>
+                        <div class="timeline-desc">EXPOSE 3000 → CMD ["node", "server.js"]</div>
+                    </div>
+                </div>
+            </div>
             <pre><code># Dockerfile
 FROM node:20-alpine
 WORKDIR /app
@@ -4105,6 +4613,19 @@ EXPOSE 8000
 CMD ["python", "app.py"]</code></pre>
 
             <h3>案例 3：完整开发环境</h3>
+            <!-- 服务交互图 -->
+            <div class="interaction-diagram">
+                <div class="interaction-center" style="min-height: 200px;">
+                    <div class="interaction-hub">
+                        <div class="interaction-hub-icon">💻</div>
+                        <div class="interaction-hub-text">App<br>:3000</div>
+                    </div>
+                    <div class="interaction-nodes">
+                        <div class="interaction-node interaction-node-1" style="top: -10px;">🗄️ DB<br>:5432</div>
+                        <div class="interaction-node interaction-node-2" style="bottom: -10px;">📦 Redis<br>:6379</div>
+                    </div>
+                </div>
+            </div>
             <pre><code># docker-compose.yml
 services:
   app:
