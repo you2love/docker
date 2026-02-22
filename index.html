@@ -1004,59 +1004,93 @@ services:
 # 生产环境: docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d</code></pre>
 
             <h3>常见错误</h3>
-            <div class="grid">
-                <div class="card">
-                    <h4>❌ 错误：端口冲突</h4>
-                    <pre><code>ports:
+            <div class="error-list">
+                <div class="error-item">
+                    <div class="error-header">
+                        <h4>❌ 错误：端口冲突</h4>
+                    </div>
+                    <div class="error-content">
+                        <pre><code>ports:
   - "80:80"  # 本地 80 端口已被占用</code></pre>
-                    <h4>✅ 解决方案</h4>
-                    <pre><code>ports:
+                        <div class="error-solution">
+                            <h4>✅ 解决方案</h4>
+                            <pre><code>ports:
   - "8080:80"  # 使用其他本地端口</code></pre>
+                        </div>
+                    </div>
                 </div>
-                <div class="card">
-                    <h4>❌ 错误：服务启动顺序</h4>
-                    <pre><code>depends_on:
+                <div class="error-item">
+                    <div class="error-header">
+                        <h4>❌ 错误：服务启动顺序</h4>
+                    </div>
+                    <div class="error-content">
+                        <pre><code>depends_on:
   - db  # 只等待容器启动，不等待服务就绪</code></pre>
-                    <h4>✅ 解决方案</h4>
-                    <pre><code>depends_on:
+                        <div class="error-solution">
+                            <h4>✅ 解决方案</h4>
+                            <pre><code>depends_on:
   db:
     condition: service_healthy  # 等待健康检查通过</code></pre>
+                        </div>
+                    </div>
                 </div>
-                <div class="card">
-                    <h4>❌ 错误：数据丢失</h4>
-                    <pre><code>docker compose down  # 默认不删除卷</code></pre>
-                    <h4>✅ 注意事项</h4>
-                    <pre><code># 删除所有数据（危险操作）
+                <div class="error-item">
+                    <div class="error-header">
+                        <h4>❌ 错误：数据丢失</h4>
+                    </div>
+                    <div class="error-content">
+                        <pre><code>docker compose down  # 默认不删除卷</code></pre>
+                        <div class="error-solution">
+                            <h4>✅ 注意事项</h4>
+                            <pre><code># 删除所有数据（危险操作）
 docker compose down -v
 
 # 生产环境建议定期备份
 docker compose exec db pg_dump ...</code></pre>
+                        </div>
+                    </div>
                 </div>
-                <div class="card">
-                    <h4>❌ 错误：环境变量未传递</h4>
-                    <pre><code>environment:
+                <div class="error-item">
+                    <div class="error-header">
+                        <h4>❌ 错误：环境变量未传递</h4>
+                    </div>
+                    <div class="error-content">
+                        <pre><code>environment:
   - DB_PASS=$DB_PASSWORD  # 变量未定义时为空</code></pre>
-                    <h4>✅ 解决方案</h4>
-                    <pre><code># 使用 .env 文件
+                        <div class="error-solution">
+                            <h4>✅ 解决方案</h4>
+                            <pre><code># 使用 .env 文件
 # .env
 DB_PASSWORD=secret
 
 # 或设置默认值
 environment:
   - DB_PASS=${DB_PASSWORD:-default}</code></pre>
+                        </div>
+                    </div>
                 </div>
-                <div class="card">
-                    <h4>❌ 错误：版本兼容问题</h4>
-                    <pre><code>version: "2"  # 旧版格式</code></pre>
-                    <h4>✅ 解决方案</h4>
-                    <pre><code>version: "3.8"  # 使用最新格式
+                <div class="error-item">
+                    <div class="error-header">
+                        <h4>❌ 错误：版本兼容问题</h4>
+                    </div>
+                    <div class="error-content">
+                        <pre><code>version: "2"  # 旧版格式</code></pre>
+                        <div class="error-solution">
+                            <h4>✅ 解决方案</h4>
+                            <pre><code>version: "3.8"  # 使用最新格式
 # 或直接省略 version（新版本推荐）</code></pre>
+                        </div>
+                    </div>
                 </div>
-                <div class="card">
-                    <h4>❌ 错误：网络隔离问题</h4>
-                    <pre><code># 服务 A 无法访问服务 B</code></pre>
-                    <h4>✅ 解决方案</h4>
-                    <pre><code># 确保服务在同一网络
+                <div class="error-item">
+                    <div class="error-header">
+                        <h4>❌ 错误：网络隔离问题</h4>
+                    </div>
+                    <div class="error-content">
+                        <pre><code># 服务 A 无法访问服务 B</code></pre>
+                        <div class="error-solution">
+                            <h4>✅ 解决方案</h4>
+                            <pre><code># 确保服务在同一网络
 services:
   a:
     networks:
@@ -1066,6 +1100,8 @@ services:
       - mynet
 networks:
   mynet:</code></pre>
+                        </div>
+                    </div>
                 </div>
             </div>
 

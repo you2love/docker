@@ -349,6 +349,52 @@ pre:hover .copy-btn {
     margin-top: 12px;
 }
 
+/* 错误列表样式 */
+.error-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.error-item {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    transition: all 0.2s ease;
+}
+
+.error-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.error-header {
+    margin-bottom: 16px;
+}
+
+.error-header h4 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: var(--text);
+}
+
+.error-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.error-solution {
+    margin-top: 8px;
+}
+
+.error-solution h4 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--primary);
+}
+
 /* 表格 */
 .table {
     width: 100%;
