@@ -253,6 +253,7 @@ pre .fold-toggle {
     transition: all 0.2s ease !important;
     backdrop-filter: blur(4px) !important;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+    margin-right: 8px !important;
 }
 
 pre:hover .fold-toggle,
@@ -273,7 +274,7 @@ pre[class*="language-"] .copy-btn,
 pre .copy-btn {
     position: absolute !important;
     top: 8px !important;
-    right: 8px !important;
+    left: 60px !important;
     padding: 4px 8px !important;
     font-size: 16px !important;
     background: rgba(255, 255, 255, 0.8) !important;
@@ -285,6 +286,7 @@ pre .copy-btn {
     transition: all 0.2s ease !important;
     backdrop-filter: blur(4px) !important;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+    margin-left: 8px !important;
 }
 
 pre:hover .copy-btn,
