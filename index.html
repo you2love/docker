@@ -196,7 +196,7 @@ docker run hello-world</code></pre>
         <!-- Dockerfile -->
         <section id="dockerfile" class="section section-gray">
             <h2>Dockerfile</h2>
-            <p>Dockerfile 是定义镜像构建过程的文本文件。</p>
+            <p>Dockerfile 是定义镜像构建过程的文本文件，包含一系列指令用于构建 Docker 镜像。</p>
 
             <h3>基础示例</h3>
             <pre><code># Node.js 应用
@@ -214,6 +214,7 @@ EXPOSE 3000
 CMD ["node", "server.js"]</code></pre>
 
             <h3>多阶段构建</h3>
+            <p>多阶段构建可以显著减小最终镜像大小，分离构建环境和运行环境。</p>
             <pre><code># 构建阶段
 FROM node:20-alpine AS builder
 WORKDIR /app
@@ -228,7 +229,7 @@ COPY --from=builder /app/node_modules ./node_modules
 EXPOSE 3000
 CMD ["node", "dist/server.js"]</code></pre>
 
-            <h3>常用指令</h3>
+            <h3>完整指令列表</h3>
             <table class="table">
                 <thead>
                     <tr>
@@ -240,7 +241,7 @@ CMD ["node", "dist/server.js"]</code></pre>
                 <tbody>
                     <tr>
                         <td><code>FROM</code></td>
-                        <td>指定基础镜像</td>
+                        <td>指定基础镜像（必须为第一条指令）</td>
                         <td><code>FROM node:20-alpine</code></td>
                     </tr>
                     <tr>
@@ -250,13 +251,38 @@ CMD ["node", "dist/server.js"]</code></pre>
                     </tr>
                     <tr>
                         <td><code>COPY</code></td>
-                        <td>复制文件</td>
+                        <td>复制文件到镜像</td>
                         <td><code>COPY . .</code></td>
                     </tr>
                     <tr>
+                        <td><code>ADD</code></td>
+                        <td>复制文件（支持 URL 和解压）</td>
+                        <td><code>ADD app.tar.gz /app</code></td>
+                    </tr>
+                    <tr>
                         <td><code>RUN</code></td>
-                        <td>执行命令</td>
+                        <td>执行命令并提交结果</td>
                         <td><code>RUN npm install</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>CMD</code></td>
+                        <td>容器启动时执行的默认命令</td>
+                        <td><code>CMD ["node", "app.js"]</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>ENTRYPOINT</code></td>
+                        <td>配置容器为可执行程序</td>
+                        <td><code>ENTRYPOINT ["node"]</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>ENV</code></td>
+                        <td>设置环境变量</td>
+                        <td><code>ENV NODE_ENV=production</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>ARG</code></td>
+                        <td>构建时的变量</td>
+                        <td><code>ARG VERSION=1.0</code></td>
                     </tr>
                     <tr>
                         <td><code>EXPOSE</code></td>
@@ -264,17 +290,154 @@ CMD ["node", "dist/server.js"]</code></pre>
                         <td><code>EXPOSE 3000</code></td>
                     </tr>
                     <tr>
-                        <td><code>CMD</code></td>
-                        <td>容器启动命令</td>
-                        <td><code>CMD ["node", "app.js"]</code></td>
+                        <td><code>VOLUME</code></td>
+                        <td>创建挂载点</td>
+                        <td><code>VOLUME /data</code></td>
                     </tr>
                     <tr>
-                        <td><code>ENV</code></td>
-                        <td>设置环境变量</td>
-                        <td><code>ENV NODE_ENV=production</code></td>
+                        <td><code>USER</code></td>
+                        <td>指定运行用户</td>
+                        <td><code>USER node</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>HEALTHCHECK</code></td>
+                        <td>健康检查</td>
+                        <td><code>HEALTHCHECK CMD curl -f http://localhost/</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>LABEL</code></td>
+                        <td>添加元数据</td>
+                        <td><code>LABEL version="1.0"</code></td>
                     </tr>
                 </tbody>
             </table>
+
+            <h3>CMD vs ENTRYPOINT</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>特性</th>
+                        <th>CMD</th>
+                        <th>ENTRYPOINT</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>目的</td>
+                        <td>设置默认命令和参数</td>
+                        <td>配置容器为可执行程序</td>
+                    </tr>
+                    <tr>
+                        <td>覆盖方式</td>
+                        <td>docker run 时可直接替换</td>
+                        <td>需要 --entrypoint 参数</td>
+                    </tr>
+                    <tr>
+                        <td>组合使用</td>
+                        <td>作为 ENTRYPOINT 的默认参数</td>
+                        <td>定义主命令</td>
+                    </tr>
+                </tbody>
+            </table>
+            <pre><code># 组合使用示例
+ENTRYPOINT ["node"]
+CMD ["app.js"]
+
+# docker run myapp        → node app.js
+# docker run myapp server.js → node server.js</code></pre>
+
+            <h3>常犯错误</h3>
+            <div class="grid">
+                <div class="card">
+                    <h4>❌ 错误：使用 latest 标签</h4>
+                    <pre><code>FROM node:latest  # 不推荐</code></pre>
+                    <h4>✅ 正确：指定版本</h4>
+                    <pre><code>FROM node:20-alpine  # 推荐</code></pre>
+                    <p>latest 标签会变化，导致构建不可重复</p>
+                </div>
+                <div class="card">
+                    <h4>❌ 错误：忽略缓存顺序</h4>
+                    <pre><code>COPY . .
+RUN npm install  # 任何文件变化都会重新执行</code></pre>
+                    <h4>✅ 正确：利用缓存</h4>
+                    <pre><code>COPY package*.json ./
+RUN npm install
+COPY . .  # 只在代码变化时才重新复制</code></pre>
+                </div>
+                <div class="card">
+                    <h4>❌ 错误：以 root 运行</h4>
+                    <pre><code>FROM node:20-alpine
+# 默认 root 用户
+CMD ["node", "app.js"]</code></pre>
+                    <h4>✅ 正确：非 root 用户</h4>
+                    <pre><code>FROM node:20-alpine
+RUN addgroup -g 1001 app && \
+    adduser -u 1001 -G app user
+USER user
+CMD ["node", "app.js"]</code></pre>
+                </div>
+                <div class="card">
+                    <h4>❌ 错误：镜像过大</h4>
+                    <pre><code>FROM node:20  # Debian 基础镜像 ~900MB
+RUN npm install</code></pre>
+                    <h4>✅ 正确：使用 Alpine</h4>
+                    <pre><code>FROM node:20-alpine  # Alpine ~170MB
+RUN npm install</code></pre>
+                </div>
+                <div class="card">
+                    <h4>❌ 错误：多层 RUN 指令</h4>
+                    <pre><code>RUN apk add --no-cache git
+RUN apk add --no-cache curl
+RUN apk add --no-cache vim</code></pre>
+                    <h4>✅ 正确：合并命令</h4>
+                    <pre><code>RUN apk add --no-cache \
+    git curl vim</code></pre>
+                </div>
+                <div class="card">
+                    <h4>❌ 错误：复制无用文件</h4>
+                    <pre><code>COPY . .  # 复制所有文件</code></pre>
+                    <h4>✅ 正确：使用 .dockerignore</h4>
+                    <pre><code># .dockerignore
+node_modules
+.git
+*.md
+.env</code></pre>
+                </div>
+            </div>
+
+            <h3>最佳实践清单</h3>
+            <pre><code># 1. 使用特定版本的基础镜像
+FROM node:20-alpine3.19
+
+# 2. 设置工作目录
+WORKDIR /app
+
+# 3. 先复制依赖文件，利用缓存
+COPY package*.json ./
+RUN npm ci --only=production
+
+# 4. 再复制源代码
+COPY . .
+
+# 5. 创建非 root 用户
+RUN addgroup -g 1001 -S appgroup && \
+    adduser -S appuser -u 1001 -G appgroup
+
+# 6. 设置环境变量
+ENV NODE_ENV=production
+
+# 7. 声明端口
+EXPOSE 3000
+
+# 8. 切换用户
+USER appuser
+
+# 9. 健康检查
+HEALTHCHECK --interval=30s --timeout=3s \
+  CMD wget -q --spider http://localhost:3000/health || exit 1
+
+# 10. 设置启动命令
+CMD ["node", "server.js"]</code></pre>
         </section>
 
         <!-- 构建镜像 -->
