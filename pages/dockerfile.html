@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dockerfile - Docker 教程</title>
+    <title>Dockerfile 最佳实践 - 多阶段构建与优化 | Docker 教程</title>
     <link rel="stylesheet" href="../styles.css">
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
     <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+    <meta name="description" content="最新 Dockerfile 最佳实践，包括多阶段构建、缓存优化、安全配置和性能优化技巧">
 </head>
 <body>
     <!-- 侧边树形导航 -->
@@ -16,128 +17,317 @@
             <span class="brand-name">Docker Tutorial</span>
         </div>
         <ul class="tree-menu">
-            <li><a href="../index.html">首页</a></li>
+            <li><a href="../index.html">🏠 首页</a></li>
             <li>
                 <details open>
-                    <summary>基础入门</summary>
+                    <summary>📚 基础入门</summary>
                     <ul class="submenu">
                         <li><a href="./install.html">安装 Docker</a></li>
+                        <li><a href="./core-concepts.html">核心概念</a></li>
                         <li><a href="./dockerfile.html" style="color: #2496ed; font-weight: bold;">Dockerfile</a></li>
                         <li><a href="./compose.html">Docker Compose</a></li>
-                        <li><a href="./wasm.html">WASM 容器</a></li>
                     </ul>
                 </details>
             </li>
-            <li><a href="./structure.html">目录结构</a></li>
-            <li><a href="./network.html">网络详解</a></li>
-            <li><a href="./volume.html">数据卷详解</a></li>
-            <li><a href="./new-features.html">新特性</a></li>
-            <li><a href="./commands.html">常用命令</a></li>
+            <li>
+                <details open>
+                    <summary>🔧 核心实践</summary>
+                    <ul class="submenu">
+                        <li><a href="./dockerfile.html" style="color: #2496ed; font-weight: bold;">Dockerfile 最佳实践</a></li>
+                        <li><a href="./compose.html">Docker Compose</a></li>
+                        <li><a href="./volume.html">数据卷详解</a></li>
+                        <li><a href="./network.html">网络配置</a></li>
+                    </ul>
+                </details>
+            </li>
             <li>
                 <details>
-                    <summary>实战示例</summary>
+                    <summary>🤖 AI 工具集成</summary>
                     <ul class="submenu">
-                        <li><a href="../examples/python-app/">Python 应用</a></li>
+                        <li><a href="./ai-tools.html">AI 工具概览</a></li>
+                        <li><a href="./ai-tools.html#docker-scout">Docker Scout</a></li>
+                        <li><a href="./ai-tools.html#dagger">Dagger CI/CD</a></li>
+                    </ul>
+                </details>
+            </li>
+            <li>
+                <details>
+                    <summary>⚡ 高级主题</summary>
+                    <ul class="submenu">
+                        <li><a href="./wasm.html">WASM 容器</a></li>
+                        <li><a href="./new-features.html">新特性</a></li>
+                    </ul>
+                </details>
+            </li>
+            <li>
+                <details>
+                    <summary>📦 实战示例</summary>
+                    <ul class="submenu">
                         <li><a href="../examples/web-app/">Web 应用</a></li>
                         <li><a href="../examples/database/">数据库</a></li>
+                        <li><a href="../examples/python-app/">Python 应用</a></li>
                         <li><a href="../examples/ai-optimized/">AI 优化</a></li>
-                        <li><a href="../examples/multi-stage/">多阶段构建</a></li>
                         <li><a href="../examples/wasm-app/">WASM 应用</a></li>
                     </ul>
                 </details>
             </li>
-            <li><a href="./practices.html">最佳实践</a></li>
-            <li><a href="./ai-tools.html">AI工具</a></li>
+            <li>
+                <details>
+                    <summary>🛠️ 参考手册</summary>
+                    <ul class="submenu">
+                        <li><a href="./commands.html">常用命令</a></li>
+                        <li><a href="./practices.html">最佳实践</a></li>
+                    </ul>
+                </details>
+            </li>
         </ul>
     </nav>
-    
+
     <!-- 主内容区域 -->
     <main class="main-content">
         <section class="section">
             <div class="container">
-                <h2 class="section-title">Dockerfile</h2>
+                <h2 class="section-title">📝 Dockerfile 最佳实践</h2>
+                <p class="section-desc">遵循最佳实践，创建高效、安全的 Docker 镜像</p>
 
-                <div class="code-block">
-                    <h3>Dockerfile 基础示例</h3>
-                    <div class="code-container">
-                        <pre><code class="language-dockerfile"># 使用 BuildKit 优化的多阶段构建
-# syntax=docker/dockerfile:1.4
+                <div class="best-practices-container">
+                    <div class="practice-code">
+                        <h3>标准 Dockerfile 示例</h3>
+                        <div class="code-container">
+                            <pre><code class="language-dockerfile"># syntax=docker/dockerfile:1.7
+
+# 使用特定版本的轻量级基础镜像
+FROM node:20-alpine3.19 AS base
+
+# 设置工作目录
+WORKDIR /app
+
+# 安装依赖时使用缓存加速
+FROM base AS deps
+RUN --mount=type=cache,target=/root/.npm \
+    npm pkg set scripts.prepare="" && \
+    npm ci --only=production
 
 # 构建阶段
-FROM node:20-alpine AS builder
-WORKDIR /app
-
-# 启用 BuildKit 缓存挂载
+FROM base AS builder
 RUN --mount=type=cache,target=/root/.npm \
-    npm ci
+    npm ci && \
+    npm run build
 
-COPY . .
-RUN npm run build
-
-# 运行阶段
-FROM node:20-alpine
-WORKDIR /app
-
-# 复制构建产物
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
-COPY package*.json ./
+# 生产镜像
+FROM base AS production
 
 # 创建非 root 用户
 RUN addgroup -g 1001 -S nodejs && \
     adduser -S nodejs -u 1001
+
+# 复制依赖和生产文件
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=builder /app/dist ./dist
+COPY package.json ./
+
+# 设置用户和权限
 USER nodejs
 
-# 暴露端口
+# 健康检查
+HEALTHCHECK --interval=30s --timeout=3s \
+  --start-period=5s --retries=3 \
+  CMD wget --quiet --tries=1 --spider \
+      http://localhost:3000/health || exit 1
+
 EXPOSE 3000
 
-# 健康检查
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD node -e "require('http').get('http://localhost:3000/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
+CMD ["node", "dist/server.js"]</code></pre>
+                            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                        </div>
+                    </div>
 
-# 启动应用
-CMD ["node", "dist/index.js"]</code></pre>
-                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    <div class="practice-tips">
+                        <h3>关键实践要点</h3>
+                        <div class="tips-list">
+                            <div class="tip-item">
+                                <span class="tip-icon">✅</span>
+                                <div>
+                                    <strong>使用多阶段构建</strong>
+                                    <p>分离构建环境和运行环境，减小最终镜像大小</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <span class="tip-icon">✅</span>
+                                <div>
+                                    <strong>利用构建缓存</strong>
+                                    <p>使用<code>--mount=type=cache</code>加速依赖安装</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <span class="tip-icon">✅</span>
+                                <div>
+                                    <strong>非 root 用户运行</strong>
+                                    <p>提高容器安全性，防止权限提升攻击</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <span class="tip-icon">✅</span>
+                                <div>
+                                    <strong>健康检查</strong>
+                                    <p>监控容器状态，自动重启异常容器</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <span class="tip-icon">✅</span>
+                                <div>
+                                    <strong>使用 .dockerignore</strong>
+                                    <p>排除不必要的文件，减小构建上下文</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <span class="tip-icon">✅</span>
+                                <div>
+                                    <strong>固定版本标签</strong>
+                                    <p>避免使用<code>latest</code>，确保构建可重复</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </div>
+        </section>
 
-                <div class="info-card">
-                    <h3>Dockerfile 新特性</h3>
-                    <ul>
-                        <li><code># syntax</code>: 声明 Dockerfile 语法版本，启用新特性</li>
-                        <li><code>--mount=type=cache</code>: BuildKit 缓存挂载，加速构建</li>
-                        <li><code>--mount=type=secret</code>: 安全挂载密钥（如 SSH 密钥）</li>
-                        <li><code>--mount=type=ssh</code>: 直接在构建中使用 SSH</li>
-                        <li><code>COPY --link</code>: 减少构建上下文和层大小</li>
-                        <li><code>RUN --network</code>: 控制构建时的网络访问</li>
-                        <li><code>HEREDOC</code>: 支持多行文本块</li>
-                    </ul>
+        <!-- .dockerignore 示例 -->
+        <section class="section bg-light">
+            <div class="container">
+                <h2 class="section-title">📄 .dockerignore 配置</h2>
+                <p class="section-desc">优化构建上下文，排除不必要的文件</p>
+
+                <div class="code-container">
+                    <pre><code class="language-dockerfile"># .dockerignore 示例
+
+# 依赖目录
+node_modules/
+vendor/
+__pycache__/
+.pyc
+
+# 开发文件
+.git/
+.gitignore
+README.md
+.env
+.env.local
+
+# 测试文件
+test/
+tests/
+*.test.js
+*.spec.js
+
+# IDE 配置
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 日志文件
+logs/
+*.log
+
+# 临时文件
+tmp/
+temp/
+*.tmp
+
+# 文档
+docs/
+*.md
+
+# CI/CD
+.github/
+.gitlab-ci.yml</code></pre>
+                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
                 </div>
+            </div>
+        </section>
 
-                <div class="code-block">
-                    <h3>使用 Secrets 和 SSH</h3>
-                    <div class="code-container">
-                        <pre><code class="language-dockerfile"># syntax=docker/dockerfile:1.4
+        <!-- Dockerfile 指令详解 -->
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">📚 Dockerfile 指令详解</h2>
+                <p class="section-desc">常用 Dockerfile 指令的使用方法和最佳实践</p>
 
-FROM node:20-alpine AS builder
-WORKDIR /app
+                <div class="instruction-grid">
+                    <div class="instruction-card">
+                        <h3>FROM</h3>
+                        <p>指定基础镜像</p>
+                        <div class="code-container">
+                            <pre><code>FROM node:20-alpine
+FROM ubuntu:22.04 AS builder</code></pre>
+                        </div>
+                    </div>
 
-# 使用私有 npm 仓库的 token（作为 secret）
-RUN --mount=type=secret,id=npm_token,required \
-    NPM_TOKEN=$(cat /run/secrets/npm_token) \
-    npm ci
+                    <div class="instruction-card">
+                        <h3>WORKDIR</h3>
+                        <p>设置工作目录</p>
+                        <div class="code-container">
+                            <pre><code>WORKDIR /app
+# 自动创建目录（如不存在）</code></pre>
+                        </div>
+                    </div>
 
-# 克隆私有 Git 仓库
-RUN --mount=type=ssh \
-    git clone git@github.com:yourorg/private-repo.git
+                    <div class="instruction-card">
+                        <h3>COPY / ADD</h3>
+                        <p>复制文件到镜像</p>
+                        <div class="code-container">
+                            <pre><code>COPY . /app
+COPY --from=builder /dist .
+ADD app.tar.gz /app</code></pre>
+                        </div>
+                    </div>
 
-# 多行脚本（HEREDOC）
-RUN <<EOF
-echo "Setting up environment..."
-apk add --no-cache git curl
-curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
-EOF</code></pre>
-                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                    <div class="instruction-card">
+                        <h3>RUN</h3>
+                        <p>执行命令</p>
+                        <div class="code-container">
+                            <pre><code>RUN apt-get update && \
+    apt-get install -y python3
+RUN --mount=type=cache npm ci</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="instruction-card">
+                        <h3>CMD / ENTRYPOINT</h3>
+                        <p>容器启动命令</p>
+                        <div class="code-container">
+                            <pre><code>CMD ["node", "server.js"]
+ENTRYPOINT ["python", "app.py"]
+CMD ["--debug"]</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="instruction-card">
+                        <h3>ENV</h3>
+                        <p>设置环境变量</p>
+                        <div class="code-container">
+                            <pre><code>ENV NODE_ENV=production
+ENV PATH="/app/bin:${PATH}"</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="instruction-card">
+                        <h3>EXPOSE</h3>
+                        <p>声明暴露端口</p>
+                        <div class="code-container">
+                            <pre><code>EXPOSE 3000
+EXPOSE 8080/tcp 8443/udp</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="instruction-card">
+                        <h3>USER</h3>
+                        <p>指定运行用户</p>
+                        <div class="code-container">
+                            <pre><code>USER nodejs
+USER 1001:1001</code></pre>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -151,10 +341,14 @@ EOF</code></pre>
             const codeBlock = button.previousElementSibling.querySelector('code');
             navigator.clipboard.writeText(codeBlock.textContent).then(() => {
                 const originalText = button.textContent;
-                button.textContent = '已复制!';
+                button.textContent = '已复制! ✓';
+                button.style.background = '#28a745';
                 setTimeout(() => {
                     button.textContent = originalText;
+                    button.style.background = '';
                 }, 2000);
+            }).catch(err => {
+                console.error('复制失败:', err);
             });
         }
     </script>

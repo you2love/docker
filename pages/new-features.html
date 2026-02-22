@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>新特性 - Docker 教程</title>
+    <title>Docker 新特性详解 - BuildKit、Docker Scout 与 AI 工具 | Docker 教程</title>
     <link rel="stylesheet" href="../styles.css">
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
     <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+    <meta name="description" content="Docker 最新特性详解，包括 BuildKit、Docker Scout、容器安全、镜像签名等革命性功能">
 </head>
 <body>
     <!-- 侧边树形导航 -->
@@ -16,207 +17,190 @@
             <span class="brand-name">Docker Tutorial</span>
         </div>
         <ul class="tree-menu">
-            <li><a href="../index.html">首页</a></li>
+            <li><a href="../index.html">🏠 首页</a></li>
             <li>
-                <details>
-                    <summary>基础入门</summary>
+                <details open>
+                    <summary>📚 基础入门</summary>
                     <ul class="submenu">
                         <li><a href="./install.html">安装 Docker</a></li>
+                        <li><a href="./core-concepts.html">核心概念</a></li>
                         <li><a href="./dockerfile.html">Dockerfile</a></li>
                         <li><a href="./compose.html">Docker Compose</a></li>
-                        <li><a href="./wasm.html">WASM 容器</a></li>
                     </ul>
                 </details>
             </li>
-            <li><a href="./structure.html">目录结构</a></li>
-            <li><a href="./network.html">网络详解</a></li>
-            <li><a href="./volume.html">数据卷详解</a></li>
-            <li><a href="./new-features.html" style="color: #2496ed; font-weight: bold;">新特性</a></li>
-            <li><a href="./commands.html">常用命令</a></li>
+            <li>
+                <details open>
+                    <summary>🔧 核心实践</summary>
+                    <ul class="submenu">
+                        <li><a href="./dockerfile.html">Dockerfile 最佳实践</a></li>
+                        <li><a href="./compose.html">Docker Compose</a></li>
+                        <li><a href="./volume.html">数据卷详解</a></li>
+                        <li><a href="./network.html">网络配置</a></li>
+                    </ul>
+                </details>
+            </li>
             <li>
                 <details>
-                    <summary>实战示例</summary>
+                    <summary>🤖 AI 工具集成</summary>
                     <ul class="submenu">
-                        <li><a href="../examples/python-app/">Python 应用</a></li>
+                        <li><a href="./ai-tools.html">AI 工具概览</a></li>
+                        <li><a href="./ai-tools.html#docker-scout">Docker Scout</a></li>
+                        <li><a href="./ai-tools.html#dagger">Dagger CI/CD</a></li>
+                    </ul>
+                </details>
+            </li>
+            <li>
+                <details open>
+                    <summary>⚡ 高级主题</summary>
+                    <ul class="submenu">
+                        <li><a href="./wasm.html">WASM 容器</a></li>
+                        <li><a href="./new-features.html" style="color: #2496ed; font-weight: bold;">新特性</li></a></li>
+                    </ul>
+                </details>
+            </li>
+            <li>
+                <details>
+                    <summary>📦 实战示例</summary>
+                    <ul class="submenu">
                         <li><a href="../examples/web-app/">Web 应用</a></li>
                         <li><a href="../examples/database/">数据库</a></li>
+                        <li><a href="../examples/python-app/">Python 应用</a></li>
                         <li><a href="../examples/ai-optimized/">AI 优化</a></li>
-                        <li><a href="../examples/multi-stage/">多阶段构建</a></li>
                         <li><a href="../examples/wasm-app/">WASM 应用</a></li>
                     </ul>
                 </details>
             </li>
-            <li><a href="./practices.html">最佳实践</a></li>
-            <li><a href="./ai-tools.html">AI工具</a></li>
+            <li>
+                <details>
+                    <summary>🛠️ 参考手册</summary>
+                    <ul class="submenu">
+                        <li><a href="./structure.html">目录结构</a></li>
+                        <li><a href="./commands.html">常用命令</a></li>
+                        <li><a href="./practices.html">最佳实践</a></li>
+                    </ul>
+                </details>
+            </li>
         </ul>
     </nav>
-    
+
     <!-- 主内容区域 -->
     <main class="main-content">
         <section class="section">
             <div class="container">
-                <h2 class="section-title">Docker 新特性</h2>
+                <h2 class="section-title">🆕 Docker 新特性详解</h2>
+                <p class="section-desc">深入了解 Docker 最新版本带来的强大功能</p>
 
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon">🤖</div>
-                        <h3>Ask Gordon</h3>
-                        <p>Docker 内置的 AI 助手，通过自然语言交互帮助编写、分析和优化 Dockerfile。命令：<code>docker ai</code></p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">🧠</div>
-                        <h3>Docker Model Runner</h3>
-                        <p>管理和运行 AI 模型的官方工具，支持本地推理和与 Compose 集成。已在 4.45.0 中 GA。</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">🎼</div>
-                        <h3>Compose v5</h3>
-                        <p>引入新的官方 Go SDK，提供全面的 API 用于集成 Compose 功能。在 4.56.0 中发布。</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">🔗</div>
-                        <h3>MCP Toolkit</h3>
-                        <p>Model Context Protocol 工具包，已在 Docker Desktop 中广泛集成，支持 100+ MCP 服务器。</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">📦</div>
-                        <h3>containerd image store</h3>
-                        <p>新的镜像存储后端，在 Docker Engine v29 中成为默认。提供更好的性能和兼容性。</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">🔍</div>
-                        <h3>Docker Scout</h3>
-                        <p>AI 增强的漏洞扫描、SBOM 生成、合规检查。实时监控镜像安全状态，自动修复安全风险。</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">⚡</div>
-                        <h3>cgroup v2 支持</h3>
-                        <p>cgroup v1 已废弃，cgroup v2 成为推荐选项。支持到 2029 年 5 月，建议尽快迁移。</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">🔥</div>
-                        <h3>nftables 支持</h3>
-                        <p>实验性的 nftables 防火墙后端，可设置 <code>--firewall-backend=nftables</code> 启用。</p>
-                    </div>
-                </div>
-
-                <div class="code-block">
-                    <h3>使用 Docker Scout 进行安全扫描</h3>
-                    <div class="code-container">
-                        <pre><code class="language-bash"># 扫描镜像漏洞
-docker scout cves myapp:latest
-
-# 快速漏洞扫描
-docker scout quickview myapp:latest
-
-# 生成 SBOM（软件物料清单）
-docker scout sbom myapp:latest --output sbom.json
-
-# 查看镜像详情和依赖关系
-docker scout repo myapp:latest
-
-# 比较镜像差异
-docker scout compare old:latest new:latest
-
-# CI/CD 集成（失败如果发现高危漏洞）
-docker scout cves --exit-code 1 --severity high,critical myapp:latest</code></pre>
-                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                    </div>
-                </div>
-
-                <div class="code-block">
-                    <h3>使用 BuildKit 2.0 分布式构建</h3>
-                    <div class="code-container">
-                        <pre><code class="language-bash"># 设置分布式构建缓存
-export BUILDKIT_REMOTE_CACHE=type=registry,ref=myregistry.com/cache
-
-# 使用远程构建器
-docker buildx build \
-  --builder=my-builder \
-  --cache-from=type=registry,ref=myregistry.com/cache \
-  --cache-to=type=registry,ref=myregistry.com/cache,mode=max \
-  -t myapp:latest \
-  .
-
-# 创建远程构建器
-docker buildx create --name remote-builder \
+                <div class="features-detail">
+                    <div class="feature-detail-item">
+                        <div class="feature-detail-header">
+                            <h3>BuildKit - 现代构建引擎</h3>
+                            <span class="version-badge">v23.0+</span>
+                        </div>
+                        <div class="feature-detail-content">
+                            <p>BuildKit 提供强大的构建性能和灵活性：</p>
+                            <ul>
+                                <li><strong>分布式构建</strong>：支持远程构建器，团队共享构建缓存</li>
+                                <li><strong>智能缓存</strong>：多层缓存策略，显著加速重复构建</li>
+                                <li><strong>并行执行</strong>：独立步骤自动并行，最大化 CPU 利用</li>
+                                <li><strong>缓存挂载</strong>：用于依赖管理的高效缓存</li>
+                                <li><strong>多平台构建</strong>：单次构建多个架构的镜像</li>
+                            </ul>
+                            <div class="code-container">
+                                <pre><code class="language-bash"># 创建远程构建器
+docker buildx create \
+  --name remote-builder \
   --driver=docker-container \
-  --driver-opt image=moby/buildkit:latest \
   --bootstrap
 
-# 并行构建多架构镜像
+# 使用共享缓存构建
 docker buildx build \
-  --platform linux/amd64,linux/arm64,linux/arm/v7 \
+  --builder=remote-builder \
+  --cache-from=type=registry,ref=myorg/cache \
+  --cache-to=type=registry,ref=myorg/cache,mode=max \
+  -t myapp:latest .
+
+# 多平台构建
+docker buildx build \
+  --platform linux/amd64,linux/arm64 \
   -t myapp:multiarch \
   --push .</code></pre>
-                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="code-block">
-                    <h3>使用 eBPF 进行监控</h3>
-                    <div class="code-container">
-                        <pre><code class="language-bash"># 安装 bpftrace（如果未安装）
-sudo apt-get install bpftrace
+                    <div class="feature-detail-item">
+                        <div class="feature-detail-header">
+                            <h3>Docker Scout 2.0 - AI 驱动的安全</h3>
+                            <span class="version-badge">v27.0+</span>
+                        </div>
+                        <div class="feature-detail-content">
+                            <p>Docker Scout 2.0 提供全面的安全保障：</p>
+                            <ul>
+                                <li><strong>实时漏洞扫描</strong>：持续监控 CVE 数据库</li>
+                                <li><strong>AI 修复建议</strong>：智能推荐最优修复方案</li>
+                                <li><strong>SBOM 生成</strong>：自动生成软件物料清单</li>
+                                <li><strong>合规检查</strong>：自动检查合规要求</li>
+                            </ul>
+                            <div class="code-container">
+                                <pre><code class="language-bash"># 完整安全扫描
+docker scout cves \
+  --severity critical,high \
+  --exit-code 1 \
+  myapp:latest
 
-# 监控容器网络流量
-sudo bpftrace -e '
-tracepoint:syscalls:sys_enter_connect / comm == "containerd" / {
-  printf("Connect from PID %d to %s\n", pid, str(args->uservaddr, 16));
-}'
+# 生成 SBOM 报告
+docker scout sbom \
+  --format spdx-json \
+  --output sbom.json \
+  myapp:latest
 
-# 监控容器文件系统访问
-sudo bpftrace -e '
-tracepoint:syscalls:sys_enter_openat / comm == "containerd" / {
-  printf("PID %d opened file: %s\n", pid, str(args->filename));
-}'
+# 比较镜像安全状态
+docker scout compare \
+  --from myapp:v1 \
+  --to myapp:v2
 
-# 使用 Sysdig 进行高级监控
-sysdig container.name=web-app
-
-# 使用 Falco 进行安全监控
-falco -r /etc/falco/rules.local.yaml</code></pre>
-                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+# CI/CD 集成
+docker scout quickview \
+  --format markdown \
+  myapp:latest</code></pre>
+                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <!-- 废弃特性 -->
-                <div class="section">
-                    <div class="container">
-                        <h2 class="section-title">⚠️ 废弃特性</h2>
-                        <p class="section-desc">以下特性已被标记为废弃或移除，请及时迁移到新的解决方案</p>
+                    <div class="feature-detail-item">
+                        <div class="feature-detail-header">
+                            <h3>容器安全增强 - 零信任架构</h3>
+                            <span class="version-badge">v27.0+</span>
+                        </div>
+                        <div class="feature-detail-content">
+                            <p>Docker 引入了多项安全增强：</p>
+                            <ul>
+                                <li><strong>镜像签名</strong>：基于 Cosign 的原生签名支持</li>
+                                <li><strong>内容信任</strong>：只运行已签名的镜像</li>
+                                <li><strong>密钥管理</strong>：集成云 KMS 和硬件密钥</li>
+                                <li><strong>供应链安全</strong>：SLSA 合规性检查</li>
+                            </ul>
+                            <div class="code-container">
+                                <pre><code class="language-bash"># 启用内容信任
+export DOCKER_CONTENT_TRUST=1
 
-                        <div class="deprecated-grid">
-                            <div class="deprecated-card">
-                                <div class="deprecated-icon">🔮</div>
-                                <h3>WASM 工作负载</h3>
-                                <p>已在 Docker Desktop 4.55.0 (2025-12-16) 中标记为废弃</p>
-                                <p><strong>移除计划：</strong>未来的 Docker Desktop 版本</p>
-                                <p><strong>替代方案：</strong>使用传统 Linux 容器</p>
-                            </div>
+# 签名镜像
+cosign sign \
+  --key cosign.key \
+  myregistry.com/myapp:latest
 
-                            <div class="deprecated-card">
-                                <div class="deprecated-icon">⚖️</div>
-                                <h3>cgroup v1</h3>
-                                <p>已在 Docker Engine v29 中标记为废弃</p>
-                                <p><strong>支持期限：</strong>至少到 2029 年 5 月</p>
-                                <p><strong>替代方案：</strong>迁移到 cgroup v2</p>
-                            </div>
+# 验证签名
+cosign verify \
+  --key cosign.pub \
+  myregistry.com/myapp:latest
 
-                            <div class="deprecated-card">
-                                <div class="deprecated-icon">🔒</div>
-                                <h3>Docker Content Trust</h3>
-                                <p>已从 Docker CLI 中移除</p>
-                                <p><strong>移除版本：</strong>Docker Engine v29.0.0</p>
-                                <p><strong>替代方案：</strong>可作为单独插件构建使用</p>
-                            </div>
-
-                            <div class="deprecated-card">
-                                <div class="deprecated-icon">📦</div>
-                                <h3>Legacy 图形驱动</h3>
-                                <p>containerd image store 成为新安装的默认选项</p>
-                                <p><strong>变更版本：</strong>Docker Engine v29.0.0</p>
-                                <p><strong>说明：</strong>不影响现有配置，仅影响新安装</p>
+# 生成 SLSA 证明
+cosign generate-slsa-provenance \
+  myapp:latest</code></pre>
+                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
                             </div>
                         </div>
                     </div>
@@ -232,10 +216,14 @@ falco -r /etc/falco/rules.local.yaml</code></pre>
             const codeBlock = button.previousElementSibling.querySelector('code');
             navigator.clipboard.writeText(codeBlock.textContent).then(() => {
                 const originalText = button.textContent;
-                button.textContent = '已复制!';
+                button.textContent = '已复制! ✓';
+                button.style.background = '#28a745';
                 setTimeout(() => {
                     button.textContent = originalText;
+                    button.style.background = '';
                 }, 2000);
+            }).catch(err => {
+                console.error('复制失败:', err);
             });
         }
     </script>

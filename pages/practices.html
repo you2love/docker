@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>最佳实践 - Docker 教程</title>
+    <title>Docker 最佳实践清单 - 生产级容器应用指南 | Docker 教程</title>
     <link rel="stylesheet" href="../styles.css">
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
     <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+    <meta name="description" content="Docker 最佳实践完整清单，涵盖安全、镜像优化、CI/CD 集成和监控日志">
 </head>
 <body>
     <!-- 侧边树形导航 -->
@@ -16,185 +17,290 @@
             <span class="brand-name">Docker Tutorial</span>
         </div>
         <ul class="tree-menu">
-            <li><a href="../index.html">首页</a></li>
+            <li><a href="../index.html">🏠 首页</a></li>
             <li>
-                <details>
-                    <summary>基础入门</summary>
+                <details open>
+                    <summary>📚 基础入门</summary>
                     <ul class="submenu">
                         <li><a href="./install.html">安装 Docker</a></li>
+                        <li><a href="./core-concepts.html">核心概念</a></li>
                         <li><a href="./dockerfile.html">Dockerfile</a></li>
                         <li><a href="./compose.html">Docker Compose</a></li>
-                        <li><a href="./wasm.html">WASM 容器</a></li>
                     </ul>
                 </details>
             </li>
-            <li><a href="./structure.html">目录结构</a></li>
-            <li><a href="./network.html">网络详解</a></li>
-            <li><a href="./volume.html">数据卷详解</a></li>
-            <li><a href="./new-features.html">新特性</a></li>
-            <li><a href="./commands.html">常用命令</a></li>
+            <li>
+                <details open>
+                    <summary>🔧 核心实践</summary>
+                    <ul class="submenu">
+                        <li><a href="./dockerfile.html">Dockerfile 最佳实践</a></li>
+                        <li><a href="./compose.html">Docker Compose</a></li>
+                        <li><a href="./volume.html">数据卷详解</a></li>
+                        <li><a href="./network.html">网络配置</a></li>
+                    </ul>
+                </details>
+            </li>
             <li>
                 <details>
-                    <summary>实战示例</summary>
+                    <summary>🤖 AI 工具集成</summary>
                     <ul class="submenu">
-                        <li><a href="../examples/python-app/">Python 应用</a></li>
+                        <li><a href="./ai-tools.html">AI 工具概览</a></li>
+                        <li><a href="./ai-tools.html#docker-scout">Docker Scout</a></li>
+                        <li><a href="./ai-tools.html#dagger">Dagger CI/CD</a></li>
+                    </ul>
+                </details>
+            </li>
+            <li>
+                <details>
+                    <summary>⚡ 高级主题</summary>
+                    <ul class="submenu">
+                        <li><a href="./wasm.html">WASM 容器</a></li>
+                        <li><a href="./new-features.html">新特性</li></li>
+                    </ul>
+                </details>
+            </li>
+            <li>
+                <details>
+                    <summary>📦 实战示例</summary>
+                    <ul class="submenu">
                         <li><a href="../examples/web-app/">Web 应用</a></li>
                         <li><a href="../examples/database/">数据库</a></li>
+                        <li><a href="../examples/python-app/">Python 应用</a></li>
                         <li><a href="../examples/ai-optimized/">AI 优化</a></li>
-                        <li><a href="../examples/multi-stage/">多阶段构建</a></li>
                         <li><a href="../examples/wasm-app/">WASM 应用</a></li>
                     </ul>
                 </details>
             </li>
-            <li><a href="./practices.html" style="color: #2496ed; font-weight: bold;">最佳实践</a></li>
-            <li><a href="./ai-tools.html">AI工具</a></li>
+            <li>
+                <details open>
+                    <summary>🛠️ 参考手册</summary>
+                    <ul class="submenu">
+                        <li><a href="./structure.html">目录结构</a></li>
+                        <li><a href="./commands.html">常用命令</a></li>
+                        <li><a href="./practices.html" style="color: #2496ed; font-weight: bold;">最佳实践</a></li>
+                    </ul>
+                </details>
+            </li>
         </ul>
     </nav>
-    
+
     <!-- 主内容区域 -->
     <main class="main-content">
         <section class="section">
             <div class="container">
-                <h2 class="section-title">Docker 最佳实践</h2>
+                <h2 class="section-title">✅ Docker 最佳实践清单</h2>
+                <p class="section-desc">遵循这些最佳实践，打造生产级容器应用</p>
 
-                <div class="practices-list">
-                    <div class="practice-item">
-                        <div class="practice-icon">🔒</div>
-                        <div class="practice-content">
-                            <h3>安全最佳实践</h3>
-                            <p>始终使用非 root 用户运行容器，限制容器权限，使用只读根文件系统，并定期扫描镜像漏洞。</p>
-                            <div class="code-container">
-                                <pre><code class="language-dockerfile"># 在 Dockerfile 中创建非 root 用户
-RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nodejs -u 1001
-USER nodejs
-
-# 使用只读根文件系统
-docker run --read-only myapp:latest
-
-# 使用用户命名空间
-docker run --userns=host myapp:latest</code></pre>
-                            </div>
+                <div class="practices-checklist">
+                    <div class="practice-category">
+                        <h3>🔒 安全实践</h3>
+                        <div class="checklist">
+                            <label class="check-item">
+                                <input type="checkbox" checked>
+                                <span>使用非 root 用户运行容器</span>
+                            </label>
+                            <label class="check-item">
+                                <input type="checkbox" checked>
+                                <span>使用只读根文件系统</span>
+                            </label>
+                            <label class="check-item">
+                                <input type="checkbox" checked>
+                                <span>定期扫描镜像漏洞</span>
+                            </label>
+                            <label class="check-item">
+                                <input type="checkbox" checked>
+                                <span>使用 secrets 管理敏感信息</span>
+                            </label>
+                            <label class="check-item">
+                                <input type="checkbox">
+                                <span>实施镜像签名和验证</span>
+                            </label>
+                            <label class="check-item">
+                                <input type="checkbox">
+                                <span>限制容器能力和权限</span>
+                            </label>
                         </div>
                     </div>
 
-                    <div class="practice-item">
-                        <div class="practice-icon">📦</div>
-                        <div class="practice-content">
-                            <h3>镜像大小优化</h3>
-                            <p>使用多阶段构建减少镜像大小，选择合适的基础镜像，合并 RUN 指令减少层数，并清理不必要的文件。</p>
-                            <div class="code-container">
-                                <pre><code class="language-dockerfile"># 使用 Alpine 基础镜像
-FROM node:18-alpine
-
-# 多阶段构建
-FROM node:18-alpine AS builder
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci && npm cache clean --force
-COPY . .
-RUN npm run build
-
-FROM node:18-alpine AS production
-WORKDIR /app
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
-CMD ["npm", "start"]</code></pre>
-                            </div>
+                    <div class="practice-category">
+                        <h3>📦 镜像优化</h3>
+                        <div class="checklist">
+                            <label class="check-item">
+                                <input type="checkbox" checked>
+                                <span>使用多阶段构建</span>
+                            </label>
+                            <label class="check-item">
+                                <input type="checkbox" checked>
+                                <span>选择合适的基础镜像（Alpine）</span>
+                            </label>
+                            <label class="check-item">
+                                <input type="checkbox" checked>
+                                <span>合并 RUN 指令减少层数</span>
+                            </label>
+                            <label class="check-item">
+                                <input type="checkbox" checked>
+                                <span>使用 .dockerignore 排除文件</span>
+                            </label>
+                            <label class="check-item">
+                                <input type="checkbox" checked>
+                                <span>利用构建缓存</span>
+                            </label>
+                            <label class="check-item">
+                                <input type="checkbox">
+                                <span>固定所有依赖版本</span>
+                            </label>
                         </div>
                     </div>
 
-                    <div class="practice-item">
-                        <div class="practice-icon">🔄</div>
-                        <div class="practice-content">
-                            <h3>持续集成/持续部署</h3>
-                            <p>使用 BuildKit 加速构建，利用缓存层，自动化测试，并使用 Docker Compose 进行多服务编排。</p>
-                            <div class="code-container">
-                                <pre><code class="language-bash"># 使用 BuildKit 构建
-export DOCKER_BUILDKIT=1
-docker build -t myapp:latest .
-
-# 使用缓存
-docker build --cache-from myapp:latest -t myapp:latest .
-
-# CI/CD 中的多架构构建
-docker buildx build --platform linux/amd64,linux/arm64 -t myapp:latest --push .</code></pre>
-                            </div>
+                    <div class="practice-category">
+                        <h3>🔄 CI/CD 集成</h3>
+                        <div class="checklist">
+                            <label class="check-item">
+                                <input type="checkbox" checked>
+                                <span>使用 BuildKit 加速构建</span>
+                            </label>
+                            <label class="check-item">
+                                <input type="checkbox" checked>
+                                <span>自动化测试容器镜像</span>
+                            </label>
+                            <label class="check-item">
+                                <input type="checkbox" checked>
+                                <span>实施镜像安全扫描</span>
+                            </label>
+                            <label class="check-item">
+                                <input type="checkbox" checked>
+                                <span>使用 Docker Compose 测试</span>
+                            </label>
+                            <label class="check-item">
+                                <input type="checkbox">
+                                <span>多架构镜像构建</span>
+                            </label>
+                            <label class="check-item">
+                                <input type="checkbox">
+                                <span>自动化镜像推送</span>
+                            </label>
                         </div>
                     </div>
 
-                    <div class="practice-item">
-                        <div class="practice-icon">📊</div>
-                        <div class="practice-content">
-                            <h3>监控和日志</h3>
-                            <p>集中化日志管理，使用健康检查，监控资源使用情况，并设置告警机制。</p>
-                            <div class="code-container">
-                                <pre><code class="language-dockerfile"># 在 Dockerfile 中添加健康检查
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost/health || exit 1
-
-# 使用 Docker Compose 配置日志
-services:
-  app:
-    image: myapp
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"</code></pre>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="practice-item">
-                        <div class="practice-icon">🔗</div>
-                        <div class="practice-content">
-                            <h3>网络和存储</h3>
-                            <p>使用自定义网络隔离服务，使用命名卷持久化数据，避免使用默认桥接网络。</p>
-                            <div class="code-container">
-                                <pre><code class="language-yaml"># Docker Compose 网络配置
-version: '3.8'
-services:
-  web:
-    image: nginx
-    networks:
-      - frontend
-    volumes:
-      - web-data:/usr/share/nginx/html
-
-  db:
-    image: postgres
-    networks:
-      - backend
-    volumes:
-      - db-data:/var/lib/postgresql/data
-
-networks:
-  frontend:
-    driver: bridge
-  backend:
-    driver: bridge
-
-volumes:
-  web-data:
-  db-data:</code></pre>
-                            </div>
+                    <div class="practice-category">
+                        <h3>📊 监控与日志</h3>
+                        <div class="checklist">
+                            <label class="check-item">
+                                <input type="checkbox" checked>
+                                <span>配置健康检查</span>
+                            </label>
+                            <label class="check-item">
+                                <input type="checkbox" checked>
+                                <span>集中化日志管理</span>
+                            </label>
+                            <label class="check-item">
+                                <input type="checkbox" checked>
+                                <span>监控资源使用情况</span>
+                            </label>
+                            <label class="check-item">
+                                <input type="checkbox" checked>
+                                <span>设置告警机制</span>
+                            </label>
+                            <label class="check-item">
+                                <input type="checkbox">
+                                <span>实现分布式追踪</span>
+                            </label>
+                            <label class="check-item">
+                                <input type="checkbox">
+                                <span>配置日志轮转</span>
+                            </label>
                         </div>
                     </div>
                 </div>
+            </div>
+        </section>
 
-                <div class="info-card">
-                    <h3>综合最佳实践清单</h3>
-                    <ul>
-                        <li>使用特定的标签而非 latest</li>
-                        <li>使用 .dockerignore 文件排除不需要的文件</li>
-                        <li>定期更新基础镜像和依赖</li>
-                        <li>使用 Docker 官方镜像作为基础</li>
-                        <li>为容器设置资源限制</li>
-                        <li>使用 secrets 管理敏感信息</li>
-                        <li>实施镜像签名和验证</li>
-                        <li>使用 Docker Bench for Security 审查配置</li>
-                    </ul>
+        <!-- 学习路径 -->
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">📚 推荐学习路径</h2>
+                <p class="section-desc">循序渐进，从入门到精通</p>
+
+                <div class="learning-path">
+                    <div class="path-stage">
+                        <div class="stage-header">
+                            <div class="stage-icon">🌱</div>
+                            <h3>入门阶段</h3>
+                        </div>
+                        <ul>
+                            <li>理解 Docker 核心概念</li>
+                            <li>安装和配置 Docker</li>
+                            <li>运行第一个容器</li>
+                            <li>学习基本命令</li>
+                            <li>编写简单 Dockerfile</li>
+                        </ul>
+                        <div class="stage-resources">
+                            <strong>推荐资源：</strong>
+                            <a href="./core-concepts.html">核心概念</a>
+                            <a href="./core-concepts.html#first-container">第一个容器</a>
+                            <a href="./commands.html">命令速查</a>
+                        </div>
+                    </div>
+
+                    <div class="path-stage">
+                        <div class="stage-header">
+                            <div class="stage-icon">🌿</div>
+                            <h3>进阶阶段</h3>
+                        </div>
+                        <ul>
+                            <li>掌握 Dockerfile 最佳实践</li>
+                            <li>使用 Docker Compose</li>
+                            <li>理解网络和存储</li>
+                            <li>多阶段构建优化</li>
+                            <li>容器调试技巧</li>
+                        </ul>
+                        <div class="stage-resources">
+                            <strong>推荐资源：</strong>
+                            <a href="./dockerfile.html">Dockerfile 实践</a>
+                            <a href="./compose.html">Compose 实战</a>
+                            <a href="./network.html">网络配置</a>
+                        </div>
+                    </div>
+
+                    <div class="path-stage">
+                        <div class="stage-header">
+                            <div class="stage-icon">🌳</div>
+                            <h3>高级阶段</h3>
+                        </div>
+                        <ul>
+                            <li>容器安全加固</li>
+                            <li>性能优化调优</li>
+                            <li>AI 工具集成</li>
+                            <li>WASM 容器实践</li>
+                            <li>生产环境部署</li>
+                        </ul>
+                        <div class="stage-resources">
+                            <strong>推荐资源：</strong>
+                            <a href="./new-features.html">安全特性</a>
+                            <a href="./ai-tools.html">AI 工具</a>
+                            <a href="./wasm.html">WASM 容器</a>
+                        </div>
+                    </div>
+
+                    <div class="path-stage">
+                        <div class="stage-header">
+                            <div class="stage-icon">🚀</div>
+                            <h3>专家阶段</h3>
+                        </div>
+                        <ul>
+                            <li>Kubernetes 集成</li>
+                            <li>微服务架构设计</li>
+                            <li>CI/CD 流水线</li>
+                            <li>云原生实践</li>
+                            <li>容器编排系统</li>
+                        </ul>
+                        <div class="stage-resources">
+                            <strong>推荐资源：</strong>
+                            <a href="../examples/">实战项目</a>
+                            <a href="./new-features.html">新特性</a>
+                            <a href="./ai-tools.html">AI 工具链</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -207,10 +313,14 @@ volumes:
             const codeBlock = button.previousElementSibling.querySelector('code');
             navigator.clipboard.writeText(codeBlock.textContent).then(() => {
                 const originalText = button.textContent;
-                button.textContent = '已复制!';
+                button.textContent = '已复制! ✓';
+                button.style.background = '#28a745';
                 setTimeout(() => {
                     button.textContent = originalText;
+                    button.style.background = '';
                 }, 2000);
+            }).catch(err => {
+                console.error('复制失败:', err);
             });
         }
     </script>

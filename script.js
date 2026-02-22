@@ -13,7 +13,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // 添加活动状态
             this.classList.add('active');
-            document.getElementById(tabId).classList.add('active');
+            const targetContent = document.getElementById(tabId);
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
         });
     });
 
@@ -108,6 +111,8 @@ function copyCode(button) {
 // 展开示例详情
 function expandExample(button) {
     const card = button.closest('.example-card');
+    if (!card) return; // 如果没有找到卡片，直接返回
+
     const isExpanded = card.classList.contains('expanded');
 
     if (isExpanded) {
@@ -150,6 +155,8 @@ document.addEventListener('DOMContentLoaded', function() {
 // 搜索功能（可选）
 function createSearchBox() {
     const navbar = document.querySelector('.nav-menu');
+    if (!navbar) return; // 如果没有导航菜单，直接返回
+
     const searchBox = document.createElement('li');
     searchBox.innerHTML = `
         <input type="text" id="search-input" placeholder="搜索..." style="
@@ -165,24 +172,28 @@ function createSearchBox() {
     navbar.appendChild(searchBox);
 
     const searchInput = document.getElementById('search-input');
-    searchInput.addEventListener('input', function() {
-        const searchTerm = this.value.toLowerCase();
-        const allContent = document.querySelectorAll('h2, h3, p, code');
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const allContent = document.querySelectorAll('h2, h3, p, code');
 
-        allContent.forEach(element => {
-            if (searchTerm && element.textContent.toLowerCase().includes(searchTerm)) {
-                element.style.background = '#fff3cd';
-                setTimeout(() => {
-                    element.style.background = '';
-                }, 2000);
-            }
+            allContent.forEach(element => {
+                if (searchTerm && element.textContent.toLowerCase().includes(searchTerm)) {
+                    element.style.background = '#fff3cd';
+                    setTimeout(() => {
+                        element.style.background = '';
+                    }, 2000);
+                }
+            });
         });
-    });
+    }
 }
 
 // 移动端菜单
 function createMobileMenu() {
     const navbar = document.querySelector('.navbar .container');
+    if (!navbar) return; // 如果没有导航栏，直接返回
+
     const menuButton = document.createElement('button');
     menuButton.innerHTML = '☰';
     menuButton.style.cssText = `
@@ -195,6 +206,8 @@ function createMobileMenu() {
     `;
 
     const navMenu = document.querySelector('.nav-menu');
+    if (!navMenu) return; // 如果没有导航菜单，直接返回
+
     menuButton.addEventListener('click', function() {
         navMenu.style.display = navMenu.style.display === 'flex' ? 'none' : 'flex';
     });
@@ -301,6 +314,11 @@ document.addEventListener('keydown', function(e) {
 // 移动端菜单切换功能
 document.addEventListener('DOMContentLoaded', function() {
     if (window.innerWidth <= 768) {
+        const sidebarNav = document.querySelector('.sidebar-nav');
+        const mainContent = document.querySelector('.main-content');
+
+        if (!sidebarNav) return; // 如果没有侧边栏，直接返回
+
         // 创建移动端菜单按钮
         const menuToggle = document.createElement('button');
         menuToggle.classList.add('mobile-menu-toggle');
@@ -308,17 +326,17 @@ document.addEventListener('DOMContentLoaded', function() {
         menuToggle.setAttribute('aria-label', '切换菜单');
         document.body.appendChild(menuToggle);
 
-        const sidebarNav = document.querySelector('.sidebar-nav');
-        
         menuToggle.addEventListener('click', function() {
             sidebarNav.classList.toggle('active');
         });
 
         // 点击内容区域隐藏菜单
-        document.querySelector('.main-content')?.addEventListener('click', function() {
-            if (sidebarNav.classList.contains('active')) {
-                sidebarNav.classList.remove('active');
-            }
-        });
+        if (mainContent) {
+            mainContent.addEventListener('click', function() {
+                if (sidebarNav.classList.contains('active')) {
+                    sidebarNav.classList.remove('active');
+                }
+            });
+        }
     }
 });

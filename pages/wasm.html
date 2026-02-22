@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WASM 容器完整教程 2026 - Docker 教程</title>
+    <title>WASM 容器 - WebAssembly 容器技术详解 | Docker 教程</title>
     <link rel="stylesheet" href="../styles.css">
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
     <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-    <meta name="description" content="2026 年 WebAssembly 容器完整教程：WASM 基础、Docker WASM 支持、Spin 框架、实战项目">
+    <meta name="description" content="Docker WASM 容器完整指南，学习 WebAssembly 容器的性能优势和最佳实践（注意：已废弃）">
 </head>
 <body>
     <!-- 侧边树形导航 -->
     <nav class="sidebar-nav">
         <div class="nav-brand">
             <span class="logo">🐳</span>
-            <span class="brand-name">Docker Tutorial 2026</span>
+            <span class="brand-name">Docker Tutorial</span>
         </div>
         <ul class="tree-menu">
             <li><a href="../index.html">🏠 首页</a></li>
@@ -23,14 +23,14 @@
                     <summary>📚 基础入门</summary>
                     <ul class="submenu">
                         <li><a href="./install.html">安装 Docker</a></li>
+                        <li><a href="./core-concepts.html">核心概念</a></li>
                         <li><a href="./dockerfile.html">Dockerfile</a></li>
                         <li><a href="./compose.html">Docker Compose</a></li>
-                        <li><a href="./wasm.html" style="color: #2496ed; font-weight: bold;">WASM 容器</a></li>
                     </ul>
                 </details>
             </li>
             <li>
-                <details>
+                <details open>
                     <summary>🔧 核心实践</summary>
                     <ul class="submenu">
                         <li><a href="./dockerfile.html">Dockerfile 最佳实践</a></li>
@@ -42,16 +42,45 @@
             </li>
             <li>
                 <details>
+                    <summary>🤖 AI 工具集成</summary>
+                    <ul class="submenu">
+                        <li><a href="./ai-tools.html">AI 工具概览</a></li>
+                        <li><a href="./ai-tools.html#docker-scout">Docker Scout</a></li>
+                        <li><a href="./ai-tools.html#dagger">Dagger CI/CD</a></li>
+                    </ul>
+                </details>
+            </li>
+            <li>
+                <details open>
+                    <summary>⚡ 高级主题</summary>
+                    <ul class="submenu">
+                        <li><a href="./wasm.html" style="color: #2496ed; font-weight: bold;">WASM 容器</a></li>
+                        <li><a href="./new-features.html">新特性</li></li>
+                    </ul>
+                </details>
+            </li>
+            <li>
+                <details>
                     <summary>📦 实战示例</summary>
                     <ul class="submenu">
                         <li><a href="../examples/web-app/">Web 应用</a></li>
                         <li><a href="../examples/database/">数据库</a></li>
-                        <li><a href="../examples/wasm-app/">WASM 应用</a></li>
+                        <li><a href="../examples/python-app/">Python 应用</a></li>
                         <li><a href="../examples/ai-optimized/">AI 优化</a></li>
+                        <li><a href="../examples/wasm-app/">WASM 应用</a></li>
                     </ul>
                 </details>
             </li>
-            <li><a href="./practices.html">✅ 最佳实践</a></li>
+            <li>
+                <details>
+                    <summary>🛠️ 参考手册</summary>
+                    <ul class="submenu">
+                        <li><a href="./structure.html">目录结构</a></li>
+                        <li><a href="./commands.html">常用命令</a></li>
+                        <li><a href="./practices.html">最佳实践</a></li>
+                    </ul>
+                </details>
+            </li>
         </ul>
     </nav>
 
@@ -59,750 +88,136 @@
     <main class="main-content">
         <section class="section">
             <div class="container">
-                <h2 class="section-title">🔮 WASM 容器完整教程 (2026)</h2>
-                <p class="section-desc">掌握下一代容器技术：WebAssembly 在 Docker 中的应用</p>
+                <h2 class="section-title">🔮 WASM 容器 - 下一代容器技术</h2>
+                <p class="section-desc">WebAssembly 容器带来极致性能和安全性</p>
 
-                <!-- WASM 废弃警告 -->
-                <div class="warning-card warning-deprecated">
-                    <h3>⚠️ 重要提示：WASM 已被废弃</h3>
-                    <p><strong>WebAssembly (WASM) 工作负载已被标记为废弃，将在未来的 Docker Desktop 版本中移除。</strong></p>
-                    <ul>
-                        <li>废弃时间：Docker Desktop 4.55.0 (2025-12-16)</li>
-                        <li>移除计划：未来的 Docker Desktop 版本</li>
-                        <li>维护状态：不再积极维护</li>
-                        <li>建议：对于新项目，建议使用传统 Linux 容器或其他替代方案</li>
-                    </ul>
-                    <p>本页面保留用于参考和已有 WASM 项目的维护，但不建议在新的生产环境中使用。</p>
+                <div class="warning-banner">
+                    <h3>⚠️ 重要提示</h3>
+                    <p>WASM 工作负载已被 Docker 官方标记为废弃，将在未来版本中移除。建议使用传统容器或探索其他 WASM 运行时方案。</p>
                 </div>
 
-                <!-- WASM 简介 -->
-                <div class="wasm-intro">
-                    <div class="info-card info-wasm">
+                <div class="wasm-comparison">
+                    <div class="wasm-info">
                         <h3>什么是 WASM 容器？</h3>
-                        <p><strong>WebAssembly (WASM)</strong> 容器是 Docker 的革命性特性，它将 WASM 模块作为容器运行。WASM 最初为浏览器设计，现在已成为云原生的下一代运行时技术。</p>
-                        <div class="wasm-highlights">
-                            <div class="highlight-item">
-                                <div class="highlight-value">100-1000x</div>
-                                <div class="highlight-label">镜像更小</div>
-                            </div>
-                            <div class="highlight-item">
-                                <div class="highlight-value">10-100x</div>
-                                <div class="highlight-label">启动更快</div>
-                            </div>
-                            <div class="highlight-item">
-                                <div class="highlight-value">10x</div>
-                                <div class="highlight-label">内存更少</div>
-                            </div>
-                            <div class="highlight-item">
-                                <div class="highlight-value">100%</div>
-                                <div class="highlight-label">跨平台</div>
-                            </div>
-                        </div>
+                        <p>WASM（WebAssembly）容器是 Docker 的革命性特性，将 WASM 模块作为容器运行，提供：</p>
+                        <ul class="wasm-features">
+                            <li><strong>极致性能</strong>：毫秒级启动，比传统容器快 10-100 倍</li>
+                            <li><strong>极小体积</strong>：镜像通常 &lt;1MB，比传统容器小 100-1000 倍</li>
+                            <li><strong>高安全性</strong>：基于能力的安全模型，更强的隔离性</li>
+                            <li><strong>跨平台</strong>：一次构建，随处运行</li>
+                            <li><strong>多语言支持</strong>：支持 Rust、Go、Python、JavaScript 等</li>
+                        </ul>
                     </div>
-                </div>
 
-                <!-- 为什么使用 WASM -->
-                <div class="wasm-why">
-                    <h2 class="section-subtitle">为什么需要 WASM 容器？</h2>
-                    <div class="comparison-grid">
-                        <div class="comparison-card">
-                            <h3>📦 传统容器的局限</h3>
-                            <ul class="cons-list">
-                                <li>镜像体积大（通常 100MB-1GB）</li>
-                                <li>启动慢（秒级）</li>
-                                <li>资源占用高</li>
-                                <li>安全隔离依赖内核</li>
-                                <li>跨平台需要多架构构建</li>
-                            </ul>
-                        </div>
-                        <div class="comparison-card highlight">
-                            <h3>✨ WASM 容器的优势</h3>
-                            <ul class="pros-list">
-                                <li>镜像极小（通常 &lt;1MB）</li>
-                                <li>毫秒级启动</li>
-                                <li>内存占用极低</li>
-                                <li>沙箱隔离，更安全</li>
-                                <li>一次构建，随处运行</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 性能对比 -->
-                <div class="performance-section">
-                    <h2 class="section-subtitle">性能对比：WASM vs 传统容器</h2>
-                    <div class="performance-table-container">
-                        <table class="performance-table">
+                    <div class="wasm-comparison-table">
+                        <h3>性能对比</h3>
+                        <table>
                             <thead>
                                 <tr>
                                     <th>指标</th>
                                     <th>传统容器</th>
                                     <th>WASM 容器</th>
-                                    <th>提升倍数</th>
+                                    <th>提升</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><strong>镜像大小</strong></td>
-                                    <td>~150 MB</td>
-                                    <td>~0.5 MB</td>
-                                    <td class="highlight-green">300x</td>
+                                    <td>镜像大小</td>
+                                    <td>~150MB</td>
+                                    <td>~500KB</td>
+                                    <td class="highlight">300x</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>启动时间</strong></td>
-                                    <td>~1-2 秒</td>
-                                    <td>~10-50 毫秒</td>
-                                    <td class="highlight-green">40x</td>
+                                    <td>启动时间</td>
+                                    <td>~1-2s</td>
+                                    <td>~10-50ms</td>
+                                    <td class="highlight">40x</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>内存占用</strong></td>
-                                    <td>~50-100 MB</td>
-                                    <td>~5-10 MB</td>
-                                    <td class="highlight-green">10x</td>
+                                    <td>内存占用</td>
+                                    <td>~50-100MB</td>
+                                    <td>~5-10MB</td>
+                                    <td class="highlight">10x</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>冷启动</strong></td>
+                                    <td>冷启动</td>
                                     <td>秒级</td>
                                     <td>毫秒级</td>
-                                    <td class="highlight-green">100x</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>镜像拉取</strong></td>
-                                    <td>~30 秒</td>
-                                    <td>~0.3 秒</td>
-                                    <td class="highlight-green">100x</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>安全隔离</strong></td>
-                                    <td>命名空间</td>
-                                    <td>能力模型 + 沙箱</td>
-                                    <td class="highlight-green">更强</td>
+                                    <td class="highlight">100x</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                <!-- 安装和配置 -->
-                <div class="wasm-setup">
-                    <h2 class="section-subtitle">安装和配置 WASM 支持</h2>
+                <div class="wasm-example">
+                    <h3>运行 WASM 容器</h3>
+                    <div class="code-container">
+                        <pre><code class="language-bash"># 启用 WASM 支持（Docker 27.0+）
+export DOCKER_CLI_EXPERIMENTAL=enabled
 
-                    <div class="deprecation-note">
-                        <p><strong>⚠️ 注意：</strong>以下步骤仅供参考，因为 WASM 工作负载已被废弃。如果您正在开发新项目，建议考虑其他方案。</p>
-                    </div>
-
-                    <div class="setup-steps">
-                        <div class="setup-step">
-                            <div class="step-badge">1</div>
-                            <div class="step-content">
-                                <h3>更新 Docker</h3>
-                                <p>需要 Docker Desktop 4.25+ 或 Docker Engine 27.0+</p>
-                                <div class="code-container">
-                                    <pre><code class="language-bash"># 检查 Docker 版本
-docker --version
-# 需要 v27.0 或更高
-
-# 更新 Docker Desktop（macOS/Windows）
-brew upgrade --cask docker-desktop
-
-# Ubuntu/Debian
-sudo apt-get update
-sudo apt-get install docker-ce docker-ce-cli containerd.io</code></pre>
-                                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="setup-step">
-                            <div class="step-badge">2</div>
-                            <div class="step-content">
-                                <h3>启用 WASM 支持</h3>
-                                <div class="code-container">
-                                    <pre><code class="language-bash"># 方法一：在 Docker Desktop 中启用
-# 设置 → General → Enable WebAssembly
-
-# 方法二：通过配置文件
-# ~/.docker/daemon.json
-{
-  "features": {
-    "wasm": true
-  }
-}
-
-# 方法三：临时启用（实验性）
-export DOCKER_CLI_EXPERIMENTAL=enabled</code></pre>
-                                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="setup-step">
-                            <div class="step-badge">3</div>
-                            <div class="step-content">
-                                <h3>安装 WASM 运行时</h3>
-                                <p>Docker 支持多种 WASM 运行时：</p>
-                                <div class="code-container">
-                                    <pre><code class="language-bash"># 安装 WasmEdge（推荐）
-curl -sSf https://raw.githubusercontent.com/WasmEdge/WasmEdge/master/utils/install.sh | bash
-
-# 安装 Spin（Fermyon）
-curl -fsSL https://developer.fermyon.com/downloads/install.sh | bash
-sudo mv spin /usr/local/bin/
-
-# 安装 WASI 节点
-npm install -g @aspect-build/wasi-node
-
-# 验证安装
-docker info | grep -i wasm
-# 应显示：wasm: wasmedge 或 wasm: spin</code></pre>
-                                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="setup-step">
-                            <div class="step-badge">4</div>
-                            <div class="step-content">
-                                <h3>验证 WASM 支持</h3>
-                                <div class="code-container">
-                                    <pre><code class="language-bash"># 检查 WASM 运行时
-docker info | grep -A 5 "Runtimes"
-
-# 输出示例：
-# Runtimes: io.containerd.wasmedge.v1 wasmtime spin
-# Default Runtime: runc
-# WASM Runtimes: wasmedge, spin
-
-# 运行测试 WASM 容器
-docker run --runtime=io.containerd.wasmedge.v1 \
-  --rm wasmcloud/http-hello-world</code></pre>
-                                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 运行 WASM 容器 -->
-                <div class="wasm-run">
-                    <h2 class="section-subtitle">运行 WASM 容器</h2>
-
-                    <div class="run-example">
-                        <h3>示例 1：运行现成的 WASM 应用</h3>
-                        <div class="code-container">
-                            <pre><code class="language-bash"># 运行 Hello World WASM 应用
-docker run --rm \
-  --runtime=io.containerd.wasmedge.v1 \
-  -p 8080:8080 \
+# 运行 WASM 容器
+docker run --runtime=wasm --rm -p 8080:8080 \
   wasmcloud/http-hello-world
 
-# 访问 http://localhost:8080
-
-# 运行 Redis 的 WASM 版本（极轻量）
-docker run --rm \
-  --runtime=io.containerd.wasmedge.v1 \
-  -p 6379:6379 \
-  wasmtime/redis-wasm
-
-# 查看容器状态
-docker ps --filter "runtime=io.containerd.wasmedge.v1"</code></pre>
-                            <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                        </div>
-                    </div>
-
-                    <div class="run-example">
-                        <h3>示例 2：构建和运行自定义 WASM 应用</h3>
-                        <p>使用 Rust 和 Spin 框架创建 WASM 应用：</p>
-                        <div class="code-container">
-                            <pre><code class="language-bash"># 1. 安装 Spin 框架
-curl -fsSL https://developer.fermyon.com/downloads/install.sh | bash
-sudo mv spin /usr/local/bin/
-
-# 2. 创建新的 Spin 项目
-spin new hello-wasm
-# 选择模板：http-rust
-
-# 3. 进入项目目录
-cd hello-wasm
-
-# 4. 构建 WASM 模块
-spin build
-
-# 5. 使用 Docker 构建镜像
+# 构建 WASM 应用
 docker buildx build \
   --platform wasi/wasm \
   -t my-wasm-app \
   -f Dockerfile.wasm .
 
-# 6. 运行 WASM 容器
-docker run --rm \
-  --runtime=io.containerd.wasmedge.v1 \
-  -p 3000:3000 \
-  my-wasm-app</code></pre>
-                            <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- WASM Dockerfile -->
-                <div class="wasm-dockerfile">
-                    <h2 class="section-subtitle">WASM Dockerfile 示例</h2>
-
-                    <div class="dockerfile-examples">
-                        <div class="dockerfile-card">
-                            <h3>Rust + Spin 示例</h3>
-                            <div class="code-container">
-                                <pre><code class="language-dockerfile"># syntax=docker/dockerfile:1.7
-# WASM 应用的 Dockerfile
-
-# 构建阶段
-FROM rust:1.75 AS builder
-WORKDIR /app
-
-# 安装 Spin CLI
-RUN curl -fsSL https://developer.fermyon.com/downloads/install.sh | bash
-ENV PATH="/root/.local/share/spin/bin:${PATH}"
-
-# 复制项目文件
-COPY Cargo.toml Cargo.lock ./
-COPY src/ ./src/
-COPY spin.toml .
-
-# 构建 WASM 模块
-RUN cargo build --release --target wasm32-wasi
-
-# 运行阶段（使用 WasmEdge）
-FROM scratch
-WORKDIR /app
-
-# 从构建阶段复制 WASM 文件和配置
-COPY --from=builder /app/target/wasm32-wasi/release/hello_wasm.wasm ./
-COPY --from=builder /app/spin.toml .
-
-# 使用 WasmEdge 运行时
-# 注意：实际运行时需要 Docker 配置 WasmEdge 运行时
-CMD ["spin", "up"]
-
-# 标注为 WASM 应用
-LABEL org.opencontainers.image.title="WASM App"
-LABEL org.opencontainers.image.base.name="scratch"</code></pre>
-                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                            </div>
-                        </div>
-
-                        <div class="dockerfile-card">
-                            <h3>AssemblyScript 示例</h3>
-                            <div class="code-container">
-                                <pre><code class="language-dockerfile"># AssemblyScript WASM 应用
-FROM node:20-alpine AS builder
-WORKDIR /app
-
-# 安装 AssemblyScript
-RUN npm install -g assemblyscript
-
-# 复制并构建
-COPY package*.json ./
-RUN npm install
-COPY . .
-RUN npm run build
-
-# 运行阶段
-FROM scratch
-COPY --from=builder /app/build/optimized.wasm ./app.wasm
-CMD ["node", "app.wasm"]</code></pre>
-                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                            </div>
-                        </div>
-
-                        <div class="dockerfile-card">
-                            <h3>Go + TinyGo 示例</h3>
-                            <div class="code-container">
-                                <pre><code class="language-dockerfile"># Go WASM 应用（使用 TinyGo）
-FROM golang:1.21-alpine AS builder
-WORKDIR /app
-
-# 安装 TinyGo
-RUN wget https://github.com/tinygo-org/tinygo/releases/download/v0.30.0/tinygo_0.30.0_amd64.deb && \
-    dpkg -i tinygo_*.deb
-
-# 复制并构建
-COPY go.mod go.sum ./
-RUN go mod download
-COPY . .
-RUN tinygo build -o app.wasm -target=wasi .
-
-# 运行阶段
-FROM scratch
-COPY --from=builder /app/app.wasm ./
-CMD ["app.wasm"]</code></pre>
-                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Docker Compose WASM -->
-                <div class="wasm-compose">
-                    <h2 class="section-subtitle">使用 Docker Compose 编排 WASM 服务</h2>
-                    <div class="code-container">
-                        <pre><code class="language-yaml"># docker-compose.wasm.yml
-name: wasm-microservices
-
-services:
-  # WASM API 服务
-  wasm-api:
-    build:
-      context: ./api
-      dockerfile: Dockerfile.wasm
-    runtime: io.containerd.wasmedge.v1
-    ports:
-      - "8080:8080"
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 50M
-        reservations:
-          cpus: '0.1'
-          memory: 10M
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8080/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-      start_period: 5s
-
-  # WASM 前端服务
-  wasm-frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile.wasm
-    runtime: io.containerd.wasmedge.v1
-    ports:
-      - "3000:3000"
-    depends_on:
-      - wasm-api
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 30M
-    restart: unless-stopped
-
-  # 传统容器（数据库）
-  redis:
-    image: redis:7-alpine
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis-data:/data
-    deploy:
-      resources:
-        limits:
-          cpus: '1'
-          memory: 200M
-
-  # 另一个 WASM 服务（边缘计算）
-  wasm-edge:
-    image: wasmcloud/http-hello-world
-    runtime: io.containerd.wasmedge.v1
-    ports:
-      - "8081:8080"
-    deploy:
-      resources:
-        limits:
-          cpus: '0.25'
-          memory: 20M
-    restart: unless-stopped
-
-volumes:
-  redis-data:
-    driver: local
-
-networks:
-  default:
-    driver: bridge</code></pre>
+# 查看 WASM 运行时
+docker info | grep -i wasm</code></pre>
                         <button class="copy-btn" onclick="copyCode(this)">复制</button>
                     </div>
-
-                    <div class="compose-commands">
-                        <h3>Compose 命令</h3>
-                        <div class="code-container">
-                            <pre><code class="language-bash"># 启动所有服务
-docker compose -f docker-compose.wasm.yml up -d
-
-# 查看服务状态
-docker compose -f docker-compose.wasm.yml ps
-
-# 查看日志
-docker compose -f docker-compose.wasm.yml logs -f wasm-api
-
-# 停止所有服务
-docker compose -f docker-compose.wasm.yml down
-
-# 查看资源使用
-docker stats --filter "runtime=io.containerd.wasmedge.v1"</code></pre>
-                            <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                        </div>
-                    </div>
                 </div>
 
-                <!-- 实战：构建 WASM 应用 -->
-                <div class="wasm-tutorial">
-                    <h2 class="section-subtitle">实战：用 Rust 构建 WASM 微服务</h2>
+                <!-- 替代方案 -->
+                <section class="section bg-light">
+                    <div class="container">
+                        <h2 class="section-title">🔄 WASM 替代方案</h2>
+                        <p class="section-desc">由于 Docker WASM 已废弃，推荐以下替代方案</p>
 
-                    <div class="tutorial-steps">
-                        <div class="tutorial-step">
-                            <h3>步骤 1：创建 Rust 项目</h3>
-                            <div class="code-container">
-                                <pre><code class="language-bash"># 创建新的 Rust 项目
-cargo new wasm-microservice
-cd wasm-microservice
+                        <div class="alternative-solutions">
+                            <div class="solution-card">
+                                <h3>Spin</h3>
+                                <p>Fermyon 开发的 WASM 应用框架</p>
+                                <div class="code-container">
+                                    <pre><code class="language-bash"># 安装 Spin
+curl https://install.fermyon.app -sSf | bash
 
-# 添加 Spin 依赖
-cargo add spin-sdk
-cargo add serde serde_json</code></pre>
-                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                            </div>
-                        </div>
-
-                        <div class="tutorial-step">
-                            <h3>步骤 2：编写 WASM 应用</h3>
-                            <div class="code-container">
-                                <pre><code class="language-rust">// src/lib.rs
-use spin_sdk::http::{Request, Response};
-use spin_sdk::http_component;
-
-#[http_component]
-fn handle_wasm_microservice(req: Request) -> anyhow::Result<Response> {
-    let path = req.uri().path();
-    
-    match path {
-        "/health" => Ok(Response::builder()
-            .status(200)
-            .header("content-type", "application/json")
-            .body(Some(r#"{"status":"healthy"}"#.into()))?),
-        
-        "/api/hello" => Ok(Response::builder()
-            .status(200)
-            .header("content-type", "application/json")
-            .body(Some(r#"{"message":"Hello from WASM!"}"#.into()))?),
-        
-        _ => Ok(Response::builder()
-            .status(404)
-            .body(Some(r#"{"error":"Not found"}"#.into()))?),
-    }
-}</code></pre>
-                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                            </div>
-                        </div>
-
-                        <div class="tutorial-step">
-                            <h3>步骤 3：配置 Spin</h3>
-                            <div class="code-container">
-                                <pre><code class="language-toml"># spin.toml
-spin_manifest_version = 2
-
-[application]
-name = "wasm-microservice"
-version = "1.0.0"
-
-[[trigger.http]]
-route = "/..."
-component = "wasm-microservice"
-
-[component.wasm-microservice]
-source = "target/wasm32-wasi/release/wasm_microservice.wasm"
-allowed_http_hosts = []
-[component.wasm-microservice.build]
-command = "cargo build --target wasm32-wasi --release"
-watch = ["src/**/*.rs", "Cargo.toml"]</code></pre>
-                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                            </div>
-                        </div>
-
-                        <div class="tutorial-step">
-                            <h3>步骤 4：构建和运行</h3>
-                            <div class="code-container">
-                                <pre><code class="language-bash"># 添加 WASM 目标
-rustup target add wasm32-wasi
-
-# 本地测试
+# 运行 Spin 应用
 spin up
 
-# 使用 Docker 构建
-docker buildx build \
-  --platform wasi/wasm \
-  -t wasm-microservice \
-  -f Dockerfile.wasm .
+# 构建为 OCI 镜像
+spin build</code></pre>
+                                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                                </div>
+                            </div>
 
-# 运行容器
-docker run --rm \
-  --runtime=io.containerd.wasmedge.v1 \
-  -p 8080:8080 \
-  wasm-microservice
+                            <div class="solution-card">
+                                <h3>WasmEdge</h3>
+                                <p>轻量级、高性能的 WASM 运行时</p>
+                                <div class="code-container">
+                                    <pre><code class="language-bash"># 安装 WasmEdge
+curl -sSf https://raw.githubusercontent.com/WasmEdge/\
+WasmEdge/master/utils/install.sh | bash
 
-# 测试 API
-curl http://localhost:8080/health
-curl http://localhost:8080/api/hello</code></pre>
-                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
+# 运行 WASM 应用
+wasmedge hello.wasm</code></pre>
+                                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- WASM 使用场景 -->
-                <div class="wasm-use-cases">
-                    <h2 class="section-subtitle">WASM 容器适用场景</h2>
-                    <div class="use-cases-grid">
-                        <div class="use-case-card">
-                            <div class="use-case-icon">⚡</div>
-                            <h3>Serverless/FaaS</h3>
-                            <p>毫秒级冷启动，完美适配函数计算场景</p>
-                            <div class="use-case-example">
-                                <strong>示例：</strong> AWS Lambda, Cloudflare Workers
-                            </div>
-                        </div>
-
-                        <div class="use-case-card">
-                            <div class="use-case-icon">🌐</div>
-                            <h3>边缘计算</h3>
-                            <p>小体积、低资源，适合边缘节点部署</p>
-                            <div class="use-case-example">
-                                <strong>示例：</strong> CDN 边缘函数，IoT 网关
-                            </div>
-                        </div>
-
-                        <div class="use-case-card">
-                            <div class="use-case-icon">🔌</div>
-                            <h3>插件系统</h3>
-                            <p>安全沙箱，适合第三方代码执行</p>
-                            <div class="use-case-example">
-                                <strong>示例：</strong> Envoy 过滤器，数据库扩展
-                            </div>
-                        </div>
-
-                        <div class="use-case-card">
-                            <div class="use-case-icon">📊</div>
-                            <h3>数据处理管道</h3>
-                            <p>轻量级、可组合，适合数据转换</p>
-                            <div class="use-case-example">
-                                <strong>示例：</strong> 日志处理，数据清洗
-                            </div>
-                        </div>
-
-                        <div class="use-case-card">
-                            <div class="use-case-icon">🔐</div>
-                            <h3>安全敏感应用</h3>
-                            <p>强隔离性，防止代码逃逸</p>
-                            <div class="use-case-example">
-                                <strong>示例：</strong> 加密计算，隐私保护
-                            </div>
-                        </div>
-
-                        <div class="use-case-card">
-                            <div class="use-case-icon">🎮</div>
-                            <h3>游戏服务器</h3>
-                            <p>快速扩缩容，低延迟响应</p>
-                            <div class="use-case-example">
-                                <strong>示例：</strong> 实时对战，游戏逻辑
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 最佳实践 -->
-                <div class="wasm-best-practices">
-                    <h2 class="section-subtitle">WASM 最佳实践</h2>
-                    <div class="practices-list">
-                        <div class="practice-item">
-                            <span class="practice-icon">✅</span>
-                            <div>
-                                <strong>选择合适的运行时</strong>
-                                <p>WasmEdge 适合通用应用，Spin 适合 HTTP 服务，Wasmtime 适合嵌入式</p>
-                            </div>
-                        </div>
-                        <div class="practice-item">
-                            <span class="practice-icon">✅</span>
-                            <div>
-                                <strong>优化 WASM 模块大小</strong>
-                                <p>使用 release 构建，启用 LTO，移除调试信息</p>
-                            </div>
-                        </div>
-                        <div class="practice-item">
-                            <span class="practice-icon">✅</span>
-                            <div>
-                                <strong>合理配置资源限制</strong>
-                                <p>WASM 资源占用低，但仍需设置合理的 CPU 和内存限制</p>
-                            </div>
-                        </div>
-                        <div class="practice-item">
-                            <span class="practice-icon">✅</span>
-                            <div>
-                                <strong>使用健康检查</strong>
-                                <p>WASM 启动快，健康检查间隔可以设置更短</p>
-                            </div>
-                        </div>
-                        <div class="practice-item">
-                            <span class="practice-icon">✅</span>
-                            <div>
-                                <strong>混合部署</strong>
-                                <p>WASM 适合无状态服务，数据库等有状态服务仍用传统容器</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 学习资源 -->
-                <div class="wasm-resources">
-                    <h2 class="section-subtitle">学习资源</h2>
-                    <div class="resources-grid">
-                        <div class="resource-card">
-                            <h4>📖 官方文档</h4>
-                            <ul>
-                                <li><a href="https://docs.docker.com/engine/wasm/" target="_blank">Docker WASM 文档</a></li>
-                                <li><a href="https://developer.fermyon.com/spin/" target="_blank">Spin Framework</a></li>
-                                <li><a href="https://wasmedge.org/" target="_blank">WasmEdge</a></li>
-                                <li><a href="https://webassembly.org/" target="_blank">WebAssembly 官网</a></li>
-                            </ul>
-                        </div>
-
-                        <div class="resource-card">
-                            <h4>💻 示例项目</h4>
-                            <ul>
-                                <li><a href="../examples/wasm-app/">WASM 应用示例</a></li>
-                                <li><a href="https://github.com/fermyon/spin/tree/main/examples" target="_blank">Spin 示例</a></li>
-                                <li><a href="https://github.com/WasmEdge/WasmEdge/tree/master/examples" target="_blank">WasmEdge 示例</a></li>
-                            </ul>
-                        </div>
-
-                        <div class="resource-card">
-                            <h4>🛠️ 工具</h4>
-                            <ul>
-                                <li><a href="https://github.com/bytecodealliance/wasmtime" target="_blank">Wasmtime</a></li>
-                                <li><a href="https://github.com/WasmEdge/WasmEdge" target="_blank">WasmEdge</a></li>
-                                <li><a href="https://github.com/fermyon/spin" target="_blank">Spin</a></li>
-                                <li><a href="https://github.com/tinygo-org/tinygo" target="_blank">TinyGo</a></li>
-                            </ul>
-                        </div>
-
-                        <div class="resource-card">
-                            <h4>📚 教程</h4>
-                            <ul>
-                                <li><a href="https://developer.fermyon.com/spin/tutorials/" target="_blank">Spin 教程</a></li>
-                                <li><a href="https://wasmedge.org/book/" target="_blank">WasmEdge Book</a></li>
-                                <li><a href="https://rustwasm.github.io/docs/book/" target="_blank">Rust and WebAssembly</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+                </section>
             </div>
         </section>
     </main>
 
     <script src="../script.js"></script>
     <script>
+        // 复制代码功能
         function copyCode(button) {
             const codeBlock = button.previousElementSibling.querySelector('code');
             navigator.clipboard.writeText(codeBlock.textContent).then(() => {

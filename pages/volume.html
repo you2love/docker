@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>数据卷详解 - Docker 教程</title>
+    <title>Docker 数据卷详解 - 持久化存储与数据管理 | Docker 教程</title>
     <link rel="stylesheet" href="../styles.css">
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
     <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+    <meta name="description" content="Docker 数据卷完整指南，学习数据持久化、bind mount、命名卷和最佳实践">
 </head>
 <body>
     <!-- 侧边树形导航 -->
@@ -16,182 +17,215 @@
             <span class="brand-name">Docker Tutorial</span>
         </div>
         <ul class="tree-menu">
-            <li><a href="../index.html">首页</a></li>
+            <li><a href="../index.html">🏠 首页</a></li>
             <li>
-                <details>
-                    <summary>基础入门</summary>
+                <details open>
+                    <summary>📚 基础入门</summary>
                     <ul class="submenu">
                         <li><a href="./install.html">安装 Docker</a></li>
+                        <li><a href="./core-concepts.html">核心概念</a></li>
                         <li><a href="./dockerfile.html">Dockerfile</a></li>
                         <li><a href="./compose.html">Docker Compose</a></li>
-                        <li><a href="./wasm.html">WASM 容器</a></li>
                     </ul>
                 </details>
             </li>
-            <li><a href="./structure.html">目录结构</a></li>
-            <li><a href="./network.html">网络详解</a></li>
-            <li><a href="./volume.html" style="color: #2496ed; font-weight: bold;">数据卷详解</a></li>
-            <li><a href="./new-features.html">新特性</a></li>
-            <li><a href="./commands.html">常用命令</a></li>
+            <li>
+                <details open>
+                    <summary>🔧 核心实践</summary>
+                    <ul class="submenu">
+                        <li><a href="./dockerfile.html">Dockerfile 最佳实践</a></li>
+                        <li><a href="./compose.html">Docker Compose</a></li>
+                        <li><a href="./volume.html" style="color: #2496ed; font-weight: bold;">数据卷详解</a></li>
+                        <li><a href="./network.html">网络配置</a></li>
+                    </ul>
+                </details>
+            </li>
             <li>
                 <details>
-                    <summary>实战示例</summary>
+                    <summary>🤖 AI 工具集成</summary>
                     <ul class="submenu">
-                        <li><a href="../examples/python-app/">Python 应用</a></li>
+                        <li><a href="./ai-tools.html">AI 工具概览</a></li>
+                        <li><a href="./ai-tools.html#docker-scout">Docker Scout</a></li>
+                        <li><a href="./ai-tools.html#dagger">Dagger CI/CD</a></li>
+                    </ul>
+                </details>
+            </li>
+            <li>
+                <details>
+                    <summary>⚡ 高级主题</summary>
+                    <ul class="submenu">
+                        <li><a href="./wasm.html">WASM 容器</a></li>
+                        <li><a href="./new-features.html">新特性</li></li>
+                    </ul>
+                </details>
+            </li>
+            <li>
+                <details>
+                    <summary>📦 实战示例</summary>
+                    <ul class="submenu">
                         <li><a href="../examples/web-app/">Web 应用</a></li>
                         <li><a href="../examples/database/">数据库</a></li>
+                        <li><a href="../examples/python-app/">Python 应用</a></li>
                         <li><a href="../examples/ai-optimized/">AI 优化</a></li>
-                        <li><a href="../examples/multi-stage/">多阶段构建</a></li>
                         <li><a href="../examples/wasm-app/">WASM 应用</a></li>
                     </ul>
                 </details>
             </li>
-            <li><a href="./practices.html">最佳实践</a></li>
-            <li><a href="./ai-tools.html">AI工具</a></li>
+            <li>
+                <details>
+                    <summary>🛠️ 参考手册</summary>
+                    <ul class="submenu">
+                        <li><a href="./commands.html">常用命令</a></li>
+                        <li><a href="./practices.html">最佳实践</a></li>
+                    </ul>
+                </details>
+            </li>
         </ul>
     </nav>
-    
+
     <!-- 主内容区域 -->
     <main class="main-content">
         <section class="section">
             <div class="container">
-                <h2 class="section-title">Docker 数据卷详解</h2>
+                <h2 class="section-title">💾 Docker 数据卷详解</h2>
+                <p class="section-desc">实现数据持久化，管理容器数据</p>
 
-                <div class="info-card">
-                    <h3>💾 Docker 数据卷概述</h3>
-                    <p>数据卷是 Docker 中用于持久化数据的机制，它独立于容器生命周期，即使容器被删除，数据卷中的数据仍然存在。</p>
-                </div>
+                <div class="volume-types">
+                    <div class="volume-type-card">
+                        <h3>命名卷 (Named Volumes)</h3>
+                        <p>由 Docker 管理，独立于容器的生命周期</p>
+                        <div class="code-container">
+                            <pre><code class="language-bash"># 创建命名卷
+docker volume create mydata
 
-                <div class="code-block">
-                    <h3>数据卷操作命令</h3>
-                    <div class="code-container">
-                        <pre><code class="language-bash"># 创建数据卷
-docker volume create my-volume
+# 使用命名卷运行容器
+docker run -d -v mydata:/app/data nginx
 
-# 列出所有数据卷
+# 查看卷列表
 docker volume ls
 
-# 查看数据卷详情
-docker volume inspect my-volume
+# 查看卷详情
+docker volume inspect mydata
 
-# 删除数据卷
-docker volume rm my-volume
-
-# 清理未使用的数据卷
-docker volume prune
-
-# 查看所有数据卷（包括未使用的）
-docker volume ls -q | xargs docker volume inspect</code></pre>
-                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+# 删除卷
+docker volume rm mydata</code></pre>
+                            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                        </div>
                     </div>
-                </div>
 
-                <div class="code-block">
-                    <h3>挂载数据卷到容器</h3>
-                    <div class="code-container">
-                        <pre><code class="language-bash"># 使用命名卷
-docker run -d --name my-container -v my-volume:/app/data nginx
-
-# 使用匿名卷
-docker run -d --name my-container -v /app/data nginx
-
-# 使用绑定挂载（主机目录）
-docker run -d --name my-container -v /host/path:/container/path nginx
-
-# 使用临时文件系统（内存中）
-docker run -d --name my-container --tmpfs /app/data nginx
+                    <div class="volume-type-card">
+                        <h3>绑定挂载 (Bind Mounts)</h3>
+                        <p>将主机目录或文件挂载到容器</p>
+                        <div class="code-container">
+                            <pre><code class="language-bash"># 挂载主机目录
+docker run -d -v /host/path:/container/path nginx
 
 # 只读挂载
-docker run -d --name my-container -v my-volume:/app/data:ro nginx
+docker run -d -v /host/path:/container/path:ro nginx
 
-# 设置挂载选项
-docker run -d --name my-container -v my-volume:/app/data:rw,Z nginx</code></pre>
-                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+# 挂载单个文件
+docker run -d -v /host/file.txt:/container/file.txt nginx
+
+# 开发环境示例
+docker run -d -v $(pwd):/app -w /app node npm start</code></pre>
+                            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                        </div>
+                    </div>
+
+                    <div class="volume-type-card">
+                        <h3>tmpfs 挂载</h3>
+                        <p>内存存储，容器停止后数据丢失</p>
+                        <div class="code-container">
+                            <pre><code class="language-bash"># 使用 tmpfs 挂载
+docker run -d --tmpfs /tmp:rw,size=100m nginx
+
+# 指定大小和权限
+docker run -d --tmpfs /cache:rw,noexec,size=1g nginx
+
+# 适用于临时数据、缓存、密钥</code></pre>
+                            <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                        </div>
                     </div>
                 </div>
+            </div>
+        </section>
 
-                <div class="info-card">
-                    <h3>数据卷类型</h3>
-                    <ul>
-                        <li><strong>命名卷</strong>: Docker 管理的持久化存储，存储在主机的特定位置</li>
-                        <li><strong>匿名卷</strong>: 没有指定名称的卷，由 Docker 自动分配名称</li>
-                        <li><strong>绑定挂载</strong>: 挂载主机文件系统中的文件或目录到容器</li>
-                        <li><strong>临时文件系统</strong>: 挂载到内存中的临时文件系统（tmpfs）</li>
-                    </ul>
-                </div>
+        <!-- Compose 中的数据卷 -->
+        <section class="section bg-light">
+            <div class="container">
+                <h2 class="section-title">🎼 Compose 中的数据卷配置</h2>
+                <p class="section-desc">在 docker-compose.yml 中定义和使用数据卷</p>
 
-                <div class="code-block">
-                    <h3>Docker Compose 中的数据卷</h3>
-                    <div class="code-container">
-                        <pre><code class="language-yaml">version: '3.8'
+                <div class="code-container">
+                    <pre><code class="language-yaml">version: '3.8'
 
 services:
-  web:
-    image: nginx
+  db:
+    image: postgres:16
     volumes:
       # 命名卷
-      - web-data:/usr/share/nginx/html
-      # 绑定挂载
-      - ./html:/usr/share/nginx/html
-      # 匿名卷
-      - /tmp/cache
-      # 只读绑定挂载
-      - ./config:/etc/nginx/configs:ro
-      # 临时文件系统
-      - type: tmpfs
-        target: /run
-        tmpfs:
-          size: 100M
-
-  db:
-    image: postgres:15
-    volumes:
-      # 命名卷用于数据库持久化
       - db-data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_DB: myapp
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
+      # 绑定挂载
+      - ./backups:/backups
+      # 匿名卷
+      - /var/lib/postgresql/backup
+
+  app:
+    image: myapp:latest
+    volumes:
+      # 只读挂载
+      - ./config:/app/config:ro
+      # 临时目录
+      - type: tmpfs
+        target: /tmp
+        tmpfs:
+          size: 100000000
+          mode: 1777
 
 volumes:
-  web-data:
   db-data:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /opt/postgres-data</code></pre>
-                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                    </div>
+      device: /data/db</code></pre>
+                    <button class="copy-btn" onclick="copyCode(this)">复制</button>
                 </div>
+            </div>
+        </section>
 
-                <div class="code-block">
-                    <h3>数据卷备份和恢复</h3>
-                    <div class="code-container">
-                        <pre><code class="language-bash"># 创建备份容器
-docker run --rm -v my-volume:/volume -v $(pwd):/backup alpine tar czf /backup/backup.tar.gz -C /volume .
+        <!-- 数据卷最佳实践 -->
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">✅ 数据卷最佳实践</h2>
+                <p class="section-desc">遵循这些实践，确保数据安全和可维护性</p>
 
-# 恢复备份
-docker run --rm -v my-volume:/volume -v $(pwd):/backup alpine tar xzf /backup/backup.tar.gz -C /volume
-
-# 使用专门的备份工具
-docker run --rm -it -v my-volume:/data -v backup-container:/backup alpine tar -cvf - -C /data . | tar -xvf - -C /backup
-
-# 从主机备份
-sudo tar -czf backup.tar.gz -C /var/lib/docker/volumes/my-volume/_data .</code></pre>
-                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
+                <div class="best-practices-list">
+                    <div class="practice-item">
+                        <span class="practice-icon">💡</span>
+                        <h3>选择合适的挂载类型</h3>
+                        <p>开发环境使用 bind mount，生产环境使用命名卷</p>
                     </div>
-                </div>
-
-                <div class="info-card">
-                    <h3>数据卷最佳实践</h3>
-                    <ul>
-                        <li>使用命名卷而非绑定挂载，以获得更好的可移植性</li>
-                        <li>为生产环境使用专用的存储解决方案</li>
-                        <li>定期备份重要数据卷</li>
-                        <li>使用卷驱动程序扩展功能（如加密、远程存储）</li>
-                        <li>合理规划卷的权限和访问模式</li>
-                    </ul>
+                    <div class="practice-item">
+                        <span class="practice-icon">💡</span>
+                        <h3>备份重要数据</h3>
+                        <p>定期备份命名卷，使用备份工具或脚本</p>
+                    </div>
+                    <div class="practice-item">
+                        <span class="practice-icon">💡</span>
+                        <h3>使用只读挂载</h3>
+                        <p>配置文件使用只读挂载，防止容器修改</p>
+                    </div>
+                    <div class="practice-item">
+                        <span class="practice-icon">💡</span>
+                        <h3>监控磁盘使用</h3>
+                        <p>定期检查卷的磁盘使用情况，清理无用数据</p>
+                    </div>
+                    <div class="practice-item">
+                        <span class="practice-icon">💡</span>
+                        <h3>使用卷驱动</h3>
+                        <p>根据需求选择合适的卷驱动（local, nfs, s3 等）</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -204,10 +238,14 @@ sudo tar -czf backup.tar.gz -C /var/lib/docker/volumes/my-volume/_data .</code><
             const codeBlock = button.previousElementSibling.querySelector('code');
             navigator.clipboard.writeText(codeBlock.textContent).then(() => {
                 const originalText = button.textContent;
-                button.textContent = '已复制!';
+                button.textContent = '已复制! ✓';
+                button.style.background = '#28a745';
                 setTimeout(() => {
                     button.textContent = originalText;
+                    button.style.background = '';
                 }, 2000);
+            }).catch(err => {
+                console.error('复制失败:', err);
             });
         }
     </script>

@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Docker 学习教程 2026 - 从入门到精通 | AI 工具集成</title>
+    <title>Docker 学习教程 - 从入门到精通 | AI 工具集成</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
-    <meta name="description" content="2026 最新版 Docker 教程，涵盖 Docker AI、Scout、Dagger、WASM 容器等最新技术和 AI 工具">
+    <meta name="description" content="最新版 Docker 教程，涵盖 Docker AI、Scout、Dagger、WASM 容器等最新技术和 AI 工具">
 </head>
 <body>
     <!-- 侧边树形导航 -->
     <nav class="sidebar-nav">
         <div class="nav-brand">
             <span class="logo">🐳</span>
-            <span class="brand-name">Docker Tutorial 2026</span>
+            <span class="brand-name">Docker Tutorial</span>
         </div>
         <ul class="tree-menu">
             <li><a href="#home">🏠 首页</a></li>
@@ -22,10 +22,10 @@
                 <details open>
                     <summary>📚 基础入门</summary>
                     <ul class="submenu">
-                        <li><a href="./pages/install.html">安装 Docker (2026)</a></li>
-                        <li><a href="#core-concepts">核心概念</a></li>
-                        <li><a href="#first-container">第一个容器</a></li>
-                        <li><a href="#architecture">架构原理</a></li>
+                        <li><a href="./pages/install.html">安装 Docker</a></li>
+                        <li><a href="./pages/core-concepts.html">核心概念</a></li>
+                        <li><a href="./pages/core-concepts.html#first-container">第一个容器</a></li>
+                        <li><a href="./pages/core-concepts.html#architecture">架构原理</a></li>
                     </ul>
                 </details>
             </li>
@@ -33,11 +33,10 @@
                 <details open>
                     <summary>🔧 核心实践</summary>
                     <ul class="submenu">
-                        <li><a href="#dockerfile">Dockerfile 最佳实践</a></li>
-                        <li><a href="#compose">Docker Compose</a></li>
-                        <li><a href="#volume">数据卷详解</a></li>
-                        <li><a href="#network">网络配置</a></li>
-                        <li><a href="#multi-stage">多阶段构建</a></li>
+                        <li><a href="./pages/dockerfile.html">Dockerfile 最佳实践</a></li>
+                        <li><a href="./pages/compose.html">Docker Compose</a></li>
+                        <li><a href="./pages/volume.html">数据卷详解</a></li>
+                        <li><a href="./pages/network.html">网络配置</a></li>
                     </ul>
                 </details>
             </li>
@@ -45,11 +44,10 @@
                 <details open>
                     <summary>🤖 AI 工具集成</summary>
                     <ul class="submenu">
-                        <li><a href="#ai-tools">AI 工具概览</a></li>
-                        <li><a href="#docker-scout">Docker Scout</a></li>
-                        <li><a href="#dagger">Dagger CI/CD</a></li>
-                        <li><a href="#ai-dockerfile">AI 生成 Dockerfile</a></li>
-                        <li><a href="./pages/ai-tools.html">完整 AI 工具链</a></li>
+                        <li><a href="./pages/ai-tools.html">AI 工具概览</a></li>
+                        <li><a href="./pages/ai-tools.html#docker-scout">Docker Scout</a></li>
+                        <li><a href="./pages/ai-tools.html#dagger">Dagger CI/CD</a></li>
+                        <li><a href="./pages/ai-tools.html#ai-dockerfile">AI 生成 Dockerfile</a></li>
                     </ul>
                 </details>
             </li>
@@ -57,11 +55,8 @@
                 <details open>
                     <summary>⚡ 高级主题</summary>
                     <ul class="submenu">
-                        <li><a href="#wasm">WASM 容器</a></li>
-                        <li><a href="#security">容器安全 (2026)</a></li>
-                        <li><a href="#performance">性能优化</a></li>
-                        <li><a href="#monitoring">监控与日志</a></li>
-                        <li><a href="#buildkit">BuildKit 2.0</a></li>
+                        <li><a href="./pages/wasm.html">WASM 容器</a></li>
+                        <li><a href="./pages/new-features.html">新特性</a></li>
                     </ul>
                 </details>
             </li>
@@ -82,11 +77,10 @@
                 <details>
                     <summary>🛠️ 参考手册</summary>
                     <ul class="submenu">
-                        <li><a href="#structure">目录结构</a></li>
-                        <li><a href="#commands">常用命令</a></li>
-                        <li><a href="#new-features">2026 新特性</a></li>
-                        <li><a href="#practices">最佳实践清单</a></li>
-                        <li><a href="#troubleshooting">故障排查</a></li>
+                        <li><a href="./pages/structure.html">目录结构</a></li>
+                        <li><a href="./pages/commands.html">常用命令</a></li>
+                        <li><a href="./pages/new-features.html">2026 新特性</a></li>
+                        <li><a href="./pages/practices.html">最佳实践清单</a></li>
                     </ul>
                 </details>
             </li>
@@ -99,26 +93,26 @@
         <section id="home" class="hero-section">
             <div class="container">
                 <div class="hero-content">
-                    <h1 class="hero-title">🐳 Docker 学习教程 2026</h1>
+                    <h1 class="hero-title">🐳 Docker 学习教程</h1>
                     <p class="hero-subtitle">从入门到精通 · AI 工具集成 · 云原生实践</p>
                     <div class="hero-features">
-                        <div class="hero-badge">✅ 2026 最新内容</div>
+                        <div class="hero-badge">✅ 最新内容</div>
                         <div class="hero-badge">✅ AI 工具集成</div>
                         <div class="hero-badge">✅ 实战项目</div>
                         <div class="hero-badge">✅ 云原生最佳实践</div>
                     </div>
                     <div class="hero-actions">
-                        <a href="#core-concepts" class="btn btn-primary">开始学习</a>
+                        <a href="./pages/core-concepts.html" class="btn btn-primary">开始学习</a>
                         <a href="./examples/" class="btn btn-secondary">查看示例</a>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 2026 年新特性概览 -->
+        <!-- 新特性概览 -->
         <section class="section bg-gradient">
             <div class="container">
-                <h2 class="section-title">🚀 Docker 2026 年新特性</h2>
+                <h2 class="section-title">🚀 Docker 新特性</h2>
                 <p class="section-desc">探索 Docker 最新版本带来的革命性改进和 AI 驱动的功能</p>
 
                 <div class="features-grid-2026">
@@ -182,208 +176,8 @@
             </div>
         </section>
 
-        <!-- 核心概念 -->
-        <section id="core-concepts" class="section">
-            <div class="container">
-                <h2 class="section-title">📖 Docker 核心概念</h2>
-                <p class="section-desc">理解 Docker 的基础概念是掌握容器技术的关键</p>
-
-                <div class="concept-grid">
-                    <div class="concept-card">
-                        <div class="concept-icon">📦</div>
-                        <h3>镜像 (Image)</h3>
-                        <p>只读模板，包含运行应用所需的代码、运行时、库和设置。采用分层存储，支持高效复用。</p>
-                        <div class="concept-example">
-                            <code>docker pull nginx:latest</code>
-                        </div>
-                    </div>
-
-                    <div class="concept-card">
-                        <div class="concept-icon">🎯</div>
-                        <h3>容器 (Container)</h3>
-                        <p>镜像的运行实例，是独立的、可执行的软件单元。容器之间相互隔离，但共享主机内核。</p>
-                        <div class="concept-example">
-                            <code>docker run -d -p 80:80 nginx</code>
-                        </div>
-                    </div>
-
-                    <div class="concept-card">
-                        <div class="concept-icon">📝</div>
-                        <h3>Dockerfile</h3>
-                        <p>定义镜像构建过程的文本文件，包含一系列指令，Docker 按这些指令组装镜像。</p>
-                        <div class="concept-example">
-                            <code>FROM node:18<br>COPY . /app<br>CMD ["npm", "start"]</code>
-                        </div>
-                    </div>
-
-                    <div class="concept-card">
-                        <div class="concept-icon">🎼</div>
-                        <h3>Docker Compose</h3>
-                        <p>定义和运行多容器应用的工具，使用 YAML 文件配置应用服务、网络和数据卷。</p>
-                        <div class="concept-example">
-                            <code>docker-compose up -d</code>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Docker 架构原理图 -->
-        <section id="architecture" class="section bg-light">
-            <div class="container">
-                <h2 class="section-title">🏗️ Docker 架构原理</h2>
-                <p class="section-desc">深入理解 Docker 的内部架构和工作原理</p>
-
-                <div class="docker-architecture-diagram">
-                    <div class="diagram-container">
-                        <div class="host-os">
-                            <h3>宿主机操作系统 (Host OS)</h3>
-                            <p>Ubuntu, CentOS, Windows, macOS 等</p>
-                        </div>
-
-                        <div class="docker-engine">
-                            <h3>Docker Engine</h3>
-                            <div class="engine-components">
-                                <div class="component">Docker Daemon (dockerd)</div>
-                                <div class="component">Containerd</div>
-                                <div class="component">runc</div>
-                            </div>
-                        </div>
-
-                        <div class="containers-section">
-                            <h3>容器层 (Containers)</h3>
-                            <div class="container-group">
-                                <div class="container-box">
-                                    <div class="container-header">容器 1</div>
-                                    <div class="container-body">
-                                        <div class="app-process">应用进程</div>
-                                        <div class="layers">
-                                            <div class="layer">可写层</div>
-                                            <div class="layer">只读层</div>
-                                            <div class="layer">只读层</div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="container-box">
-                                    <div class="container-header">容器 2</div>
-                                    <div class="container-body">
-                                        <div class="app-process">应用进程</div>
-                                        <div class="layers">
-                                            <div class="layer">可写层</div>
-                                            <div class="layer">只读层</div>
-                                            <div class="layer">只读层</div>
-                                            <div class="layer">只读层</div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="container-box">
-                                    <div class="container-header">容器 N</div>
-                                    <div class="container-body">
-                                        <div class="app-process">应用进程</div>
-                                        <div class="layers">
-                                            <div class="layer">可写层</div>
-                                            <div class="layer">基础镜像层</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="images-section">
-                            <h3>镜像层 (Images)</h3>
-                            <div class="image-layers">
-                                <div class="image-layer">Ubuntu 基础镜像</div>
-                                <div class="image-layer">应用依赖层</div>
-                                <div class="image-layer">应用代码层</div>
-                            </div>
-                        </div>
-
-                        <div class="shared-resources">
-                            <h3>共享资源</h3>
-                            <p>内核、CPU、内存、网络、存储</p>
-                        </div>
-                    </div>
-
-                    <div class="diagram-description">
-                        <h3>架构说明</h3>
-                        <ul>
-                            <li><strong>宿主机操作系统</strong>：提供底层系统资源和内核功能</li>
-                            <li><strong>Docker Engine</strong>：负责容器的创建、运行和管理</li>
-                            <li><strong>镜像层</strong>：采用分层存储，多层只读层构成镜像</li>
-                            <li><strong>容器层</strong>：在镜像基础上添加可写层，实现写时复制</li>
-                            <li><strong>共享资源</strong>：容器共享宿主机内核，但彼此隔离</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 第一个容器 -->
-        <section id="first-container" class="section">
-            <div class="container">
-                <h2 class="section-title">🎯 运行你的第一个容器</h2>
-                <p class="section-desc">快速上手，体验 Docker 的魅力</p>
-
-                <div class="quick-start-steps">
-                    <div class="step">
-                        <div class="step-number">1</div>
-                        <div class="step-content">
-                            <h3>拉取镜像</h3>
-                            <div class="code-container">
-                                <pre><code class="language-bash">docker pull nginx:latest</code></pre>
-                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                            </div>
-                            <p>从 Docker Hub 下载 Nginx 官方镜像</p>
-                        </div>
-                    </div>
-
-                    <div class="step">
-                        <div class="step-number">2</div>
-                        <div class="step-content">
-                            <h3>运行容器</h3>
-                            <div class="code-container">
-                                <pre><code class="language-bash">docker run -d -p 8080:80 --name my-nginx nginx</code></pre>
-                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                            </div>
-                            <p>后台运行容器，将主机 8080 端口映射到容器 80 端口</p>
-                        </div>
-                    </div>
-
-                    <div class="step">
-                        <div class="step-number">3</div>
-                        <div class="step-content">
-                            <h3>访问服务</h3>
-                            <div class="code-container">
-                                <pre><code class="language-bash"># 在浏览器访问 http://localhost:8080
-# 或查看容器状态
-docker ps
-docker logs my-nginx</code></pre>
-                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                            </div>
-                            <p>查看运行状态和日志</p>
-                        </div>
-                    </div>
-
-                    <div class="step">
-                        <div class="step-number">4</div>
-                        <div class="step-content">
-                            <h3>停止和清理</h3>
-                            <div class="code-container">
-                                <pre><code class="language-bash">docker stop my-nginx
-docker rm my-nginx</code></pre>
-                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                            </div>
-                            <p>停止并删除容器</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <!-- AI 工具集成 -->
-        <section id="ai-tools" class="section bg-gradient-ai">
+        <section class="section bg-gradient-ai">
             <div class="container">
                 <h2 class="section-title">🤖 AI 工具在 Docker 中的应用</h2>
                 <p class="section-desc">利用 AI 技术提升 Docker 开发效率和安全性</p>
@@ -431,7 +225,7 @@ import Client from "@dagger.io/dagger";
 
 async function build() {
   const client = new Client();
-  
+
   const result = await client
     .container()
     .from("node:18-alpine")
@@ -441,7 +235,7 @@ async function build() {
     .withExec(["npm", "test"])
     .withExec(["npm", "run", "build"])
     .directory("./dist");
-    
+
   return result;
 }</code></pre>
                             <button class="copy-btn" onclick="copyCode(this)">复制</button>
@@ -505,339 +299,8 @@ trivy image --format table \
             </div>
         </section>
 
-        <!-- Dockerfile 最佳实践 -->
-        <section id="dockerfile" class="section">
-            <div class="container">
-                <h2 class="section-title">📝 Dockerfile 最佳实践 (2026)</h2>
-                <p class="section-desc">遵循最佳实践，创建高效、安全的 Docker 镜像</p>
-
-                <div class="best-practices-container">
-                    <div class="practice-code">
-                        <h3>2026 标准 Dockerfile 示例</h3>
-                        <div class="code-container">
-                            <pre><code class="language-dockerfile"># syntax=docker/dockerfile:1.7
-
-# 使用特定版本的轻量级基础镜像
-FROM node:20-alpine3.19 AS base
-
-# 设置工作目录
-WORKDIR /app
-
-# 安装依赖时使用缓存加速
-FROM base AS deps
-RUN --mount=type=cache,target=/root/.npm \
-    npm pkg set scripts.prepare="" && \
-    npm ci --only=production
-
-# 构建阶段
-FROM base AS builder
-RUN --mount=type=cache,target=/root/.npm \
-    npm ci && \
-    npm run build
-
-# 生产镜像
-FROM base AS production
-
-# 创建非 root 用户
-RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nodejs -u 1001
-
-# 复制依赖和生产文件
-COPY --from=deps /app/node_modules ./node_modules
-COPY --from=builder /app/dist ./dist
-COPY package.json ./
-
-# 设置用户和权限
-USER nodejs
-
-# 健康检查
-HEALTHCHECK --interval=30s --timeout=3s \
-  --start-period=5s --retries=3 \
-  CMD wget --quiet --tries=1 --spider \
-      http://localhost:3000/health || exit 1
-
-EXPOSE 3000
-
-CMD ["node", "dist/server.js"]</code></pre>
-                            <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                        </div>
-                    </div>
-
-                    <div class="practice-tips">
-                        <h3>关键实践要点</h3>
-                        <div class="tips-list">
-                            <div class="tip-item">
-                                <span class="tip-icon">✅</span>
-                                <div>
-                                    <strong>使用多阶段构建</strong>
-                                    <p>分离构建环境和运行环境，减小最终镜像大小</p>
-                                </div>
-                            </div>
-                            <div class="tip-item">
-                                <span class="tip-icon">✅</span>
-                                <div>
-                                    <strong>利用构建缓存</strong>
-                                    <p>使用<code>--mount=type=cache</code>加速依赖安装</p>
-                                </div>
-                            </div>
-                            <div class="tip-item">
-                                <span class="tip-icon">✅</span>
-                                <div>
-                                    <strong>非 root 用户运行</strong>
-                                    <p>提高容器安全性，防止权限提升攻击</p>
-                                </div>
-                            </div>
-                            <div class="tip-item">
-                                <span class="tip-icon">✅</span>
-                                <div>
-                                    <strong>健康检查</strong>
-                                    <p>监控容器状态，自动重启异常容器</p>
-                                </div>
-                            </div>
-                            <div class="tip-item">
-                                <span class="tip-icon">✅</span>
-                                <div>
-                                    <strong>使用 .dockerignore</strong>
-                                    <p>排除不必要的文件，减小构建上下文</p>
-                                </div>
-                            </div>
-                            <div class="tip-item">
-                                <span class="tip-icon">✅</span>
-                                <div>
-                                    <strong>固定版本标签</strong>
-                                    <p>避免使用<code>latest</code>，确保构建可重复</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Docker Compose -->
-        <section id="compose" class="section bg-light">
-            <div class="container">
-                <h2 class="section-title">🎼 Docker Compose 实战</h2>
-                <p class="section-desc">使用 Compose 定义和运行多容器应用</p>
-
-                <div class="compose-example">
-                    <div class="compose-code">
-                        <h3>完整的 Compose 配置示例</h3>
-                        <div class="code-container">
-                            <pre><code class="language-yaml">name: myapp
-
-services:
-  web:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        - NODE_ENV=production
-    ports:
-      - "3000:3000"
-    environment:
-      - NODE_ENV=production
-      - DATABASE_URL=postgres://user:pass@db:5432/myapp
-      - REDIS_URL=redis://redis:6379
-    volumes:
-      - ./logs:/app/logs
-      - web-static:/app/public
-    depends_on:
-      db:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-    networks:
-      - frontend
-      - backend
-    deploy:
-      resources:
-        limits:
-          cpus: '1.5'
-          memory: 1G
-        reservations:
-          cpus: '0.25'
-          memory: 256M
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "wget", "-q", "--spider", \
-             "http://localhost:3000/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
-
-  db:
-    image: postgres:16-alpine
-    environment:
-      POSTGRES_DB: myapp
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-secure_password}
-    volumes:
-      - db-data:/var/lib/postgresql/data
-      - ./backups:/backups
-    networks:
-      - backend
-    deploy:
-      resources:
-        limits:
-          cpus: '1'
-          memory: 1G
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U user -d myapp"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  redis:
-    image: redis:7-alpine
-    command: redis-server --appendonly yes
-    volumes:
-      - redis-data:/data
-    networks:
-      - backend
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-networks:
-  frontend:
-    driver: bridge
-  backend:
-    driver: bridge
-    internal: true
-
-volumes:
-  db-data:
-  redis-data:
-  web-static:</code></pre>
-                            <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                        </div>
-                    </div>
-
-                    <div class="compose-commands">
-                        <h3>常用 Compose 命令</h3>
-                        <div class="command-list-compact">
-                            <div class="command-item">
-                                <code>docker compose up -d</code>
-                                <span>后台启动所有服务</span>
-                            </div>
-                            <div class="command-item">
-                                <code>docker compose down</code>
-                                <span>停止并删除所有资源</span>
-                            </div>
-                            <div class="command-item">
-                                <code>docker compose logs -f</code>
-                                <span>查看实时日志</span>
-                            </div>
-                            <div class="command-item">
-                                <code>docker compose ps</code>
-                                <span>查看服务状态</span>
-                            </div>
-                            <div class="command-item">
-                                <code>docker compose exec SERVICE sh</code>
-                                <span>进入容器</span>
-                            </div>
-                            <div class="command-item">
-                                <code>docker compose build</code>
-                                <span>重新构建镜像</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- WASM 容器 -->
-        <section id="wasm" class="section">
-            <div class="container">
-                <h2 class="section-title">🔮 WASM 容器 - 下一代容器技术</h2>
-                <p class="section-desc">WebAssembly 容器带来极致性能和安全性</p>
-
-                <div class="wasm-comparison">
-                    <div class="wasm-info">
-                        <h3>什么是 WASM 容器？</h3>
-                        <p>WASM（WebAssembly）容器是 Docker 的革命性特性，将 WASM 模块作为容器运行，提供：</p>
-                        <ul class="wasm-features">
-                            <li><strong>极致性能</strong>：毫秒级启动，比传统容器快 10-100 倍</li>
-                            <li><strong>极小体积</strong>：镜像通常 &lt;1MB，比传统容器小 100-1000 倍</li>
-                            <li><strong>高安全性</strong>：基于能力的安全模型，更强的隔离性</li>
-                            <li><strong>跨平台</strong>：一次构建，随处运行</li>
-                            <li><strong>多语言支持</strong>：支持 Rust、Go、Python、JavaScript 等</li>
-                        </ul>
-                    </div>
-
-                    <div class="wasm-comparison-table">
-                        <h3>性能对比</h3>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>指标</th>
-                                    <th>传统容器</th>
-                                    <th>WASM 容器</th>
-                                    <th>提升</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>镜像大小</td>
-                                    <td>~150MB</td>
-                                    <td>~500KB</td>
-                                    <td class="highlight">300x</td>
-                                </tr>
-                                <tr>
-                                    <td>启动时间</td>
-                                    <td>~1-2s</td>
-                                    <td>~10-50ms</td>
-                                    <td class="highlight">40x</td>
-                                </tr>
-                                <tr>
-                                    <td>内存占用</td>
-                                    <td>~50-100MB</td>
-                                    <td>~5-10MB</td>
-                                    <td class="highlight">10x</td>
-                                </tr>
-                                <tr>
-                                    <td>冷启动</td>
-                                    <td>秒级</td>
-                                    <td>毫秒级</td>
-                                    <td class="highlight">100x</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="wasm-example">
-                    <h3>运行 WASM 容器</h3>
-                    <div class="code-container">
-                        <pre><code class="language-bash"># 启用 WASM 支持（Docker 27.0+）
-export DOCKER_CLI_EXPERIMENTAL=enabled
-
-# 运行 WASM 容器
-docker run --runtime=wasm --rm -p 8080:8080 \
-  wasmcloud/http-hello-world
-
-# 构建 WASM 应用
-docker buildx build \
-  --platform wasi/wasm \
-  -t my-wasm-app \
-  -f Dockerfile.wasm .
-
-# 查看 WASM 运行时
-docker info | grep -i wasm</code></pre>
-                        <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <!-- 常用命令 -->
-        <section id="commands" class="section bg-light">
+        <section class="section bg-light">
             <div class="container">
                 <h2 class="section-title">🛠️ Docker 常用命令速查</h2>
                 <p class="section-desc">快速查找常用的 Docker 命令</p>
@@ -991,366 +454,21 @@ docker info | grep -i wasm</code></pre>
             </div>
         </section>
 
-        <!-- 2026 新特性详情 -->
-        <section id="new-features" class="section">
-            <div class="container">
-                <h2 class="section-title">🆕 Docker 2026 新特性详解</h2>
-                <p class="section-desc">深入了解 Docker 最新版本带来的强大功能</p>
-
-                <div class="features-detail">
-                    <div class="feature-detail-item">
-                        <div class="feature-detail-header">
-                            <h3>BuildKit - 现代构建引擎</h3>
-                            <span class="version-badge">v23.0+</span>
-                        </div>
-                        <div class="feature-detail-content">
-                            <p>BuildKit 提供强大的构建性能和灵活性：</p>
-                            <ul>
-                                <li><strong>分布式构建</strong>：支持远程构建器，团队共享构建缓存</li>
-                                <li><strong>智能缓存</strong>：多层缓存策略，显著加速重复构建</li>
-                                <li><strong>并行执行</strong>：独立步骤自动并行，最大化 CPU 利用</li>
-                                <li><strong>缓存挂载</strong>：用于依赖管理的高效缓存</li>
-                                <li><strong>多平台构建</strong>：单次构建多个架构的镜像</li>
-                            </ul>
-                            <div class="code-container">
-                                <pre><code class="language-bash"># 创建远程构建器
-docker buildx create \
-  --name remote-builder \
-  --driver=docker-container \
-  --bootstrap
-
-# 使用共享缓存构建
-docker buildx build \
-  --builder=remote-builder \
-  --cache-from=type=registry,ref=myorg/cache \
-  --cache-to=type=registry,ref=myorg/cache,mode=max \
-  -t myapp:latest .
-
-# 多平台构建
-docker buildx build \
-  --platform linux/amd64,linux/arm64 \
-  -t myapp:multiarch \
-  --push .</code></pre>
-                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="feature-detail-item">
-                        <div class="feature-detail-header">
-                            <h3>Docker Scout 2.0 - AI 驱动的安全</h3>
-                            <span class="version-badge">v27.0+</span>
-                        </div>
-                        <div class="feature-detail-content">
-                            <p>Docker Scout 2.0 提供全面的安全保障：</p>
-                            <ul>
-                                <li><strong>实时漏洞扫描</strong>：持续监控 CVE 数据库</li>
-                                <li><strong>AI 修复建议</strong>：智能推荐最优修复方案</li>
-                                <li><strong>SBOM 生成</strong>：自动生成软件物料清单</li>
-                                <li><strong>合规检查</strong>：自动检查合规要求</li>
-                            </ul>
-                            <div class="code-container">
-                                <pre><code class="language-bash"># 完整安全扫描
-docker scout cves \
-  --severity critical,high \
-  --exit-code 1 \
-  myapp:latest
-
-# 生成 SBOM 报告
-docker scout sbom \
-  --format spdx-json \
-  --output sbom.json \
-  myapp:latest
-
-# 比较镜像安全状态
-docker scout compare \
-  --from myapp:v1 \
-  --to myapp:v2
-
-# CI/CD 集成
-docker scout quickview \
-  --format markdown \
-  myapp:latest</code></pre>
-                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="feature-detail-item">
-                        <div class="feature-detail-header">
-                            <h3>容器安全增强 - 零信任架构</h3>
-                            <span class="version-badge">v27.0+</span>
-                        </div>
-                        <div class="feature-detail-content">
-                            <p>2026 版 Docker 引入了多项安全增强：</p>
-                            <ul>
-                                <li><strong>镜像签名</strong>：基于 Cosign 的原生签名支持</li>
-                                <li><strong>内容信任</strong>：只运行已签名的镜像</li>
-                                <li><strong>密钥管理</strong>：集成云 KMS 和硬件密钥</li>
-                                <li><strong>供应链安全</strong>：SLSA 合规性检查</li>
-                            </ul>
-                            <div class="code-container">
-                                <pre><code class="language-bash"># 启用内容信任
-export DOCKER_CONTENT_TRUST=1
-
-# 签名镜像
-cosign sign \
-  --key cosign.key \
-  myregistry.com/myapp:latest
-
-# 验证签名
-cosign verify \
-  --key cosign.pub \
-  myregistry.com/myapp:latest
-
-# 生成 SLSA 证明
-cosign generate-slsa-provenance \
-  myapp:latest</code></pre>
-                                <button class="copy-btn" onclick="copyCode(this)">复制</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 最佳实践 -->
-        <section id="practices" class="section bg-light">
-            <div class="container">
-                <h2 class="section-title">✅ Docker 最佳实践清单</h2>
-                <p class="section-desc">遵循这些最佳实践，打造生产级容器应用</p>
-
-                <div class="practices-checklist">
-                    <div class="practice-category">
-                        <h3>🔒 安全实践</h3>
-                        <div class="checklist">
-                            <label class="check-item">
-                                <input type="checkbox" checked>
-                                <span>使用非 root 用户运行容器</span>
-                            </label>
-                            <label class="check-item">
-                                <input type="checkbox" checked>
-                                <span>使用只读根文件系统</span>
-                            </label>
-                            <label class="check-item">
-                                <input type="checkbox" checked>
-                                <span>定期扫描镜像漏洞</span>
-                            </label>
-                            <label class="check-item">
-                                <input type="checkbox" checked>
-                                <span>使用 secrets 管理敏感信息</span>
-                            </label>
-                            <label class="check-item">
-                                <input type="checkbox">
-                                <span>实施镜像签名和验证</span>
-                            </label>
-                            <label class="check-item">
-                                <input type="checkbox">
-                                <span>限制容器能力和权限</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="practice-category">
-                        <h3>📦 镜像优化</h3>
-                        <div class="checklist">
-                            <label class="check-item">
-                                <input type="checkbox" checked>
-                                <span>使用多阶段构建</span>
-                            </label>
-                            <label class="check-item">
-                                <input type="checkbox" checked>
-                                <span>选择合适的基础镜像（Alpine）</span>
-                            </label>
-                            <label class="check-item">
-                                <input type="checkbox" checked>
-                                <span>合并 RUN 指令减少层数</span>
-                            </label>
-                            <label class="check-item">
-                                <input type="checkbox" checked>
-                                <span>使用 .dockerignore 排除文件</span>
-                            </label>
-                            <label class="check-item">
-                                <input type="checkbox" checked>
-                                <span>利用构建缓存</span>
-                            </label>
-                            <label class="check-item">
-                                <input type="checkbox">
-                                <span>固定所有依赖版本</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="practice-category">
-                        <h3>🔄 CI/CD 集成</h3>
-                        <div class="checklist">
-                            <label class="check-item">
-                                <input type="checkbox" checked>
-                                <span>使用 BuildKit 加速构建</span>
-                            </label>
-                            <label class="check-item">
-                                <input type="checkbox" checked>
-                                <span>自动化测试容器镜像</span>
-                            </label>
-                            <label class="check-item">
-                                <input type="checkbox" checked>
-                                <span>实施镜像安全扫描</span>
-                            </label>
-                            <label class="check-item">
-                                <input type="checkbox" checked>
-                                <span>使用 Docker Compose 测试</span>
-                            </label>
-                            <label class="check-item">
-                                <input type="checkbox">
-                                <span>多架构镜像构建</span>
-                            </label>
-                            <label class="check-item">
-                                <input type="checkbox">
-                                <span>自动化镜像推送</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="practice-category">
-                        <h3>📊 监控与日志</h3>
-                        <div class="checklist">
-                            <label class="check-item">
-                                <input type="checkbox" checked>
-                                <span>配置健康检查</span>
-                            </label>
-                            <label class="check-item">
-                                <input type="checkbox" checked>
-                                <span>集中化日志管理</span>
-                            </label>
-                            <label class="check-item">
-                                <input type="checkbox" checked>
-                                <span>监控资源使用情况</span>
-                            </label>
-                            <label class="check-item">
-                                <input type="checkbox" checked>
-                                <span>设置告警机制</span>
-                            </label>
-                            <label class="check-item">
-                                <input type="checkbox">
-                                <span>实现分布式追踪</span>
-                            </label>
-                            <label class="check-item">
-                                <input type="checkbox">
-                                <span>配置日志轮转</span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 学习路径 -->
-        <section class="section">
-            <div class="container">
-                <h2 class="section-title">📚 推荐学习路径</h2>
-                <p class="section-desc">循序渐进，从入门到精通</p>
-
-                <div class="learning-path">
-                    <div class="path-stage">
-                        <div class="stage-header">
-                            <div class="stage-icon">🌱</div>
-                            <h3>入门阶段</h3>
-                        </div>
-                        <ul>
-                            <li>理解 Docker 核心概念</li>
-                            <li>安装和配置 Docker</li>
-                            <li>运行第一个容器</li>
-                            <li>学习基本命令</li>
-                            <li>编写简单 Dockerfile</li>
-                        </ul>
-                        <div class="stage-resources">
-                            <strong>推荐资源：</strong>
-                            <a href="#core-concepts">核心概念</a>
-                            <a href="#first-container">第一个容器</a>
-                            <a href="#commands">命令速查</a>
-                        </div>
-                    </div>
-
-                    <div class="path-stage">
-                        <div class="stage-header">
-                            <div class="stage-icon">🌿</div>
-                            <h3>进阶阶段</h3>
-                        </div>
-                        <ul>
-                            <li>掌握 Dockerfile 最佳实践</li>
-                            <li>使用 Docker Compose</li>
-                            <li>理解网络和存储</li>
-                            <li>多阶段构建优化</li>
-                            <li>容器调试技巧</li>
-                        </ul>
-                        <div class="stage-resources">
-                            <strong>推荐资源：</strong>
-                            <a href="#dockerfile">Dockerfile 实践</a>
-                            <a href="#compose">Compose 实战</a>
-                            <a href="#network">网络配置</a>
-                            <a href="#multi-stage">多阶段构建</a>
-                        </div>
-                    </div>
-
-                    <div class="path-stage">
-                        <div class="stage-header">
-                            <div class="stage-icon">🌳</div>
-                            <h3>高级阶段</h3>
-                        </div>
-                        <ul>
-                            <li>容器安全加固</li>
-                            <li>性能优化调优</li>
-                            <li>AI 工具集成</li>
-                            <li>WASM 容器实践</li>
-                            <li>生产环境部署</li>
-                        </ul>
-                        <div class="stage-resources">
-                            <strong>推荐资源：</strong>
-                            <a href="#security">容器安全</a>
-                            <a href="#ai-tools">AI 工具</a>
-                            <a href="#wasm">WASM 容器</a>
-                            <a href="#practices">最佳实践</a>
-                        </div>
-                    </div>
-
-                    <div class="path-stage">
-                        <div class="stage-header">
-                            <div class="stage-icon">🚀</div>
-                            <h3>专家阶段</h3>
-                        </div>
-                        <ul>
-                            <li>Kubernetes 集成</li>
-                            <li>微服务架构设计</li>
-                            <li>CI/CD 流水线</li>
-                            <li>云原生实践</li>
-                            <li>容器编排系统</li>
-                        </ul>
-                        <div class="stage-resources">
-                            <strong>推荐资源：</strong>
-                            <a href="./examples/">实战项目</a>
-                            <a href="#new-features">新特性</a>
-                            <a href="./pages/ai-tools.html">AI 工具链</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <!-- 页脚 -->
         <footer class="footer">
             <div class="container">
                 <div class="footer-content">
                     <div class="footer-section">
-                        <h4>🐳 Docker Tutorial 2026</h4>
+                        <h4>🐳 Docker Tutorial</h4>
                         <p>最全面的 Docker 学习资源，涵盖最新技术和 AI 工具</p>
                     </div>
                     <div class="footer-section">
                         <h4>快速链接</h4>
                         <ul>
-                            <li><a href="#core-concepts">核心概念</a></li>
-                            <li><a href="#ai-tools">AI 工具</a></li>
+                            <li><a href="./pages/core-concepts.html">核心概念</a></li>
+                            <li><a href="./pages/ai-tools.html">AI 工具</a></li>
                             <li><a href="./examples/">实战示例</a></li>
-                            <li><a href="#commands">命令速查</a></li>
+                            <li><a href="./pages/commands.html">命令速查</a></li>
                         </ul>
                     </div>
                     <div class="footer-section">
@@ -1372,7 +490,7 @@ cosign generate-slsa-provenance \
                     </div>
                 </div>
                 <div class="footer-bottom">
-                    <p>© 2026 Docker Tutorial. 持续更新中... | 最后更新：2026 年 2 月</p>
+                    <p>© Docker Tutorial. 持续更新中...</p>
                 </div>
             </div>
         </footer>

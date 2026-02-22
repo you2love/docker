@@ -2049,7 +2049,7 @@ html {
     font-size: 1.05rem;
 }
 
-/* 特性网格 2026 */
+/* 特性网格 */
 .features-grid-2026 {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
