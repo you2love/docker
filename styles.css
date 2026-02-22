@@ -235,23 +235,50 @@ pre:not(.collapsed) .fold-toggle {
     display: none !important;
 }
 
-pre.collapsed .fold-toggle {
-    display: block;
+pre .fold-toggle {
     position: absolute;
-    bottom: 10px;
-    right: 10px;
-    background: var(--primary);
-    color: white;
+    top: 8px;
+    left: 8px;
+    background: rgba(255,255,255,0.1);
+    color: #c9d1d9;
     border: none;
     padding: 4px 8px;
     border-radius: 4px;
     font-size: 12px;
     cursor: pointer;
     z-index: 10;
+    transition: opacity 0.2s;
 }
 
-pre.collapsed .fold-toggle:hover {
-    background: var(--primary-dark);
+pre:hover .fold-toggle {
+    opacity: 1;
+}
+
+pre .fold-toggle:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+pre .copy-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 4px 8px;
+    font-size: 16px;
+    background: rgba(255,255,255,0.1);
+    border: none;
+    border-radius: 4px;
+    color: #c9d1d9;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+pre:hover .copy-btn {
+    opacity: 1;
+}
+
+pre .copy-btn:hover {
+    background: rgba(255,255,255,0.2);
 }
 
 /* 复制按钮 */

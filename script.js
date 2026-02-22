@@ -44,7 +44,8 @@ function initCodeFolding() {
                 this.textContent = pre.classList.contains('collapsed') ? '展开' : '收起';
             });
             
-            pre.appendChild(foldButton);
+            // 将折叠按钮插入到pre标签的开头，和复制按钮并列
+            pre.insertBefore(foldButton, pre.firstChild);
         }
     });
 }
