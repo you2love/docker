@@ -456,19 +456,62 @@ docker buildx build --platform linux/amd64,linux/arm64 -t myapp:v1 .</code></pre
         <!-- Docker Compose -->
         <section id="compose" class="section section-gray">
             <h2>Docker Compose</h2>
-            <p>定义和运行多容器应用的工具。</p>
+            <p>Docker Compose 是定义和运行多容器应用的工具，使用 YAML 文件配置服务、网络和数据卷。</p>
 
-            <h3>docker-compose.yml 示例</h3>
+            <h3>基本结构</h3>
+            <pre><code># docker-compose.yml 基本结构
+version: "3.8"  # 可选，新版本已不需要
+
+services:       # 定义服务
+  webapp:
+    # 服务配置...
+
+networks:       # 定义网络（可选）
+  frontend:
+
+volumes:        # 定义数据卷（可选）
+  db-data:
+
+configs:        # 定义配置（可选）
+  my-config:
+
+secrets:        # 定义机密（可选）
+  db-password:</code></pre>
+
+            <h3>完整示例</h3>
             <pre><code>services:
   web:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - NODE_ENV=production
     ports:
       - "3000:3000"
     environment:
       - NODE_ENV=production
+      - DATABASE_URL=postgres://user:pass@db:5432/myapp
     depends_on:
-      - db
-      - redis
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - frontend
+      - backend
+    volumes:
+      - ./logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
 
   db:
     image: postgres:16-alpine
@@ -478,31 +521,644 @@ docker buildx build --platform linux/amd64,linux/arm64 -t myapp:v1 .</code></pre
       POSTGRES_PASSWORD: password
     volumes:
       - db-data:/var/lib/postgresql/data
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d myapp"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
 
   redis:
     image: redis:7-alpine
+    command: redis-server --appendonly yes
     volumes:
       - redis-data:/data
+    networks:
+      - backend
+    restart: unless-stopped
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
+    internal: true  # 内部网络，外部无法访问
 
 volumes:
   db-data:
   redis-data:</code></pre>
 
             <h3>常用命令</h3>
-            <pre><code># 启动服务
-docker compose up -d
+            <pre><code># 服务管理
+docker compose up -d              # 后台启动所有服务
+docker compose up -d --build      # 重建镜像后启动
+docker compose up -d web db       # 只启动指定服务
+docker compose down               # 停止并删除容器、网络
+docker compose down -v            # 同时删除数据卷
+docker compose down --rmi all     # 同时删除镜像
 
 # 查看状态
-docker compose ps
+docker compose ps                 # 查看服务状态
+docker compose logs               # 查看所有日志
+docker compose logs -f web        # 实时查看 web 服务日志
+docker compose top                # 查看进程
 
-# 查看日志
-docker compose logs -f
+# 服务操作
+docker compose start web          # 启动服务
+docker compose stop web           # 停止服务
+docker compose restart web        # 重启服务
+docker compose pause web          # 暂停服务
+docker compose unpause web        # 恢复服务
 
-# 停止服务
-docker compose down
+# 执行命令
+docker compose exec web sh        # 进入容器
+docker compose exec db psql -U user myapp  # 在 db 容器执行命令
+docker compose run --rm web npm test       # 一次性运行命令
 
-# 重建并启动
-docker compose up -d --build</code></pre>
+# 其他
+docker compose config             # 验证配置文件
+docker compose config --services  # 列出所有服务
+docker compose pull               # 拉取所有镜像
+docker compose push               # 推送所有镜像</code></pre>
+
+            <h3>常用场景</h3>
+
+            <h4>场景 1：开发环境</h4>
+            <pre><code>services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app           # 挂载代码目录，支持热重载
+      - /app/node_modules  # 防止本地 node_modules 覆盖
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true  # 支持文件监听
+    command: npm run dev
+
+  db:
+    image: postgres:16-alpine
+    ports:
+      - "5432:5432"     # 暴露端口便于本地连接
+    environment:
+      POSTGRES_DB: dev
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: dev
+    volumes:
+      - dev-data:/var/lib/postgresql/data
+
+volumes:
+  dev-data:</code></pre>
+
+            <h4>场景 2：微服务架构</h4>
+            <pre><code>services:
+  gateway:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - api
+      - web
+    networks:
+      - frontend
+
+  api:
+    build: ./api
+    environment:
+      - DATABASE_URL=postgres://db:5432/myapp
+    depends_on:
+      - db
+      - redis
+    networks:
+      - frontend
+      - backend
+
+  web:
+    build: ./web
+    networks:
+      - frontend
+
+  db:
+    image: postgres:16-alpine
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  redis:
+    image: redis:7-alpine
+    networks:
+      - backend
+
+networks:
+  frontend:
+  backend:
+    internal: true  # 只有内部服务可访问</code></pre>
+
+            <h4>场景 3：CI/CD 测试</h4>
+            <pre><code>services:
+  app:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgres://test:test@db:5432/test
+    command: npm test
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: test
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U test"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    tmpfs:
+      - /var/lib/postgresql/data  # 使用内存存储，测试更快</code></pre>
+
+            <h4>场景 4：多环境配置</h4>
+            <pre><code># docker-compose.yml（基础配置）
+services:
+  web:
+    image: myapp
+    ports:
+      - "3000:3000"
+
+# docker-compose.override.yml（开发环境，自动加载）
+services:
+  web:
+    build: .
+    volumes:
+      - .:/app
+    environment:
+      - DEBUG=true
+
+# docker-compose.prod.yml（生产环境）
+services:
+  web:
+    image: myapp:latest
+    restart: always
+    deploy:
+      replicas: 3
+
+# 使用方式：
+# 开发环境: docker compose up
+# 生产环境: docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d</code></pre>
+
+            <h3>常见错误</h3>
+            <div class="grid">
+                <div class="card">
+                    <h4>❌ 错误：端口冲突</h4>
+                    <pre><code>ports:
+  - "80:80"  # 本地 80 端口已被占用</code></pre>
+                    <h4>✅ 解决方案</h4>
+                    <pre><code>ports:
+  - "8080:80"  # 使用其他本地端口</code></pre>
+                </div>
+                <div class="card">
+                    <h4>❌ 错误：服务启动顺序</h4>
+                    <pre><code>depends_on:
+  - db  # 只等待容器启动，不等待服务就绪</code></pre>
+                    <h4>✅ 解决方案</h4>
+                    <pre><code>depends_on:
+  db:
+    condition: service_healthy  # 等待健康检查通过</code></pre>
+                </div>
+                <div class="card">
+                    <h4>❌ 错误：数据丢失</h4>
+                    <pre><code>docker compose down  # 默认不删除卷</code></pre>
+                    <h4>✅ 注意事项</h4>
+                    <pre><code># 删除所有数据（危险操作）
+docker compose down -v
+
+# 生产环境建议定期备份
+docker compose exec db pg_dump ...</code></pre>
+                </div>
+                <div class="card">
+                    <h4>❌ 错误：环境变量未传递</h4>
+                    <pre><code>environment:
+  - DB_PASS=$DB_PASSWORD  # 变量未定义时为空</code></pre>
+                    <h4>✅ 解决方案</h4>
+                    <pre><code># 使用 .env 文件
+# .env
+DB_PASSWORD=secret
+
+# 或设置默认值
+environment:
+  - DB_PASS=${DB_PASSWORD:-default}</code></pre>
+                </div>
+                <div class="card">
+                    <h4>❌ 错误：版本兼容问题</h4>
+                    <pre><code>version: "2"  # 旧版格式</code></pre>
+                    <h4>✅ 解决方案</h4>
+                    <pre><code>version: "3.8"  # 使用最新格式
+# 或直接省略 version（新版本推荐）</code></pre>
+                </div>
+                <div class="card">
+                    <h4>❌ 错误：网络隔离问题</h4>
+                    <pre><code># 服务 A 无法访问服务 B</code></pre>
+                    <h4>✅ 解决方案</h4>
+                    <pre><code># 确保服务在同一网络
+services:
+  a:
+    networks:
+      - mynet
+  b:
+    networks:
+      - mynet
+networks:
+  mynet:</code></pre>
+                </div>
+            </div>
+
+            <h3>配置文件最佳实践</h3>
+            <pre><code># 1. 使用 .env 文件管理环境变量
+# .env
+COMPOSE_PROJECT_NAME=myapp
+POSTGRES_PASSWORD=secret
+API_KEY=xxx
+
+# 2. 使用命名卷而非绑定挂载（生产环境）
+volumes:
+  db-data:  # 命名卷
+
+# 3. 限制资源
+deploy:
+  resources:
+    limits:
+      cpus: '0.5'
+      memory: 256M
+
+# 4. 设置重启策略
+restart: unless-stopped
+
+# 5. 使用健康检查
+healthcheck:
+  test: ["CMD", "curl", "-f", "http://localhost/health"]
+  interval: 30s
+  timeout: 10s
+  retries: 3
+
+# 6. 使用网络隔离
+networks:
+  frontend:
+  backend:
+    internal: true
+
+# 7. 使用 secrets 管理敏感数据
+secrets:
+  db_password:
+    file: ./secrets/db_password.txt</code></pre>
+
+            <h3>服务配置指令详解</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>指令</th>
+                        <th>说明</th>
+                        <th>示例</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>image</code></td>
+                        <td>指定镜像名称</td>
+                        <td><code>image: nginx:alpine</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>build</code></td>
+                        <td>构建配置</td>
+                        <td><code>build: ./dir</code> 或详细配置</td>
+                    </tr>
+                    <tr>
+                        <td><code>ports</code></td>
+                        <td>端口映射</td>
+                        <td><code>["3000:3000", "80:80"]</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>expose</code></td>
+                        <td>暴露端口（仅内部）</td>
+                        <td><code>["3000"]</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>environment</code></td>
+                        <td>环境变量</td>
+                        <td><code>KEY=value</code> 或 <code>["KEY=value"]</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>env_file</code></td>
+                        <td>从文件加载环境变量</td>
+                        <td><code>env_file: .env</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>volumes</code></td>
+                        <td>挂载卷</td>
+                        <td><code>["./data:/app/data"]</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>networks</code></td>
+                        <td>连接的网络</td>
+                        <td><code>["frontend", "backend"]</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>depends_on</code></td>
+                        <td>服务依赖</td>
+                        <td><code>["db", "redis"]</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>restart</code></td>
+                        <td>重启策略</td>
+                        <td><code>always / unless-stopped / on-failure</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>command</code></td>
+                        <td>覆盖默认命令</td>
+                        <td><code>["node", "server.js"]</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>entrypoint</code></td>
+                        <td>覆盖入口点</td>
+                        <td><code>["/app/entrypoint.sh"]</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>working_dir</code></td>
+                        <td>工作目录</td>
+                        <td><code>/app</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>user</code></td>
+                        <td>运行用户</td>
+                        <td><code>node</code> 或 <code>1000:1000</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>healthcheck</code></td>
+                        <td>健康检查</td>
+                        <td>test, interval, timeout, retries</td>
+                    </tr>
+                    <tr>
+                        <td><code>deploy</code></td>
+                        <td>部署配置（Swarm）</td>
+                        <td>replicas, resources, update_config</td>
+                    </tr>
+                    <tr>
+                        <td><code>profiles</code></td>
+                        <td>服务配置文件</td>
+                        <td><code>["debug", "test"]</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>extra_hosts</code></td>
+                        <td>添加主机名映射</td>
+                        <td><code>"myhost:192.168.1.1"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>dns</code></td>
+                        <td>自定义 DNS</td>
+                        <td><code>["8.8.8.8", "8.8.4.4"]</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>labels</code></td>
+                        <td>添加元数据标签</td>
+                        <td><code>"com.example.description=Web app"</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>变量替换</h3>
+            <pre><code># .env 文件
+DB_HOST=db
+DB_PORT=5432
+DB_NAME=myapp
+DB_USER=${DB_USER:-admin}      # 默认值
+DB_PASS=${DB_PASS:?密码未设置}  # 必须设置，否则报错
+
+# docker-compose.yml
+services:
+  app:
+    environment:
+      - DATABASE_URL=postgres://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}
+    ports:
+      - "${APP_PORT:-3000}:3000"  # 使用默认值
+
+# 使用方式
+DB_PASS=secret docker compose up -d
+# 或
+cp .env.example .env && docker compose up -d</code></pre>
+
+            <h3>Profiles 功能</h3>
+            <p>Profiles 允许按需启动不同服务组合：</p>
+            <pre><code>services:
+  web:
+    image: nginx
+    ports:
+      - "80:80"
+
+  # 只在 debug profile 启用
+  debug:
+    image: busybox
+    command: tail -f /dev/null
+    profiles:
+      - debug
+
+  # 只在 test profile 启用
+  selenium:
+    image: selenium/standalone-chrome
+    profiles:
+      - test
+
+  # 多个 profile
+  adminer:
+    image: adminer
+    profiles:
+      - debug
+      - admin
+
+# 使用方式
+docker compose up -d                    # 只启动 web
+docker compose --profile debug up -d    # 启动 web + debug + adminer
+docker compose --profile test up -d     # 启动 web + selenium
+docker compose --profile debug --profile test up -d  # 启动全部</code></pre>
+
+            <h3>更多应用场景</h3>
+
+            <h4>场景 5：负载均衡</h4>
+            <pre><code>services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - web
+
+  web:
+    image: myapp:latest
+    deploy:
+      replicas: 3  # 运行 3 个副本
+    environment:
+      - NODE_ENV=production
+    networks:
+      - app-network
+
+networks:
+  app-network:</code></pre>
+
+            <h4>场景 6：日志收集</h4>
+            <pre><code>services:
+  app:
+    image: myapp
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    depends_on:
+      - elasticsearch
+      - logstash
+
+  elasticsearch:
+    image: elasticsearch:8-alpine
+    environment:
+      - discovery.type=single-node
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+
+  logstash:
+    image: logstash:8-alpine
+    volumes:
+      - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+
+  kibana:
+    image: kibana:8-alpine
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+
+volumes:
+  es-data:</code></pre>
+
+            <h4>场景 7：消息队列</h4>
+            <pre><code>services:
+  producer:
+    build: ./producer
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+  consumer:
+    build: ./consumer
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    deploy:
+      replicas: 3  # 多个消费者
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - "5672:5672"   # AMQP
+      - "15672:15672" # 管理界面
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - rabbit-data:/var/lib/rabbitmq
+
+volumes:
+  rabbit-data:</code></pre>
+
+            <h4>场景 8：数据库主从复制</h4>
+            <pre><code>services:
+  pg-master:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: myapp
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_REPLICATION_USER: replicator
+      POSTGRES_REPLICATION_PASSWORD: repl_pass
+    volumes:
+      - master-data:/var/lib/postgresql/data
+    command: >
+      postgres
+      -c wal_level=replica
+      -c max_wal_senders=3
+      -c max_replication_slots=3
+
+  pg-replica:
+    image: postgres:16-alpine
+    environment:
+      PGUSER: replicator
+      PGPASSWORD: repl_pass
+      PGHOST: pg-master
+    depends_on:
+      - pg-master
+    volumes:
+      - replica-data:/var/lib/postgresql/data
+
+volumes:
+  master-data:
+  replica-data:</code></pre>
+
+            <h3>扩展和继承</h3>
+            <pre><code># 使用 extends 继承配置（已弃用，推荐使用 YAML 锚点）
+# docker-compose.yml
+x-common-config: &common-config
+  restart: unless-stopped
+  networks:
+    - app-network
+  logging:
+    driver: json-file
+    options:
+      max-size: "10m"
+
+services:
+  api:
+    <<: *common-config
+    image: myapp:api
+    ports:
+      - "3000:3000"
+
+  worker:
+    <<: *common-config
+    image: myapp:worker
+    command: node worker.js
+
+networks:
+  app-network:</code></pre>
+        </section>
+  test: ["CMD", "curl", "-f", "http://localhost/health"]
+  interval: 30s
+  timeout: 10s
+  retries: 3
+  start_period: 40s
+
+# 6. 使用网络隔离
+networks:
+  frontend:
+  backend:
+    internal: true
+
+# 7. 使用 secrets 管理敏感数据
+secrets:
+  db_password:
+    file: ./secrets/db_password.txt</code></pre>
         </section>
 
         <!-- 常用命令 -->
