@@ -547,61 +547,97 @@ CMD ["app.js"]
 # docker run myapp server.js → node server.js</code></pre>
 
             <h3>常犯错误</h3>
-            <div class="grid">
-                <div class="card">
-                    <h4>❌ 错误：使用 latest 标签</h4>
-                    <pre><code>FROM node:latest  # 不推荐</code></pre>
-                    <h4>✅ 正确：指定版本</h4>
-                    <pre><code>FROM node:20-alpine  # 推荐</code></pre>
-                    <p>latest 标签会变化，导致构建不可重复</p>
+            <div class="error-list">
+                <div class="error-item">
+                    <div class="error-header">
+                        <h4>❌ 错误：使用 latest 标签</h4>
+                    </div>
+                    <div class="error-content">
+                        <pre><code>FROM node:latest  # 不推荐</code></pre>
+                        <div class="error-solution">
+                            <h4>✅ 正确：指定版本</h4>
+                            <pre><code>FROM node:20-alpine  # 推荐</code></pre>
+                        </div>
+                        <p>latest 标签会变化，导致构建不可重复</p>
+                    </div>
                 </div>
-                <div class="card">
-                    <h4>❌ 错误：忽略缓存顺序</h4>
-                    <pre><code>COPY . .
+                <div class="error-item">
+                    <div class="error-header">
+                        <h4>❌ 错误：忽略缓存顺序</h4>
+                    </div>
+                    <div class="error-content">
+                        <pre><code>COPY . .
 RUN npm install  # 任何文件变化都会重新执行</code></pre>
-                    <h4>✅ 正确：利用缓存</h4>
-                    <pre><code>COPY package*.json ./
+                        <div class="error-solution">
+                            <h4>✅ 正确：利用缓存</h4>
+                            <pre><code>COPY package*.json ./
 RUN npm install
 COPY . .  # 只在代码变化时才重新复制</code></pre>
+                        </div>
+                    </div>
                 </div>
-                <div class="card">
-                    <h4>❌ 错误：以 root 运行</h4>
-                    <pre><code>FROM node:20-alpine
+                <div class="error-item">
+                    <div class="error-header">
+                        <h4>❌ 错误：以 root 运行</h4>
+                    </div>
+                    <div class="error-content">
+                        <pre><code>FROM node:20-alpine
 # 默认 root 用户
 CMD ["node", "app.js"]</code></pre>
-                    <h4>✅ 正确：非 root 用户</h4>
-                    <pre><code>FROM node:20-alpine
+                        <div class="error-solution">
+                            <h4>✅ 正确：非 root 用户</h4>
+                            <pre><code>FROM node:20-alpine
 RUN addgroup -g 1001 app && \
     adduser -u 1001 -G app user
 USER user
 CMD ["node", "app.js"]</code></pre>
+                        </div>
+                    </div>
                 </div>
-                <div class="card">
-                    <h4>❌ 错误：镜像过大</h4>
-                    <pre><code>FROM node:20  # Debian 基础镜像 ~900MB
+                <div class="error-item">
+                    <div class="error-header">
+                        <h4>❌ 错误：镜像过大</h4>
+                    </div>
+                    <div class="error-content">
+                        <pre><code>FROM node:20  # Debian 基础镜像 ~900MB
 RUN npm install</code></pre>
-                    <h4>✅ 正确：使用 Alpine</h4>
-                    <pre><code>FROM node:20-alpine  # Alpine ~170MB
+                        <div class="error-solution">
+                            <h4>✅ 正确：使用 Alpine</h4>
+                            <pre><code>FROM node:20-alpine  # Alpine ~170MB
 RUN npm install</code></pre>
+                        </div>
+                    </div>
                 </div>
-                <div class="card">
-                    <h4>❌ 错误：多层 RUN 指令</h4>
-                    <pre><code>RUN apk add --no-cache git
+                <div class="error-item">
+                    <div class="error-header">
+                        <h4>❌ 错误：多层 RUN 指令</h4>
+                    </div>
+                    <div class="error-content">
+                        <pre><code>RUN apk add --no-cache git
 RUN apk add --no-cache curl
 RUN apk add --no-cache vim</code></pre>
-                    <h4>✅ 正确：合并命令</h4>
-                    <pre><code>RUN apk add --no-cache \
+                        <div class="error-solution">
+                            <h4>✅ 正确：合并命令</h4>
+                            <pre><code>RUN apk add --no-cache \
     git curl vim</code></pre>
+                        </div>
+                    </div>
                 </div>
-                <div class="card">
-                    <h4>❌ 错误：复制无用文件</h4>
-                    <pre><code>COPY . .  # 复制所有文件</code></pre>
-                    <h4>✅ 正确：使用 .dockerignore</h4>
-                    <pre><code># .dockerignore
+                <div class="error-item">
+                    <div class="error-header">
+                        <h4>❌ 错误：复制无用文件</h4>
+                    </div>
+                    <div class="error-content">
+                        <pre><code>COPY . .  # 复制所有文件</code></pre>
+                        <div class="error-solution">
+                            <h4>✅ 正确：使用 .dockerignore</h4>
+                            <pre><code># .dockerignore
 node_modules
 .git
 *.md
 .env</code></pre>
+                        </div>
+                    </div>
                 </div>
             </div>
 
