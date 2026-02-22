@@ -1434,48 +1434,375 @@ FROM gcr.io/distroless/static</code></pre>
         <!-- AI 工具 -->
         <section id="ai-tools" class="section section-gray">
             <h2>AI 工具集成</h2>
-            <p>Docker 生态系统集成了多项 AI 工具，提升开发效率：</p>
+            <p>Docker 生态系统集成了多项 AI 工具，帮助初学者更快上手，提升开发效率。</p>
 
-            <div class="grid">
-                <div class="card">
-                    <h3>Docker Scout</h3>
-                    <p>安全扫描与 SBOM 生成</p>
-                    <pre><code>docker scout cves myapp:latest
-docker scout sbom myapp:latest</code></pre>
-                </div>
-                <div class="card">
-                    <h3>Ask Gordon</h3>
-                    <p>Docker AI 助手</p>
-                    <pre><code>docker ai
-# 自然语言交互</code></pre>
-                </div>
-                <div class="card">
-                    <h3>Dockerizer</h3>
-                    <p>自动将项目容器化，AI 分析代码生成 Dockerfile</p>
-                    <pre><code>npx dockerizer init
-npx dockerizer analyze</code></pre>
-                </div>
-                <div class="card">
-                    <h3>Dockge</h3>
-                    <p>现代化 Docker Compose 可视化管理界面</p>
-                    <pre><code>docker run -d -p 5001:5001 \
-  -v /var/run/docker.sock:/var/run/docker.sock \
-  louislam/dockge:latest</code></pre>
-                </div>
-                <div class="card">
-                    <h3>Docker GenAI Stack</h3>
-                    <p>完整生成式 AI 开发栈（Ollama + LangChain）</p>
-                    <pre><code>git clone https://github.com/docker/genai-stack
-cd genai-stack
-docker compose up -d</code></pre>
-                </div>
-                <div class="card">
-                    <h3>Trivy AI 增强版</h3>
-                    <p>AI 驱动的漏洞扫描与自动修复建议</p>
-                    <pre><code>trivy image --scanners vuln,secret,misconfig \
-  --ai-suggestions myapp:latest</code></pre>
-                </div>
+            <h3>🔍 Docker Scout - 安全扫描工具</h3>
+            <div class="card">
+                <h4>什么是 Docker Scout？</h4>
+                <p>Docker Scout 是 Docker 官方的安全分析工具，可以扫描你的镜像，找出其中的安全漏洞，并告诉你如何修复。</p>
+                
+                <h4>为什么需要它？</h4>
+                <ul>
+                    <li>你的镜像可能包含有漏洞的软件包</li>
+                    <li>新漏洞每天都在被发现，需要定期检查</li>
+                    <li>生产环境必须确保安全合规</li>
+                </ul>
+
+                <h4>如何使用？</h4>
+                <pre><code># 1. 快速查看镜像安全概况
+docker scout quickview nginx:latest
+
+# 2. 详细漏洞扫描
+docker scout cves myapp:latest
+
+# 3. 只显示高危漏洞
+docker scout cves --severity HIGH,CRITICAL myapp:latest
+
+# 4. 生成软件物料清单（SBOM）
+docker scout sbom --format spdx-json --output sbom.json myapp:latest
+
+# 5. 比较两个镜像的安全差异
+docker scout compare --from myapp:v1 --to myapp:v2
+
+# 6. 在 CI/CD 中自动阻断不安全镜像
+docker scout cves --exit-code 1 --severity HIGH,CRITICAL myapp:latest</code></pre>
+
+                <h4>初学者常见问题</h4>
+                <pre><code>Q: 扫描结果显示很多漏洞，我该怎么办？
+A: 优先修复 CRITICAL 和 HIGH 级别的漏洞，Docker Scout 会给出具体的修复建议。
+
+Q: 每次构建都需要扫描吗？
+A: 建议在 CI/CD 流程中加入自动扫描，确保不安全的镜像不会部署到生产环境。</code></pre>
             </div>
+
+            <h3>🤖 Ask Gordon - Docker AI 助手</h3>
+            <div class="card">
+                <h4>什么是 Ask Gordon？</h4>
+                <p>Ask Gordon 是 Docker 内置的 AI 助手，你可以用自然语言与它对话，让它帮你编写 Dockerfile、诊断问题、优化配置。</p>
+                
+                <h4>为什么需要它？</h4>
+                <ul>
+                    <li>不懂 Dockerfile 语法？让 AI 帮你写</li>
+                    <li>遇到错误不知道怎么解决？问 Gordon</li>
+                    <li>想知道最佳实践？直接问</li>
+                </ul>
+
+                <h4>如何使用？</h4>
+                <pre><code># 启动 Ask Gordon（需要 Docker Desktop）
+docker ai
+
+# 示例对话：
+You: 帮我为 Node.js 应用写一个 Dockerfile
+Gordon: 好的，这是为你生成的 Dockerfile...
+[生成优化的 Dockerfile]
+
+You: 我的容器启动后立即退出了，怎么回事？
+Gordon: 让我帮你分析可能的原因...
+[给出诊断建议]
+
+You: 如何减小镜像大小？
+Gordon: 这里有一些优化建议...
+[列出具体的优化方法]</code></pre>
+
+                <h4>常见使用场景</h4>
+                <pre><code># 场景 1：生成 Dockerfile
+"帮我为一个 Python Flask 应用创建 Dockerfile"
+
+# 场景 2：诊断问题
+"容器报错 'connection refused'，如何排查？"
+
+# 场景 3：优化建议
+"这个 Dockerfile 有什么可以优化的地方？"
+
+# 场景 4：学习概念
+"什么是多阶段构建？为什么要用它？"</code></pre>
+            </div>
+
+            <h3>📦 Dockerizer - 自动容器化工具</h3>
+            <div class="card">
+                <h4>什么是 Dockerizer？</h4>
+                <p>Dockerizer 是一个 AI 驱动的工具，可以自动分析你的项目代码，生成 Dockerfile 和 docker-compose.yml，无需手动编写。</p>
+                
+                <h4>为什么需要它？</h4>
+                <ul>
+                    <li>不知道如何为项目写 Dockerfile？自动生成</li>
+                    <li>不确定最佳实践？AI 帮你优化</li>
+                    <li>项目结构复杂？自动识别依赖</li>
+                </ul>
+
+                <h4>如何使用？</h4>
+                <pre><code># 1. 安装 Dockerizer
+npm install -g dockerizer
+
+# 2. 在项目目录中初始化
+cd my-project
+npx dockerizer init
+
+# Dockerizer 会：
+# - 分析 package.json / requirements.txt 等依赖文件
+# - 检测项目类型（Node.js / Python / Java 等）
+# - 生成优化的 Dockerfile
+# - 生成 docker-compose.yml（可选）
+
+# 3. 分析现有项目
+npx dockerizer analyze
+
+# 4. 生成多阶段构建的 Dockerfile
+npx dockerizer init --multi-stage
+
+# 5. 为特定框架生成
+npx dockerizer init --framework nextjs
+npx dockerizer init --framework django</code></pre>
+
+                <h4>生成示例</h4>
+                <pre><code># Dockerizer 自动生成的 Dockerfile 示例
+# 项目类型：Node.js Express
+
+# --- 基础阶段 ---
+FROM node:20-alpine AS base
+WORKDIR /app
+
+# --- 依赖阶段 ---
+FROM base AS deps
+COPY package*.json ./
+RUN npm ci --only=production
+
+# --- 运行阶段 ---
+FROM base
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+EXPOSE 3000
+USER node
+CMD ["node", "server.js"]</code></pre>
+            </div>
+
+            <h3>🖥️ Dockge - 可视化管理界面</h3>
+            <div class="card">
+                <h4>什么是 Dockge？</h4>
+                <p>Dockge 是一个现代化的 Docker Compose 可视化管理界面，让你通过网页界面管理容器，无需记住复杂的命令。</p>
+                
+                <h4>为什么需要它？</h4>
+                <ul>
+                    <li>不喜欢命令行？用图形界面操作</li>
+                    <li>想查看容器日志？一键查看</li>
+                    <li>需要管理多个项目？统一界面管理</li>
+                </ul>
+
+                <h4>如何安装？</h4>
+                <pre><code># 方法 1：Docker 命令（推荐）
+docker run -d \
+  --name dockge \
+  -p 5001:5001 \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v ~/dockge/data:/app/data \
+  louislam/dockge:latest
+
+# 方法 2：Docker Compose
+services:
+  dockge:
+    image: louislam/dockge:latest
+    ports:
+      - "5001:5001"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./data:/app/data
+    restart: unless-stopped
+
+# 访问界面
+# 打开浏览器：http://localhost:5001</code></pre>
+
+                <h4>主要功能</h4>
+                <pre><code># 1. 管理 Compose 项目
+# - 查看所有服务状态
+# - 启动/停止/重启服务
+# - 查看实时日志
+
+# 2. 编辑 compose 文件
+# - 内置 YAML 编辑器
+# - 语法高亮
+# - 自动补全
+
+# 3. 容器终端
+# - 直接在网页中进入容器
+# - 执行命令
+
+# 4. 资源监控
+# - CPU/内存使用情况
+# - 网络流量</code></pre>
+            </div>
+
+            <h3>🧠 Docker GenAI Stack - AI 应用开发栈</h3>
+            <div class="card">
+                <h4>什么是 Docker GenAI Stack？</h4>
+                <p>Docker GenAI Stack 是 Docker 官方提供的生成式 AI 开发模板，包含运行大语言模型所需的所有组件。</p>
+                
+                <h4>为什么需要它？</h4>
+                <ul>
+                    <li>想本地运行 AI 模型？一键部署</li>
+                    <li>开发 AI 应用？提供完整模板</li>
+                    <li>学习大语言模型？开箱即用</li>
+                </ul>
+
+                <h4>如何使用？</h4>
+                <pre><code># 1. 克隆项目
+git clone https://github.com/docker/genai-stack
+cd genai-stack
+
+# 2. 启动服务
+docker compose up -d
+
+# 3. 访问应用
+# 打开浏览器：http://localhost:8501
+
+# 包含的组件：
+# - Ollama：本地运行大语言模型
+# - LangChain：AI 应用开发框架
+# - Neo4j：图数据库（可选）
+# - Streamlit：Web 界面</code></pre>
+
+                <h4>运行 AI 模型示例</h4>
+                <pre><code># 在容器中运行 Ollama
+docker exec -it ollama ollama pull llama2
+docker exec -it ollama ollama run llama2
+
+# 或者使用 Docker 直接运行 Ollama
+docker run -d \
+  --name ollama \
+  -p 11434:11434 \
+  -v ollama-data:/root/.ollama \
+  ollama/ollama
+
+# 拉取并运行模型
+docker exec -it ollama ollama pull llama2
+docker exec -it ollama ollama pull codellama
+docker exec -it ollama ollama pull mistral</code></pre>
+            </div>
+
+            <h3>🔒 Trivy AI 增强版 - 漏洞扫描工具</h3>
+            <div class="card">
+                <h4>什么是 Trivy？</h4>
+                <p>Trivy 是一个全面的安全扫描器，可以扫描容器镜像、文件系统、Git 仓库，发现漏洞、配置问题和敏感信息泄露。AI 增强版提供智能修复建议。</p>
+                
+                <h4>为什么需要它？</h4>
+                <ul>
+                    <li>Docker Scout 的开源替代方案</li>
+                    <li>扫描更全面（漏洞+配置+密钥）</li>
+                    <li>AI 提供智能修复建议</li>
+                </ul>
+
+                <h4>如何安装和使用？</h4>
+                <pre><code># 安装 Trivy
+# macOS
+brew install trivy
+
+# Windows (使用 Scoop)
+scoop install trivy
+
+# Linux
+curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh
+
+# 基本使用
+# 1. 扫描镜像
+trivy image nginx:latest
+
+# 2. 扫描本地文件系统
+trivy fs .
+
+# 3. 扫描配置文件
+trivy config .
+
+# 4. 扫描多种类型
+trivy image --scanners vuln,secret,misconfig myapp:latest
+
+# 5. 输出 JSON 格式
+trivy image --format json --output report.json myapp:latest
+
+# 6. 只显示高危漏洞
+trivy image --severity HIGH,CRITICAL myapp:latest</code></pre>
+
+                <h4>CI/CD 集成示例</h4>
+                <pre><code># GitHub Actions
+name: Security Scan
+on: [push]
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          severity: 'HIGH,CRITICAL'
+          exit-code: '1'  # 发现漏洞时失败</code></pre>
+
+                <h4>扫描结果解读</h4>
+                <pre><code>trivy image myapp:latest
+
+# 输出示例：
+# ┌──────────────┬───────────────┬──────────────┬─────────────┐
+# │   Library    │ Vulnerability │  Severity    │   Version   │
+# ├──────────────┼───────────────┼──────────────┼─────────────┤
+# │ openssl      │ CVE-2024-1234 │ CRITICAL     │ 1.1.1k      │
+# │ node         │ CVE-2024-5678 │ HIGH         │ 18.0.0      │
+# └──────────────┴───────────────┴──────────────┴─────────────┘
+
+# 解读：
+# - CRITICAL: 必须立即修复
+# - HIGH: 应尽快修复
+# - MEDIUM: 计划修复
+# - LOW: 可忽略</code></pre>
+            </div>
+
+            <h3>工具对比与选择指南</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>工具</th>
+                        <th>主要用途</th>
+                        <th>适合人群</th>
+                        <th>难度</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Docker Scout</strong></td>
+                        <td>官方安全扫描</td>
+                        <td>所有 Docker 用户</td>
+                        <td>⭐ 简单</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ask Gordon</strong></td>
+                        <td>AI 助手、学习指导</td>
+                        <td>初学者</td>
+                        <td>⭐ 简单</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Dockerizer</strong></td>
+                        <td>自动生成配置</td>
+                        <td>不想手写配置的人</td>
+                        <td>⭐ 简单</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Dockge</strong></td>
+                        <td>可视化管理</td>
+                        <td>喜欢图形界面的人</td>
+                        <td>⭐ 简单</td>
+                    </tr>
+                    <tr>
+                        <td><strong>GenAI Stack</strong></td>
+                        <td>AI 应用开发</td>
+                        <td>AI 开发者</td>
+                        <td>⭐⭐ 中等</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Trivy</strong></td>
+                        <td>全面安全扫描</td>
+                        <td>安全运维人员</td>
+                        <td>⭐⭐ 中等</td>
+                    </tr>
+                </tbody>
+            </table>
         </section>
 
         <!-- 实战 -->
