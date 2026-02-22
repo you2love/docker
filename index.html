@@ -1285,6 +1285,210 @@ docker run -d --name app --network mynet myapp
 
 # app 容器内可直接使用主机名连接
 # redis://redis:6379</code></pre>
+
+            <h3>容器与外界通讯过程</h3>
+            <p>理解容器如何与外界通讯是掌握 Docker 网络的关键。</p>
+
+            <h4>通讯架构图</h4>
+            <div class="arch-diagram">
+                <pre><code>┌─────────────────────────────────────────────────────────────────┐
+│                         外部网络（互联网）                         │
+└─────────────────────────────────────────────────────────────────┘
+                              ↑↓
+┌─────────────────────────────────────────────────────────────────┐
+│                        宿主机 (Host)                              │
+│  ┌──────────────────────────────────────────────────────────┐   │
+│  │                    Docker 网桥 (docker0)                   │   │
+│  │                    172.17.0.1 (网关)                       │   │
+│  └──────────────────────────────────────────────────────────┘   │
+│         ↑                    ↑                    ↑              │
+│    ┌────────┐           ┌────────┐           ┌────────┐         │
+│    │ 容器 A  │           │ 容器 B  │           │ 容器 C  │         │
+│    │172.17.0.2│          │172.17.0.3│          │172.17.0.4│        │
+│    │ 端口 80 │           │ 端口 3000│          │ 端口 5432│        │
+│    └────────┘           └────────┘           └────────┘         │
+│         ↑                    ↑                    ↑              │
+│    主机端口                主机端口              主机端口         │
+│    8080→80               3000→3000            5432→5432         │
+└─────────────────────────────────────────────────────────────────┘</code></pre>
+            </div>
+
+            <h4>1. 容器访问外部网络</h4>
+            <pre><code># 容器访问互联网的过程：
+# 1. 容器发送请求（源 IP: 172.17.0.2）
+# 2. 请求经过 docker0 网桥
+# 3. 通过 NAT（网络地址转换）转换为宿主机 IP
+# 4. 请求发送到外部网络
+# 5. 响应按原路返回
+
+# 示例：容器内访问外部 API
+docker run --rm alpine wget -qO- https://api.github.com
+
+# 查看容器的网络配置
+docker run --rm alpine ip addr show
+# eth0: 172.17.0.x → docker0 网桥
+
+# 查看宿主机的 iptables NAT 规则
+sudo iptables -t nat -L -n</code></pre>
+
+            <h4>2. 外部访问容器（端口映射）</h4>
+            <pre><code># 端口映射原理：
+# 外部请求 → 宿主机端口 → iptables 转发 → 容器端口
+
+# 映射单个端口
+docker run -d -p 8080:80 nginx
+# 宿主机 8080 → 容器 80
+
+# 映射多个端口
+docker run -d -p 8080:80 -p 8443:443 nginx
+
+# 指定 IP 绑定
+docker run -d -p 127.0.0.1:8080:80 nginx
+# 只允许本地访问
+
+# 映射 UDP 端口
+docker run -d -p 53:53/udp dns-server
+
+# 查看端口映射
+docker port container_name
+docker ps --format "table {{.Names}}\t{{.Ports}}"
+
+# 验证端口监听
+netstat -tlnp | grep 8080
+# 或
+lsof -i :8080</code></pre>
+
+            <h4>3. 容器间通讯</h4>
+            <pre><code># 同一 bridge 网络内的容器通讯：
+
+# 方式 1：通过 IP 地址
+# 容器 A (172.17.0.2) → 容器 B (172.17.0.3)
+curl http://172.17.0.3:3000
+
+# 方式 2：通过容器名称（需要自定义网络）
+docker network create mynet
+docker run -d --name db --network mynet postgres
+docker run -d --name app --network mynet myapp
+
+# app 容器可以通过名称访问 db
+# postgresql://db:5432/mydb
+
+# 查看网络内容器的 IP
+docker network inspect mynet
+
+# 进入容器测试连通性
+docker exec -it app ping db
+docker exec -it app curl http://db:5432</code></pre>
+
+            <h4>4. 不同网络模式对比</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>网络模式</th>
+                        <th>容器 IP</th>
+                        <th>访问外部</th>
+                        <th>外部访问容器</th>
+                        <th>容器间通讯</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>bridge</strong></td>
+                        <td>独立 IP（如 172.17.0.x）</td>
+                        <td>✅ 通过 NAT</td>
+                        <td>✅ 需要端口映射</td>
+                        <td>✅ 通过 IP 或名称</td>
+                    </tr>
+                    <tr>
+                        <td><strong>host</strong></td>
+                        <td>共享宿主机 IP</td>
+                        <td>✅ 直接访问</td>
+                        <td>✅ 直接访问容器端口</td>
+                        <td>✅ 通过 localhost</td>
+                    </tr>
+                    <tr>
+                        <td><strong>none</strong></td>
+                        <td>无</td>
+                        <td>❌ 无法访问</td>
+                        <td>❌ 无法访问</td>
+                        <td>❌ 无法通讯</td>
+                    </tr>
+                    <tr>
+                        <td><strong>macvlan</strong></td>
+                        <td>物理网络 IP</td>
+                        <td>✅ 直接访问</td>
+                        <td>✅ 直接访问</td>
+                        <td>✅ 通过物理网络</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>5. 网络通讯完整示例</h4>
+            <pre><code># 场景：Web 应用 + 数据库 + Redis
+
+# 1. 创建网络
+docker network create app-network
+
+# 2. 启动数据库（内部端口，不映射到外部）
+docker run -d \
+  --name db \
+  --network app-network \
+  -e POSTGRES_PASSWORD=secret \
+  postgres:16-alpine
+# 数据库只能在网络内部访问，外部无法直接连接
+
+# 3. 启动 Redis（内部端口）
+docker run -d \
+  --name redis \
+  --network app-network \
+  redis:7-alpine
+
+# 4. 启动 Web 应用（映射端口到外部）
+docker run -d \
+  --name web \
+  --network app-network \
+  -p 3000:3000 \
+  -e DATABASE_URL=postgres://postgres:secret@db:5432 \
+  -e REDIS_URL=redis://redis:6379 \
+  myapp
+
+# 通讯路径：
+# 外部用户 → 宿主机:3000 → web 容器:3000
+# web 容器 → db:5432（内部 DNS 解析）
+# web 容器 → redis:6379（内部 DNS 解析）
+
+# 验证通讯
+docker exec -it web ping db      # Web → DB
+docker exec -it web ping redis    # Web → Redis
+curl http://localhost:3000        # 外部 → Web</code></pre>
+
+            <h4>6. 常见网络问题排查</h4>
+            <pre><code># 问题 1：容器无法访问外部网络
+# 检查 DNS
+docker run --rm alpine nslookup google.com
+docker run --rm alpine ping -c 3 8.8.8.8
+
+# 问题 2：外部无法访问容器端口
+# 检查端口映射
+docker port container_name
+# 检查防火墙
+sudo ufw status
+sudo iptables -L -n | grep 8080
+
+# 问题 3：容器间无法通讯
+# 确认在同一网络
+docker network inspect mynet
+# 检查容器网络配置
+docker exec container_name ip addr show
+
+# 问题 4：DNS 解析失败
+# 使用自定义 DNS
+docker run --dns 8.8.8.8 myapp
+
+# 问题 5：端口冲突
+# 查看端口占用
+lsof -i :8080
+netstat -tlnp | grep 8080</code></pre>
         </section>
 
         <!-- 数据卷 -->
