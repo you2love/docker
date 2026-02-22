@@ -428,17 +428,50 @@ FROM gcr.io/distroless/static</code></pre>
         </section>
 
         <!-- AI 工具 -->
-        <section id="ai-tools" class="section">
+        <section id="ai-tools" class="section section-gray">
             <h2>AI 工具集成</h2>
-            <p>Docker 集成了多项 AI 工具：</p>
-            <pre><code># Docker Scout - 安全扫描
-docker scout cves myapp:latest
+            <p>Docker 生态系统集成了多项 AI 工具，提升开发效率：</p>
 
-# Ask Gordon - AI 助手
-docker ai
-
-# 生成 SBOM
+            <div class="grid">
+                <div class="card">
+                    <h3>Docker Scout</h3>
+                    <p>安全扫描与 SBOM 生成</p>
+                    <pre><code>docker scout cves myapp:latest
 docker scout sbom myapp:latest</code></pre>
+                </div>
+                <div class="card">
+                    <h3>Ask Gordon</h3>
+                    <p>Docker AI 助手</p>
+                    <pre><code>docker ai
+# 自然语言交互</code></pre>
+                </div>
+                <div class="card">
+                    <h3>Dockerizer</h3>
+                    <p>自动将项目容器化，AI 分析代码生成 Dockerfile</p>
+                    <pre><code>npx dockerizer init
+npx dockerizer analyze</code></pre>
+                </div>
+                <div class="card">
+                    <h3>Dockge</h3>
+                    <p>现代化 Docker Compose 可视化管理界面</p>
+                    <pre><code>docker run -d -p 5001:5001 \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  louislam/dockge:latest</code></pre>
+                </div>
+                <div class="card">
+                    <h3>Docker GenAI Stack</h3>
+                    <p>完整生成式 AI 开发栈（Ollama + LangChain）</p>
+                    <pre><code>git clone https://github.com/docker/genai-stack
+cd genai-stack
+docker compose up -d</code></pre>
+                </div>
+                <div class="card">
+                    <h3>Trivy AI 增强版</h3>
+                    <p>AI 驱动的漏洞扫描与自动修复建议</p>
+                    <pre><code>trivy image --scanners vuln,secret,misconfig \
+  --ai-suggestions myapp:latest</code></pre>
+                </div>
+            </div>
         </section>
 
         <!-- 实战 -->
